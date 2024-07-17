@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasPermissions;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -17,6 +20,10 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
+    use HasRoles;
+    use HasPermissions;
+
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +34,21 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'apellido',
+        'telefono',
+        'idRol',
+        'estado',
+        'sexo',
+        'localidad',
+        'idSector',
+        'idEmpresa',
+        'idGremio',
+        'idRol',
+        'direccion',
+        'telefonoLaboral',
+        'fNac',
+        'fechaAfiliacion',
+        'documento'
     ];
 
     /**
@@ -38,7 +60,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'two_factor_recovery_codes',
-        'two_factor_secret',
+        'two_factor_secret',        
     ];
 
     /**
@@ -58,4 +80,32 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+     public function role()
+    {
+        return $this->belongsTo(Role::class, 'idRol');
+    }
+
+     public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'idEmpresa');
+    }
+
+     public function sector()
+    {
+        return $this->belongsTo(Sectore::class, 'idSector');
+    }
+
+    public function hijos()
+{
+    return $this->hasMany(Hijo::class, 'idPadre');
+}
+
+public function conyuge()
+{
+    return $this->hasOne(Conyuge::class, 'idConyuge');
+}
+
+    
+
 }

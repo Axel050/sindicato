@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware([
@@ -24,9 +25,24 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
+       $user = auth()->user();
+
+    // Verifica si el usuario tiene al menos un rol
+    if (!$user->roles()->exists()) {
+        return abort(403, 'No autorizado');               
+    }
         return view('dashboard');
     })->name('dashboard');
 
+    // USUARIOS
+    Route::get('/usuarios',[SideMenuController::class, "usuarios"])->name('usuarios');
+
+    Route::get('/roles',[SideMenuController::class, "roles"])->name('roles');
+
+    // MIEMBROS
+    Route::get('/miembros',[SideMenuController::class, "miembros"])->name('miembros');
+
+    //TABLAS AUXILIARES
     Route::get('/empresas',[SideMenuController::class, "tablaEmpresa"])->name('empresas');
 
     Route::get('/gremios',[SideMenuController::class, "tablaGremio"])->name('gremios');

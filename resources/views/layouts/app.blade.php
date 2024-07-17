@@ -54,7 +54,7 @@
               </nav>
                             
               <!-- Page Content -->
-              <main class="bg-red-500">                                
+              <main class="bg-gray-50">                                
                 {{ $slot }}
               </main>
 

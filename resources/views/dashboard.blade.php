@@ -3,7 +3,15 @@
     Dashboard
   </x-slot>
 
-  @livewire('admin.dashboard')
 
+
+@if(auth()->user()->hasAnyRole([
+            'Administrador', 'AdministridaorPrincipal', 
+            ]) && auth()->user()->estado == 1 )        
+        @livewire('admin.dashboard')
+  @else  
+  @livewire('admin.guest.index')  
+  @endif
+  
 
 </x-app-layout>
