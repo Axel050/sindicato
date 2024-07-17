@@ -139,7 +139,7 @@ class Modal extends Component
               }
                             
               $this->title= "Editar";
-              $this->btnText= "Editar";          
+              $this->btnText= "Guardar"; 
               $this->bg="background-color: rgb(234 88 12)";
             }
 

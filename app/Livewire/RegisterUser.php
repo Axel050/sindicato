@@ -39,7 +39,7 @@ class RegisterUser extends Component
   public $empresas;
   public $empresaId;
   public $sectores;
-  public $sectorId;
+  public $sectorId=0;
   public $gremios;
   public $gremioId;
   
