@@ -54,7 +54,7 @@
                                                 </div>
                                               </div>
 
-                                              <div class="flex flex-col   items-start lg:w-2/3 w-[85%] mx-auto text-gray-500">
+                                              {{-- <div class="flex flex-col   items-start lg:w-2/3 w-[85%] mx-auto text-gray-500">
                                                 <label  class="w-full text-start text-gray-500 mt-2 leading-[16px] text-base">Estado</label>
                                                 
                                                 <div class="relative w-full ">
@@ -64,7 +64,7 @@
                                                     </select>
                                                   <x-input-error for="status"   class="absolute top-full"/>
                                                 </div>
-                                              </div>
+                                              </div> --}}
                                               
 
                                                                                                                                                                               

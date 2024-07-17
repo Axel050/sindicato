@@ -65,7 +65,7 @@ class Modal extends Component
               $this->rol = Role::find($this->id);
               $this->name = $this->rol->name ;                            
               $this->description = $this->rol->description ;
-              $this->status = $this->rol->status ;
+              // $this->status = $this->rol->status ;
               
               $this->title= "Editar";
               $this->btnText= "Guardar";          
@@ -97,8 +97,8 @@ class Modal extends Component
           "name" =>$this->name,
           "guard_name" => "web",
           "description" => $this->description,
-          "status" => $this->status,
         ]);
+        // "status" => $this->status,
         
         $this->dispatch("roleCreated");
     }
@@ -111,9 +111,9 @@ class Modal extends Component
 
           $this->rol->name=$this->name;
           $this->rol->description=$this->description;
-          $this->rol->status=$this->status;
+          // $this->rol->status=$this->status;
           $this->rol->save();
-    
+          
         $this->dispatch("roleUpdated");
 
     }

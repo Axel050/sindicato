@@ -56,27 +56,18 @@
                                               <table class="min-w-full divide-y  divide-gray-400   p-1">  
                                                   <thead>
 
-                                                    
-                                                        
+                                                                                                            
                                                     <tr class="bg-gray-100 relative text-gray-600 font-bold divide-x-2 [&>th]:pl-2 [&>th]:pr-1 [&>th]:lg:pl-4 [&>th]:text-start text-sm ">
                                                         
-                                                      <th scope="col" class="py-1">
-                                                        Id
-                                                      </th>
+                                                      <th scope="col" class="py-1">Id</th>
 
-                                                      <th scope="col" >
-                                                        Nombre</th>
-
+                                                      <th scope="col" >Nombre</th>
                                                       
-                                                      <th scope="col" >
-                                                        Descripcion</th>
-                                                      
-
-                                                      <th scope="col" >
-                                                        Estado</th>
+                                                      <th scope="col" >Descripcion</th>
+                                                    
+                                                      {{-- <th scope="col" >Estado</th> --}}
                                                         
-                                                        <th scope="col" class="lg:w-[190px] w-[90px]">
-                                                          Accion</th>
+                                                        <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>
                                                         
                                                       </tr>
                                                   </thead>
@@ -92,13 +83,13 @@
 
                                                       <td class="py-1.5" >{{ $rol->description }}</td>
 
-                                                      <td  class="text-white">
+                                                      {{-- <td  class="text-white">
                                                           @if ($rol->status)
                                                               <span class="bg-green-500 px-1 py-0.5 rounded-md">Activo</span>
                                                              @else
                                                               <span class="bg-red-300 px-1 py-0.5 rounded-md">Inactivo</span>
                                                           @endif 
-                                                       </td>
+                                                       </td> --}}
                                                         
                                                       
                                                       <td >
