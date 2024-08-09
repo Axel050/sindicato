@@ -42,6 +42,9 @@ Route::middleware([
     // MIEMBROS
     Route::get('/miembros',[SideMenuController::class, "miembros"])->name('miembros');
 
+    // BENEFICIOS
+    Route::get('/beneficios',[SideMenuController::class, "beneficios"])->name('beneficios');
+
     //TABLAS AUXILIARES
     Route::get('/empresas',[SideMenuController::class, "tablaEmpresa"])->name('empresas');
 
@@ -50,6 +53,8 @@ Route::middleware([
     Route::get('/sectores',[SideMenuController::class, "tablaSector"])->name('sectores');
 
     Route::get('/condiciones',[SideMenuController::class, "tablaCondicion"])->name('condiciones');
+
+    Route::get('/perfil',[SideMenuController::class, "perfil"])->name('perfil');
 
     //  function () {
     //     return view('admin.tablas.empresas');}

@@ -1,34 +1,29 @@
-<div class="  fixed w-full h-full top-0 left-0 flex items-center justify-center  z-50"  >
-      <div class="absolute w-full h-full bg-gray-600 opacity-60" wire:click="$parent.$set('method',false)"></div>
-                                                 
-      <div  class=" bg-white border w border-gray-500   md:ma-w-[1000px]  lg:w-fit w-[96%]   z-50 rounded-lg shadow-gray-400 shadow-md max-h-[92%] " >
-                                                                    
-              <div class="bg-ornge-200   text-gray-500  text-start ">
-                  <div class="flex  flex-col justify-center items-center h-full ">
+<div  class=" flex justify-center w-full fullscreen items-center bg-gray-50 relative" >
+  <x-action-message on="UserUpdated" class="bg-orange-500  border-orange-700 absolute top-0 left-0 z-10" >
+                Miembro actualizado con exitó.</x-action-message> 
+              
+                  <div class="flex  flex-col justify-center items-center    mx-auto h-fit lg:w-auto w-[95%] border shadow-lg">
                                           
                             <h2 class="lg:text-2xl text-xl mb-0  w-full text-center py-1  border-b border-gray-300 text-white"  
                             style="{{$bg}}">                                          
-                                {{$title  }} miembro
+                                {{$title  }} perfil
                               </h2>                                            
-                                                                                                                              
+                                                                 
+                              
                           <form class="flex flex-col max-w-[1200px] mx-auto w-full  pb-4  mb-0  lg:p-6 p-2  rounded-lg overflow-y-auto max-h-[85vh] " 
                             wire:submit={{$method}} 
-                            >                                
-                            @if ($method =="delete") 
+                            >                                                                                                           
 
-                                <p class="text-center text-gray-600 lg:px-10 px-6">Esta seguro de eliminar el miembro  </p>
-                                <p class="text-center text-gray-600 mb-6"><strong >"{{$name}}" </strong>?</p>
-                                @else
-                                                 
-
-                            <div class="border- border-gray-300 shadow-l mb-6 rounded-lg bg-rd-200">
+                            <div class="border- border-gray-300 lg:shadow-md mb-6 rounded-lg bg-white">
                             
-                            <div class="grid lg:grid-cols-5 grid-cols-1 px-4 pb-4  space-y-2 space-x-4 pt-0 [&>div]:flex [&>div]:flex-col [&>div]:justify-end [&>div]:relative bg-reen-200 shadow-md"> 
+                            <div class="grid lg:grid-cols-5 grid-cols-1 px-4 pb-4  space-y-2 space-x-4 pt-0 [&>div]:flex [&>div]:flex-col [&>div]:justify-end [&>div]:relative bg-reen-200 lg:shadow-md"> 
 
 
                                   <div class=" -red-200  ml-4 ">
                                     <x-label for="name">Nombre</x-label>
-                                      <input  class="h-7 rounded-lg mr-2" wire:model="name" />
+                                      <input wire:model="name" {{ $method == 'show' ? 'disabled' : '' }}
+                                       class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                       />
                                       <x-input-error for="name"   class=" absolute top-full py-0 leading-[12px] text-xs"/>
                                   </div>
 
@@ -36,19 +31,23 @@
 
                                   <div class=" -green-200 ">
                                     <x-label for="apellido">Apellido</x-label>
-                                        <input  class="h-7 rounded-lg mr-2" wire:model="apellido" />
+                                        <input wire:model="apellido"  {{ $method == 'show' ? 'disabled' : '' }}
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                         />
                                         <x-input-error for="apellido"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
 
                                   <div class="">
                                     <x-label for="">Documento</x-label>
-                                        <input  class="h-7 rounded-lg mr-2" wire:model="documento" />
+                                        <input wire:model="documento"  {{ $method == 'show' ? 'disabled' : '' }}
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                        />
                                       <x-input-error for="documento"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
 
                                   <div>
                                     <x-label for="">Genero</x-label>
-                                        <select wire:model="genero" class="h-7 rounded-lg mr-2 text-sm block py-0">
+                                        <select wire:model="genero" class="h-7 rounded-lg mr-2 text-sm block py-0"    {{ $method == 'show' ? 'disabled' : '' }}  >
                                         <option value="">Elija un genero</option>
                                         <option value="hombre">Masculino</option>
                                         <option value="mujer">Femenino</option>
@@ -58,146 +57,138 @@
 
                                   <div>
                                     <x-label for="">Fecha Nacimiento</x-label>
-                                        <input type="date" class="h-7 rounded-lg mr-2" wire:model="fechaNac" />
+                                        <input type="date"  wire:model="fechaNac"  {{ $method == 'show' ? 'disabled' : '' }}
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                        />
                                       <x-input-error for="fechaNac"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
                                   
                                   <div>
                                     <x-label for="">Dirección</x-label>
-                                        <input  class="h-7 rounded-lg mr-2" wire:model="direccion" />
+                                        <input wire:model="direccion"  {{ $method == 'show' ? 'disabled' : '' }}
+                                         class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                          />
                                         <x-input-error for="direccion"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
                                   <div >
+
                                     <x-label for="">Teléfono</x-label>
-                                        <input  class="h-7 rounded-lg mr-2" wire:model="telefono" />
+                                        <input  wire:model="telefono"  {{ $method == 'show' ? 'disabled' : '' }}
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                        />
                                       <x-input-error for="telefono"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
+
                                   <div>
                                     <x-label for="">Teléfono laboral</x-label>
-                                        <input  class="h-7 rounded-lg mr-2" wire:model="telefonoLaboral" />
+                                        <input  wire:model="telefonoLaboral"  {{ $method == 'show' ? 'disabled' : '' }}
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                        />
                                       <x-input-error for="telefonoLaboral"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                     </div>
+
                                     <div>
                                     <x-label for="">Email</x-label>
-                                        <input  class="h-7 rounded-lg mr-2" wire:model="email" />
+                                        <input  wire:model="email"  {{ $method == 'show' ? 'disabled' : '' }}
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}" 
+                                        />
                                       <x-input-error for="email"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
                                   
                                   <div>
                                     <x-label for="">Localidad</x-label>
-                                        <input  class="h-7 rounded-lg mr-2" wire:model="localidad" />
+                                        <input  wire:model="localidad"  {{ $method == 'show' ? 'disabled' : '' }}
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                        />
                                       <x-input-error for="localidad"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                     </div>
                                     
                                     <div>
                                     <x-label for="">Fecha Afiliación</x-label>
-                                        <input  type="date" class="h-7 rounded-lg mr-2" wire:model="fechaAfiliacion" />
+                                        <input  type="date"  wire:model="fechaAfiliacion"  {{ $method == 'show' ? 'disabled' : '' }}
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                        />
                                       <x-input-error for="fechaAfiliacion"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
 
                                   <div>
                                     <x-label for="">Empresa</x-label>
-                                    <select wire:model="empresaId" class="h-7 rounded-lg mr-2 text-sm block py-0">                
+                                    <select wire:model="empresaId" class="h-7 rounded-lg mr-2 text-sm block py-0"  {{ $method == 'show' ? 'disabled' : '' }}  >
                                       <option value="">Elija empresa</option>
                                       @foreach ($empresas as $empresa)
                                           
                                       <option value="{{$empresa->id}}">{{$empresa->nombreEmpresa}}</option>
                                       @endforeach
                                       </select>
-                                      <x-input-error for="empresaId"   class="text-xs absolute top-full py-0 leading-[12px] "/>              
+                                      <x-input-error for="empresaId"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
 
                                     <div>
                                     <x-label for="">Sector</x-label>
-                                    <select wire:model="sectorId" class="h-7 rounded-lg mr-2 text-sm block py-0">                
+                                    <select wire:model="sectorId" class="h-7 rounded-lg mr-2 text-sm block py-0"  {{ $method == 'show' ? 'disabled' : '' }}  > 
                                       <option value="">Elija sector</option>
                                       @foreach ($sectores as $sector)
                                           
                                       <option value="{{$sector->id}}">{{$sector->nombreSector}}</option>
                                       @endforeach
                                       </select>
-                                      <x-input-error for="sectorId"   class="text-xs absolute top-full py-0 leading-[12px] "/>              
+                                      <x-input-error for="sectorId"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
 
                                     <div>
                                     <x-label for="">Sindicato</x-label>
-                                    <select wire:model="gremioId" class="h-7 rounded-lg mr-2 text-sm block py-0">                
+                                    <select wire:model="gremioId" class="h-7 rounded-lg mr-2 text-sm block py-0"  {{ $method == 'show' ? 'disabled' : '' }}  >
                                       <option value="">Elija sindicato</option>
                                       @foreach ($gremios as $gremio)
                                           
                                       <option value="{{$gremio->id}}">{{$gremio->nombreGremio}}</option>
                                       @endforeach
                                       </select>
-                                      <x-input-error for="gremioId"   class="text-xs absolute top-full py-0 leading-[12px] "/>              
+                                      <x-input-error for="gremioId"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
 
 
                                   <div>
                                     <x-label for="">Legajo</x-label>
-                                        <input  class="h-7 rounded-lg mr-2" wire:model="legajo" />
+                                        <input   wire:model="legajo"  {{ $method == 'show' ? 'disabled' : '' }} 
+                                        class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                        />
                                       <x-input-error for="legajo"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                     </div>
 
-                                  <div>
-                                    
-                                    <x-label for="">Condicion </x-label>
-                                    <select wire:model.live="idCondicion" class="h-7 rounded-lg mr-2 text-sm block py-0">
-                                        <option value="">Elija condicion</option>
-                                        @foreach ($condiciones as $condicion)
-                                            
-                                        <option value="{{$condicion->id}}">{{$condicion->nombreCondicion}}</option>                                        
-                                        @endforeach
-                                      </select>
-                                      <x-input-error for="idCondicion"   class="text-xs absolute top-full py-0 leading-[12px] "/>
-                                  </div>
-
-                                  <div>
-                                    
-                                    <x-label for="">Rol </x-label>
-                                    <select wire:model.live="idRol" class="h-7 rounded-lg mr-2 text-sm block py-0">                
-                                        <option value="">Elija Rol</option>
-                                        <option value="3">Miembro</option>
-                                        <option value="2">Usuario pendiente revision</option>
-                                      </select>
-                                      <x-input-error for="idRol"   class="text-xs absolute top-full py-0 leading-[12px] "/>              
-                                  </div>
-
-                                  <div>
-                                    
-                                    <x-label for="">Estado </x-label>
-                                    <select wire:model.live="estado" class="h-7 rounded-lg mr-2 text-sm block py-0">                
-                                        <option value="0">Inactivo</option>
-                                        <option value="1">Activo</option>
-                                      </select>
-                                      <x-input-error for="conyugue"   class="text-xs absolute top-full py-0 leading-[12px] "/>              
-                                  </div>
+                                  
+                                  
 
                                   <div>
                                     
                                     <x-label for="">Conyugue </x-label>
-                                    <select wire:model.live="conyugue" class="h-7 rounded-lg mr-2 text-sm block py-0">                
+                                    <select wire:model.live="conyugue" class="h-7 rounded-lg mr-2 text-sm block py-0"  {{ $method == 'show' ? 'disabled' : '' }}  >
                                         <option value="0">No</option>
                                         <option value="1">Si</option>
                                       </select>
-                                      <x-input-error for="conyugue"   class="text-xs absolute top-full py-0 leading-[12px] "/>              
+                                      <x-input-error for="conyugue"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
 
                                   <div>
                                     
                                     <x-label for="">Hijos </x-label>
-                                      <input    type="number" min="0" wire:model.live="hijos" class="h-7 rounded-lg mr-2"/>                               
+                                      <input    type="number" min="0" wire:model.live="hijos"  {{ $method == 'show' ? 'disabled' : '' }}  
+                                      class="h-7 rounded-lg mr-2 {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"/> 
                                   </div>
 
+                                  @if ($method=="edit")
+                                      
                                   <div>
                                     <x-label for="">Password</x-label>
-                                      <input  class="h-7 rounded-lg mr-2" wire:model="password" />
-                                      <x-input-error for="password"   class="text-xs absolute top-full py-0 leading-[12px] "/>
+                                    <input  class="h-7 rounded-lg mr-2" wire:model="password"  {{ $method == 'show' ? 'disabled' : '' }}/>
+                                    <x-input-error for="password"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
                                   <div>
                                     <x-label for="">Confirmación Password</x-label>
-                                      <input  class="h-7 rounded-lg mr-2" wire:model="password_confirmation" />
-                                      <x-input-error for="password_confirmation"   class="text-xs absolute top-full py-0 leading-[12px] "/>
+                                    <input  class="h-7 rounded-lg mr-2" wire:model="password_confirmation"  {{ $method == 'show' ? 'disabled' : '' }}/>
+                                    <x-input-error for="password_confirmation"   class="text-xs absolute top-full py-0 leading-[12px] "/>
                                   </div>
+                                  @endif
 
 
                             </div> 
@@ -210,28 +201,34 @@
                             <div class="flex flex-col  max-w-[1050px] mx-auto lg:w-fit w-[90%]  border-2 border-gray-300 pb-4 shadow-lg mb-6 rounded-lg">
                                   <h2 class="bg-emerald-700   w-full py-1 text-lg font-semibold mb-4 pl-4 flex rounded-t-md text-white">
                                     <span>Conyugue</span>
-                                    <button  type="button" wire:click="$set('conyugue','0')" class="ml-auto mr-4 text-red-600 font-semibold hover:text-red-800 hover:font-bold text-xl">X</button>
-                                  
+                                    @if ($method == "edit")                                    
+                                    <button  type="button" wire:click="$set('conyugue','0')" class="ml-auto mr-4 text-red-600 font-semibold hover:text-red-800 hover:font-bold text-xl">X</button>                                    
+                                    @endif
+
                                   </h2>
                             <div class="grid lg:grid-cols-5 grid-cols-1 px-4">
                                   <div>
                                     <x-label for="">Nombre</x-label>
-                                      <input  class="h-7 rounded-lg mr-2 lg:w-auto w-full" wire:model="nombreConyugue" />
+                                    
+                                      <input  class="h-7 rounded-lg mr-2 lg:w-auto w-full {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                       wire:model="nombreConyugue"  {{ $method == 'show' ? 'disabled' : '' }}/>
                                       <x-input-error for="nombreConyugue"   class=" top-full py-0 leading-[12px]"/>
                                   </div>
                                   <div>
                                     <x-label for="">Apellido</x-label>
-                                      <input  class="h-7 rounded-lg mr-2 lg:w-auto w-full" wire:model="apellidoConyugue" />
+                                      <input  class="h-7 rounded-lg mr-2 lg:w-auto w-full {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                      wire:model="apellidoConyugue"  {{ $method == 'show' ? 'disabled' : '' }}/>
                                       <x-input-error for="apellidoConyugue"   class=" top-full py-0 leading-[12px]"/>
                                   </div>
                                   <div>
                                     <x-label for="">Documento</x-label>
-                                      <input  class="h-7 rounded-lg mr-2 lg:w-auto w-full" wire:model="documentoConyugue" />
+                                      <input  class="h-7 rounded-lg mr-2 lg:w-auto w-full {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                      wire:model="documentoConyugue"  {{ $method == 'show' ? 'disabled' : '' }}/>
                                       <x-input-error for="documentoConyugue"   class=" top-full py-0 leading-[12px]"/>
                                   </div>
                                   <div class="flex flex-col">
                                     <x-label for="">Genero</x-label>
-                                      <select wire:model="generoConyugue" class="h-7 rounded-lg mr-2 text-sm block py-0 lg:w-auto w-full">
+                                      <select wire:model="generoConyugue" class="h-7 rounded-lg mr-2 text-sm block py-0 lg:w-auto w-full"  {{ $method == 'show' ? 'disabled' : '' }}  >
                                         <option value="">Elija un genero</option>
                                         <option value="hombre">Hombre</option>
                                         <option value="mujer">Mujer</option>
@@ -241,7 +238,8 @@
 
                                   <div>
                                     <x-label for="">Fecha Nacimiento</x-label>
-                                    <input type="date" class="h-7 rounded-lg mr-2 lg:w-auto w-full" wire:model="fechaNacConyugue" />
+                                    <input type="date" class="h-7 rounded-lg mr-2 lg:w-auto w-full {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                    wire:model="fechaNacConyugue"  {{ $method == 'show' ? 'disabled' : '' }}/>
                                       <x-input-error for="fechaNacConyugue"   class=" top-full py-0 leading-[12px]"/>
                                   </div>
 
@@ -255,9 +253,11 @@
                                                 <div class="flex flex-col  max-w-[1050px] mx-auto lg:w-fit w-[90%]  border-2 border-gray-300 pb-4 shadow-lg mb-4 rounded-lg">
                                                       <h2 class="bg-red-300 wfull py-1 text-lg font-semibold mb-4 pl-4 flex rounded-t-md text-white">Hijo {{$i +1}}
                                                         
-                                                        
-                                                        <button type="button" class="text-red-600 ml-auto mr-4 font-semibold hover:text-red-800 hover:font-bold text-xl"
-                                                      wire:click="removeHijo({{ $i }})">X</button>
+                                                        @if ($method == "edit")                                    
+                                                              <button type="button" class="text-red-600 ml-auto mr-4 font-semibold hover:text-red-800 hover:font-bold text-xl"
+                                                                wire:click="removeHijo({{ $i }})">X</button>
+                                                          @endif
+                      
                                                       </h2>
 
                                                 <div class="grid lg:grid-cols-5 grid-cols-1 px-4 bg-re-200 ">
@@ -265,7 +265,8 @@
                                                   
                                                       <div>
                                                         <x-label for="">Nombre</x-label>                          
-                                                          <input  class="h-7 rounded-lg mr-2 lg:w-auto w-full " wire:model="hijosData.{{ $i }}.nombre" />
+                                                          <input  class="h-7 rounded-lg mr-2 lg:w-auto w-full {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                                          wire:model="hijosData.{{ $i }}.nombre"  {{ $method == 'show' ? 'disabled' : '' }}/>
                                                           <x-input-error for="hijosData.{{$i}}.nombre"   class=" top-full py-0 leading-[12px]"/>
                                                           
                                                         </div>
@@ -273,28 +274,32 @@
 
                                                       <div>
                                                         <x-label for="">Apellido</x-label>
-                                                          <input type="text" class="h-7 rounded-lg mr-2 lg:w-auto w-full" wire:model="hijosData.{{ $i }}.apellido" />
+                                                          <input type="text" class="h-7 rounded-lg mr-2 lg:w-auto w-full {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                                           wire:model="hijosData.{{ $i }}.apellido"  {{ $method == 'show' ? 'disabled' : '' }}/>
                                                           <x-input-error for="hijosData.{{$i}}.apellido"   class=" top-full py-0 leading-[12px]"/>
                                                       </div>
                                                       <div>
                                                         <x-label for="">Documento</x-label>
-                                                          <input type="text" class="h-7 rounded-lg mr-2 lg:w-auto w-full" wire:model="hijosData.{{ $i }}.documento" />
+                                                          <input type="text" class="h-7 rounded-lg mr-2 lg:w-auto w-full {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                                           wire:model="hijosData.{{ $i }}.documento" {{ $method == 'show' ? 'disabled' : '' }} />
                                                           <x-input-error for="hijosData.{{$i}}.documento"   class=" top-full py-0 leading-[12px]"/>
                                                       </div>
 
                                                       <div class="bg--500 relative flex flex-col">
                                                         <x-label for="">Genero</x-label>
-                                                        <select wire:model="hijosData.{{ $i }}.genero" class="h-7 rounded-lg mr-2 text-sm block py-0 lg:w-auto w-full">
+                                                        <select wire:model="hijosData.{{ $i }}.genero" class="h-7 rounded-lg mr-2 text-sm block py-0 lg:w-auto w-full"  {{ $method == 'show' ? 'disabled' : '' }}  >
                                                             <option value="">Elija un genero</option>
-                                                            <option value="M">Hombre</option>
-                                                            <option value="F">Mujer</option>
+                                                            <option value="hombre">Hombre</option>
+                                                            <option value="mujer">Mujer</option>
                                                           </select>
                                                           <x-input-error for="hijosData.{{$i}}.genero"   class=" top-full py-0 leading-[12px]"/>
                                                       </div>
 
                                                       <div >
                                                         <x-label for="">Fecha Nacimiento</x-label>
-                                                          <input  type="date" wire:model="hijosData.{{ $i }}.fechaNac"  class="h-7 rounded-lg  lg:w-auto w-full"/>
+                                                          <input  type="date" wire:model="hijosData.{{ $i }}.fechaNac"  
+                                                          class="h-7 rounded-lg  lg:w-auto w-full {{ $method == 'show' ? 'bg-gray-50 opacity-70 ' : '' }}"
+                                                           {{ $method == 'show' ? 'disabled' : '' }}/>
                                                           <x-input-error for="hijosData.{{$i}}.fechaNac"   class=" top-full py-0 leading-[12px]"/>
                                                       </div>
 
@@ -302,16 +307,21 @@
                                                 </div>
                                                 @endfor
 
-
-                                                @endif
+                                                
                                               
                                                 <div class="flex justify-center gap-x-12"> 
-                                                  
-                                                  <button type="button" wire:click="$parent.$set('method',false)"                      
+                                              
+                                                  @if ($method == "edit")
+                                                      <button type="button" wire:click="option('show')"
                                                       class="px-6 py-1.5 bg-red-500 text-white w-fit  rounded-lg hover:bg-red-600">Cancelar  
-                                                  </button >
 
-                                                  <button   class="px-6 py-1.5 bg-green-500 text-white w-fit  rounded-lg hover:bg-green-600">{{$btnText}}</button>
+                                                      </button >
+                                                      
+                                                        <button   class="px-6 py-1.5 bg-green-500 text-white w-fit  rounded-lg hover:bg-green-600" wire:click="edit">Guardar</button>{{$method}}
+                                                        @else
+
+                                                        <button   type="button"  class="px-6 py-1.5 bg-green-500 text-white w-fit  rounded-lg hover:bg-green-600" wire:click="option('edit')">Editar</button>
+                                                  @endif
                                                  </div>
 
 
@@ -319,9 +329,10 @@
                                     </form>                                          
                                             
 
-                            </div>            
+
+                              </div>
                               </div>
 
-                        </div>
-                                                        
-  </div>
+                        
+
+  

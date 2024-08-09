@@ -245,8 +245,8 @@
             <x-label for="">Genero</x-label>
             <select wire:model="hijosData.{{ $i }}.genero" class="h-7 rounded-lg mr-2 text-sm block py-0 lg:w-auto w-full">
                 <option value="">Elija un genero</option>
-                <option value="hombre">Hombre</option>
-                <option value="mujer">Mujer</option>
+                <option value="M">Hombre</option>
+                <option value="F">Mujer</option>
               </select>
               <x-input-error for="hijosData.{{$i}}.genero"   class=" top-full py-0 leading-[12px]"/>
           </div>

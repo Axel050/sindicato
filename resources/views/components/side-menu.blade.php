@@ -101,6 +101,19 @@
                 <span class="ml-1 ">Miembros</span></a>
               </li>
               @endif
+
+              @if(auth()->user()->hasAnyPermission([
+            'miembros-ver','miembros-crear','miembros-editar','miembros-actualizar','miembros-eliminar',            
+            ]) && auth()->user()->estado ==1 )             
+
+           <li class="pl- mb-1 mt-2  py-1 hover:text-gray-200 hover:shadow-md hover:shadow-sky-600 px-1 
+              {{ Request::is('beneficios') ? 'bg-gradient-to-l from-sky-300 to-sky-300/10  text-gray-200 font-bold' : '' }} "   >
+              <a class="flex gap-x-2" href="{{Route('beneficios')}}">                 
+                <svg class="w-6 h-6 "  viewBox="0 0 32 32" enable-background="new 0 0 32 32" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" stroke="#fff"><g id="SVGRepo_bgCarrier" stroke-width="0"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Layer_1"></g> <g id="Layer_2"> <g> <rect fill="none" height="16" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="24" x="4" y="14"></rect> <rect fill="none" height="6" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="28" x="2" y="8"></rect> <rect fill="none" height="16" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="6" x="13" y="14"></rect> <rect fill="none" height="6" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="6" x="13" y="8"></rect> <polygon fill="none" points=" 16,7 19,4 18,2 16,2 14,2 13,4 " stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></polygon> <polyline fill="none" points=" 19,4 23,3 25,5 25,8 " stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></polyline> <polyline fill="none" points=" 13,4 9,3 7,5 7,8 " stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></polyline> </g> </g> </g></svg>
+                
+                <span class="ml-1 ">Beneficios</span></a>
+              </li>
+              @endif
   
 
 

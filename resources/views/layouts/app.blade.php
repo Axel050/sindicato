@@ -16,6 +16,33 @@
 
         <!-- Styles -->
         @livewireStyles
+
+        <script>
+          document.addEventListener('alpine:init', () => {
+          Alpine.data('imageUploader', (initialImage) => ({
+            image: initialImage,
+            isImageLoaded: !!initialImage,
+
+          
+
+        updateImage(event) {
+            this.isImageLoaded = true;
+            this.image = URL.createObjectURL(event.target.files[0]);            
+        },
+
+        clearImage() {
+            this.image = '';
+            this.isImageLoaded = false;
+            this.$refs.fileInput.value = ''; // Clear the file input value
+        }
+
+
+    }));
+});
+
+
+        </script>
+
     </head>
     <body class="font-sans antialiased">
         <x-banner />
@@ -47,7 +74,7 @@
                     @endif
                   
                     <div class="flex justify-end ml-auto mr-4 bg-gray-100">
-                      <x-dropdownlog />
+                      <x-dropdownlog />                      
                     </div>                                  
                   </div>
                                 

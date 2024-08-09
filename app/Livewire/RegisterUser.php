@@ -8,6 +8,7 @@ use App\Models\Gremio;
 use App\Models\Hijo;
 use App\Models\Sectore;
 use App\Models\User;
+use App\Rules\UniqueDocument;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -56,7 +57,7 @@ class RegisterUser extends Component
             'name' => 'required',
             'apellido' => 'required',
             'telefono' => 'required',
-            'documento' => 'required',         
+            'documento' => 'required|unique:users', 
             'genero' => 'required',         
             'fechaNac' => 'required',         
             'direccion' => 'required',         
@@ -72,7 +73,7 @@ class RegisterUser extends Component
           if($this->conyugue == 1  ){ 
             $rules['nombreConyugue'] = 'required';
             $rules['apellidoConyugue'] = 'required';
-            $rules['documentoConyugue'] = 'required';
+            $rules['documentoConyugue'] = ['required', new UniqueDocument];
             $rules['generoConyugue'] = 'required';
             $rules['fechaNacConyugue'] = 'required';
            }
@@ -82,16 +83,16 @@ class RegisterUser extends Component
               $rules["hijosData.$i.nombre"]   = 'required';
               $rules["hijosData.$i.apellido"]  = 'required';
               $rules["hijosData.$i.genero"]    = 'required';
-              $rules["hijosData.$i.documento"] = 'required';
+              $rules["hijosData.$i.documento"] = ['required', new UniqueDocument];
               $rules["hijosData.$i.fechaNac"]   = 'required';
            }
 
           return $rules;
         }
-        
+
 
     protected function messages(){
-       return [                      
+       return [
             "name.required" => "Ingrese nombre.",            
             "apellido.required"=> "Ingrese apellido.",
             "telefono.required"=> "Ingrese telefono.",
@@ -103,27 +104,27 @@ class RegisterUser extends Component
             "password.confirmed"=> "Las claves no coinciden.",            
             "password.min"=> "Debe tener al menos 8 caracteres.",            
             "empresaId.required"=> "Elija una empresa.",
-            "documento" => "Ingrese documento.",
+            "documento.required" => "Ingrese documento.",
+            "documento.unique" => "Documento existente.",
             "genero" => "Elija genero.",
             "fechaNac" => "Elija fecha.",
             "direccion" => "Ingrese direccion.",
             "gremioId" => "Elija sindicato.",
             
-            
             "hijosData.*.nombre" => "Ingrese nombre.",
             "hijosData.*.apellido" => "Ingrese apellido.",
             "hijosData.*.genero" => "Elija genero.",
             "hijosData.*.fechaNac" => "Elija fecha.",
-            "hijosData.*.documento" => "Ingrese documento.",
+            "hijosData.*.documento.required" => "Ingrese documento.",            
 
             "nombreConyugue" => "Ingrese nombre.",
             "apellidoConyugue" => "Ingrese apellido.",
             "generoConyugue" => "Elija genero.",
             "fechaNacConyugue" => "Elija fecha.",
-            "documentoConyugue" => "Ingrese documento.",
+            "documentoConyugue.required" => "Ingrese documento.",
+            
 
-
-          ];                 
+          ];
       }
     
 
@@ -150,7 +151,6 @@ class RegisterUser extends Component
       
        $this->validate(  $this->rules(), $this->messages()); 
            
-
 
         $miembro = User::create([
           "name" =>$this->name,

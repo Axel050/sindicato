@@ -38,4 +38,7 @@ class CondicionesRequerida extends Model
 		'idResponsable',
 		'tipo'
 	];
+
+    
+
 }

@@ -1,11 +1,9 @@
 <x-app-layout>     
     <x-slot name="headerT">
-   Miembros
+   Beneficios
   </x-slot>
 
-
-  @livewire('admin.miembros.index')
-
+  @livewire('admin.beneficios.index')
 
 
 </x-app-layout>

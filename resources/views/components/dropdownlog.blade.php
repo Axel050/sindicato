@@ -36,12 +36,14 @@
     x-transition:leave-end="transform opacity-0 scale-95"  
     >  
     
-      <p class="font-medium text-sm text-gray-500 ">{{ Auth::user()->email }}</p>
+      <p class="font-medium text-sm text-gray-500 p-1 ">{{ Auth::user()->email }}</p>
+
+      <a href="{{Route('perfil')}}"  class="font-medium  text-gray-500 p-1 hover:text-gray-700 hover:font-bold  hover:bg-gray-100">Perfil</a>
 
       <form method="POST" action="{{ route('logout') }}" x-data>
       @csrf
 
-      <a href="{{ route('logout') }}" class="flex items-center hover:text-gray-600 hover:font-bold"
+      <a href="{{ route('logout') }}" class="flex items-center p-1 pt-2 hover:text-gray-700 hover:font-bold  hover:bg-gray-100"
             @click.prevent="$root.submit();">
           <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M4 4H13V9H11.5V5.5H5.5V18.5H11.5V15H13V20H4V4Z" fill="#1F2328"/>

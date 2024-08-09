@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Livewire\Admin\Miembros;
+namespace App\Livewire\Admin\PerfilActual;
 
-use App\Models\Condicione;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Conyuge;
@@ -10,24 +9,19 @@ use App\Models\Empresa;
 use App\Models\Gremio;
 use App\Models\Hijo;
 use App\Models\Sectore;
-use App\Rules\UniqueDocument;
 use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Role;
+use Livewire\Attributes\On;
 
-class Modal extends Component
+class Show extends Component
 {
 
     public $title;
     public $id;
     public $bg;    
-    public $method;
-    public $btnText;    
+    public $method;    
 
     public $user;
     
-    public $idRol;
-    public $estado=0;
-
     public $name;
     public $apellido;
     public $documento;
@@ -44,9 +38,7 @@ class Modal extends Component
     public $hijos=0;  
     public $password;
     public $password_confirmation;
-    
-    public $condiciones;
-    public $idCondicion;    
+        
     public $localidad;
     public $empresas;
     public $empresaId;
@@ -55,7 +47,6 @@ class Modal extends Component
     public $gremios;
     public $gremioId;
   
-    public $conyugeId;
     public $nombreConyugue;
     public $apellidoConyugue;
     public $documentoConyugue;
@@ -63,42 +54,29 @@ class Modal extends Component
     public $fechaNacConyugue;
 
     public $hijosData=[];
+    
 
-      
+
      public function mount(){
+          $this->method="show";    
+          $this->title= "Informacion del ";              
+          $this->bg="background-color: rgb(22 163 74)"; 
 
-      $this->hijosData = array_fill(0, $this->hijos, [
-            'documento' => '',            
-            'apellido' => '',
-            'nombre' => '',
-            'genero' => '',            
-            'fechaNac' => '',            
-            "id" => ""
-        ]);
 
-      $this->empresas=Empresa::orderBy("nombreEmpresa","asc")->get();
-      $this->sectores=Sectore::orderBy("nombreSector","asc")->get();
-      $this->gremios=Gremio::orderBy("nombreGremio","asc")->get();
-      $this->condiciones=Condicione::orderBy("nombreCondicion","asc")->get();
+              $this->hijosData = array_fill(0, $this->hijos, [
+                    'documento' => '',            
+                    'apellido' => '',
+                    'nombre' => '',
+                    'genero' => '',            
+                    'fechaNac' => '',            
+                ]);
 
-      if($this->method == "save"){        
-          $this->title= "Crear";
-          $this->btnText= "Guardar";
-          $this->bg=	"background-color: rgb(22 163 74)";
-        }
-        
-        if($this->method == "delete"){
-          $this->user = User::find($this->id);
-          $this->name = $this->user->name ;                    
+              $this->empresas=Empresa::orderBy("nombreEmpresa","asc")->get();
+              $this->sectores=Sectore::orderBy("nombreSector","asc")->get();
+              $this->gremios=Gremio::orderBy("nombreGremio","asc")->get();      
 
-          $this->title= "Eliminar";
-          $this->btnText= "Eliminar";
-          $this->bg=	"background-color: rgb(239 68 68)"; 
-        }
-
-        if($this->method == "update"){              
-              $this->user = User::find($this->id);
-
+             
+              $this->user =  auth()->user();
               $this->name = $this->user->name ;
               $this->apellido = $this->user->apellido ;
               $this->documento = $this->user->documento ;
@@ -112,11 +90,8 @@ class Modal extends Component
               $this->fechaAfiliacion =date('Y-m-d', strtotime($this->user->fechaAfiliacion));
               $this->empresaId = $this->user->idEmpresa ;
               $this->sectorId = $this->user->idSector ;
-              $this->gremioId = $this->user->idGremio ;
-              $this->idCondicion = $this->user->idCondicion ;
-              $this->legajo = $this->user->legajo ;
-              $this->estado = $this->user->estado ;            
-              $this->idRol = $this->user->idRol ;             
+              $this->gremioId = $this->user->idGremio ;              
+              $this->legajo = $this->user->legajo ;              
               $this->conyugue = $this->user->conyuge ? 1 :  0 ;
               $this->hijos = $this->user->hijos->count() ;
 
@@ -127,7 +102,6 @@ class Modal extends Component
                       'nombre' => $h->nombre,
                       'genero' => $h->sexo,
                       'fechaNac' => date('Y-m-d', strtotime($h->fNac)),
-                      'id' => $h->id,
                   ];
                 
               }
@@ -135,21 +109,35 @@ class Modal extends Component
 
 
               if($this->user->conyuge){
-                $this->conyugeId= $this->user->conyuge?->id;
                 $this->nombreConyugue = $this->user->conyuge?->nombre;
                 $this->apellidoConyugue = $this->user->conyuge?->apellido;
                 $this->documentoConyugue = $this->user->conyuge?->documento;
                 $this->generoConyugue = $this->user->conyuge?->sexo;
                 $this->fechaNacConyugue = date('Y-m-d', strtotime($this->user->conyuge?->fNac));
               }
-                            
-              $this->title= "Editar";
-              $this->btnText= "Guardar"; 
-              $this->bg="background-color: rgb(234 88 12)";
+
+              $this->title= "Informacion del ";              
+                $this->bg="background-color: rgb(22 163 74)"; 
+
             }
 
+            public function option($method){
+
+              $this->method = $method;
+              if($method == "show"){
+                $this->title= "Informacion del ";              
+                $this->bg="background-color: rgb(22 163 74)"; 
+              }
+              else {
+                $this->title= "Editar"; 
+                $this->bg="background-color: rgb(234 88 12)"; 
+              }
+
+            }
+            
+
       
-     }
+    
 
      protected function rules(){
        $rules  =  [
@@ -157,50 +145,46 @@ class Modal extends Component
             'name' => 'required',
             'apellido' => 'required',
             'telefono' => 'required',
-            
+            'documento' => 'required',         
             'genero' => 'required',         
             'fechaNac' => 'required',         
             'gremioId' => 'required|integer',  
-            'empresaId' => 'required',  
-            'idCondicion' => 'required',  
-            'hijos' => 'required|integer',                                      
-            'idRol' => 'required',                                                  
+            'empresaId' => 'required',              
+            'hijos' => 'required|integer',                                                                                              
           ]; 
           
           
-          if($this->method == "update"){              
+          if($this->method == "edit"){
             $rules['email'] = 'required|email|unique:users,email,' . $this->user->id;
-            $rules['documento'] = 'required|unique:users,documento,' . $this->user->id;                      
+          
                 if ( $this->password) {
                     $rules['password'] = 'required|string|confirmed|min:8';
                 }
             }
 
            elseif($this->method == "save"){  
-                  $rules['documento'] = 'required|unique:users' ;
                   $rules['email'] = 'required|email|unique:users';
                   $rules['password'] = 'required|string|confirmed|min:8';
            }
           
                     
-          if($this->conyugue == 1  ){             
+          if($this->conyugue == 1  ){ 
             $rules['nombreConyugue'] = 'required';
-            $rules['apellidoConyugue'] = 'required';            
-            $rules['documentoConyugue'] = ['required', new UniqueDocument($this->conyugeId)];
+            $rules['apellidoConyugue'] = 'required';
+            $rules['documentoConyugue'] = 'required';
             $rules['generoConyugue'] = 'required';
             $rules['fechaNacConyugue'] = 'required';
-            
           }
 
 
-            for ($i = 0; $i < $this->hijos; $i++) {                            
+            for ($i = 0; $i < $this->hijos; $i++) {
               $rules["hijosData.$i.nombre"]   = 'required';
               $rules["hijosData.$i.apellido"]  = 'required';
               $rules["hijosData.$i.genero"]    = 'required';
-              $rules["hijosData.$i.documento"] = ['required', new UniqueDocument('',$this->hijosData[$i]['id'], $this->id)];
+              $rules["hijosData.$i.documento"] = 'required';
               $rules["hijosData.$i.fechaNac"]   = 'required';
            }
-      
+          
            
           return $rules;
         }
@@ -219,117 +203,32 @@ class Modal extends Component
             "password.confirmed"=> "Las claves no coinciden.",            
             "password.min"=> "Debe tener al menos 8 caracteres.",            
             "empresaId.required"=> "Elija una empresa.",
-            "documento.required" => "Ingrese documento.",
-            "documento.unique" => "Documento existente.",
+            "documento" => "Ingrese documento.",
             "genero" => "Elija genero.",
             "fechaNac" => "Elija fecha.",
             "direccion" => "Ingrese direccion.",
-            "gremioId" => "Elija sindicato.",
-            "idCondicion" => "Elija condicion.",
+            "gremioId" => "Elija sindicato.",            
             
             
             "hijosData.*.nombre.required" => "Ingrese nombre.",
             "hijosData.*.apellido" => "Ingrese apellido.",
             "hijosData.*.genero" => "Elija genero.",
             "hijosData.*.fechaNac" => "Elija fecha.",
-            "hijosData.*.documento.required" => "Ingrese documento.",
+            "hijosData.*.documento" => "Ingrese documento.",
 
             "nombreConyugue" => "Ingrese nombre.",
             "apellidoConyugue" => "Ingrese apellido.",
             "generoConyugue" => "Elija genero.",
             "fechaNacConyugue" => "Elija fecha.",
-            "documentoConyugue.required" => "Ingrese documento.",
+            "documentoConyugue" => "Ingrese documento.",
 
 
           ];                 
       }
 
-    
-     public function save(){
-
-       $this->validate(  $this->rules(), $this->messages()); 
-      
-
-
-        $miembro = User::create([
-          "name" =>$this->name,
-          "apellido" =>$this->apellido,
-          "email" =>$this->email,
-          "telefono" =>$this->telefono,
-          "telefonoLaboral" =>$this->telefonoLaboral,
-          "direccion" =>$this->direccion,
-          "sexo" =>$this->genero,
-          "fNac" =>$this->fechaNac,
-                             
-          "localidad" =>$this->localidad,
-          "documento" =>$this->documento,
-          "fechaAfiliacion"=>$this->fechaAfiliacion,
-          
-          "idEmpresa" =>$this->empresaId,
-          "idGremio" =>$this->gremioId,
-          "idSector" =>$this->sectorId,
-          "idCondicion" =>$this->idCondicion,
-          "legajo" =>$this->legajo,
-
-          "password" =>bcrypt($this->sectorId),
-           
-          "idRol" =>$this->estado == 1 ? 3 : $this->idRol, //si es activo , rol=miembro
-          "estado" =>$this->estado, 
-                    
-        ]);
-
-        // 
-        $rol = Role::find($this->idRol);
-
-      
-      if($this->estado == 0  ){                        
-        $roleName= $rol->name;        
-        $miembro->assignRole($roleName);
-      }
-      else if($this->estado == 1 ){                     
-              $miembro->assignRole("Miembro");
-              $miembro->idRol= 3;
-        }
-        // 
-        
-        $id = $miembro->id;
-        
-
-        if($this->conyugue == 1){
-        $conyugue= Conyuge::create([
-          "nombre"=>$this->nombreConyugue,
-          "apellido"=>$this->apellidoConyugue,
-          "documento"=>$this->documentoConyugue,
-          "sexo"=>$this->generoConyugue,
-          "fNac"=>$this->fechaNacConyugue,
-          "idConyuge"=>$id,
-        ]);
-      }
-
-
-      if ($this->hijos > 0 ) {
-         foreach ($this->hijosData as $hijo) { 
-                            
-          Hijo::create([
-            "nombre"=>$hijo['nombre'],
-            "apellido"=>$hijo['apellido'],
-            "dni"=>$hijo['documento'],
-            "sexo"=>$hijo['genero'],
-            "fNac"=>$hijo['fechaNac'],
-            "idPadre"=>$id,
-            "estado"=>0
-          ]);
-  
          
-        }
-        }
-                
-         $this->dispatch("miembroCreated");
 
-      
-     }
-
-     public function update(){
+     public function edit(){
 
 
       $this->validate(  $this->rules(), $this->messages()); 
@@ -348,48 +247,19 @@ class Modal extends Component
       $user->fechaAfiliacion= $this->fechaAfiliacion;
       $user->idEmpresa= $this->empresaId;
       $user->idGremio= $this->gremioId;
-      $user->idSector= $this->sectorId;
-      $user->idCondicion= $this->idCondicion;
+      $user->idSector= $this->sectorId;    
       $user->legajo= $this->legajo;
-      $user->idRol= $this->idRol;
-      $user->estado= $this->estado;
+    
       
       if($this->password){
         $user->password= bcrypt($this->password);
       }
-
-      $rol = Role::find($this->idRol);
-
-      if($this->estado ==  0 && $this->idRol == 3){
-              $rolName = $rol->name;
-              $user->removeRole($rolName);
-      }
-      else if($this->estado == 0  &&  $this->idRol == 2){
-                        
-        $roleName= $rol->name;        
-        $user->assignRole($roleName);
-      }
-      else if($this->estado == 1 ){       
-              $user->removeRole("UsuarioPendienteRevision");
-              $user->assignRole("Miembro");
-              $user->idRol= 3;
-        }
-
-      
-      
-      
-
-      
-      
       
       $user->save();
-      
-      
-      
+                
       if($this->conyugue == 0){
             $user->conyuge()->delete();
       }
-
       
       if($user->conyuge && $this->conyugue ==  1){                   
             $user->conyuge->nombre = $this->nombreConyugue;
@@ -457,7 +327,7 @@ class Modal extends Component
       
 
 
-      $this->dispatch("miembroUpdated");
+      $this->dispatch("UserUpdated");
 
      }
 
@@ -472,25 +342,10 @@ class Modal extends Component
         }
 
     }
-
-    public function delete(){
-              $idRol = $this->user->idRol;
-              $this->user->delete();
-
-              $rol = Role::find($idRol);
-              $rolName = $rol->name;
-              $this->user->removeRole($rolName);
-
-              $this->user->hijos()->delete();
-              $this->user->conyuge()->delete();
-
-              $this->dispatch("miembroDeleted");
-        }
-
-
-        
+    
+        #[On(['UserUpdated'] )]  
     public function render()
     {
-        return view('livewire.admin.miembros.modal');
+        return view('livewire.admin.perfil-actual.show');
     }
 }

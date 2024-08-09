@@ -79,15 +79,15 @@ class Modal extends Component
 
     public function save(){
                   
-        $this->validate(  $this->rules(), $this->messages());              
-
+        $this->validate(  $this->rules(), $this->messages()); 
+        
           Gremio::create([
-            "nombreGremio"=>$this->nombreGremio,            
+            "nombreGremio"=>$this->nombreGremio,
             "descripcionGremio"=>$this->descripcionGremio,
-            "estado"=>$this->estado,            
-            "idResponsable"=>1,            
-          ]);        
+            "estado"=>$this->estado,
+          ]);
 
+          // "idResponsable"=>1,
           $this->dispatch('gremioCreated');   
 
     }
