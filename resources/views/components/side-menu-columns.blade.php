@@ -1,19 +1,18 @@
 <div class=" absolute  top-0 right-0  max-h-screen h-full overflow-y-auto  pt-2  transition-all duration-500 border-gray-300   border-r-2 bg-blue-600 z-50 pb-2"  
-    :class="openColumn? 'lg:w-[300px] lg:min-w-[300px]  w-full  ' : 'w-0 '  "             
+    :class="openColumn? 'lg:w-[360px] lg:min-w-[360px]  w-full  ' : 'w-0 '  "             
     x-cloak
         >  
 
 
         <button @click="openColumn = !openColumn" class="absolute top-2 left-3 rounded-full bg-white text-red-800 font-extrabold w-6 h-6 hover:bg-gray-200 "    >X</button>
 
-    <div  class="w-full   g-green-200 flex justify-center  mb-1   ">      
+    <div  class="w-full   g-green-200 flex justify-center  mb-2 mt-1  ">      
         <h2 class="text-2xl font-extrabold  w-full text-center text-white ">Columnas</h2>
     </div>
 
-
-      <ul class="flex  flex-col px-4  mt-2 text-gray-50  borde  [&>li]:cursor-pointer  text-sm space-y-1">        
-    
-
+     
+      <ul class="grid grid-cols-2 px-4  mt-4 text-gray-50    [&>li]:cursor-pointer  text-sm space-y-2 ">        
+     
         <li>
           <x-checkbox  wire:model="selectedColumns" value="id"  class="mr-2 " />
           ID
@@ -159,7 +158,7 @@
             
       </ul>            
       
-            <button class="bg-gray-100 rounded-lg px-3 py-1   lg:mt-4 mt-3 text-base hover:bg-gray-200 font-semibold text-blue-900 flex w-[80%] justify-center mx-auto" 
+            <button class="bg-gray-100 rounded-lg px-3 py-1   lg:mt-6 mt-3 text-base hover:bg-gray-200 font-semibold text-blue-900 flex w-[80%] justify-center mx-auto" 
             wire:click="showColumns"  @click="openColumn = !openColumn" 
             >Aplicar
            </button>
