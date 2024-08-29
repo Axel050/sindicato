@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Miembros;
 
+use App\Exports\MiembrosExport;
 use App\Models\Empresa;
 use App\Models\Gremio;
 use App\Models\Sectore;
@@ -11,11 +12,15 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Index extends Component
 {
   
   use WithPagination;
+  public $users;  
+
+  public $selectedColumns=[];  
 
   public $desdeHijo;  
   public $hastaHijo;     
@@ -66,6 +71,7 @@ class Index extends Component
 
   public $query,$nombre,$id;
     public $searchField = 'name';
+    public $searchType = 'miembro';
   public $method="";    
 
     
@@ -143,6 +149,7 @@ class Index extends Component
 
     #[On(['miembroCreated' ,'miembroUpdated' ,'miembroDeleted'] )]
       public function mount(){
+        $this->loadUserPreferences();
         $this->method="";
         $this->resetPage(); 
 
@@ -159,6 +166,34 @@ class Index extends Component
         // Log::alert($this->localidades);
          
       }
+
+
+
+
+
+    public function loadUserPreferences()
+    {
+        $preference = auth()->user()->columnPreference;
+
+        if ($preference) {
+            $this->selectedColumns = json_decode($preference->columns, true);
+        }
+    }
+
+     public function showColumns()
+    {
+        $preference = auth()->user()->columnPreference;
+
+        if ($preference) {
+            $preference->update(['columns' => json_encode($this->selectedColumns)]);
+        } else {
+            auth()->user()->columnPreference()->create([
+                'columns' => json_encode($this->selectedColumns),
+            ]);
+        }
+    }
+
+
 
        public function getMonthName($monthNumber)
     {
@@ -180,18 +215,62 @@ class Index extends Component
         return $months[$monthNumber] ?? '';
     }
 
+
+
+    // $miembros = User::where('idRol', [2, 3])->orderBy("id","asc")->get(); 
+    // $miembros = $this->users; // Esto debe ser una colección de modelos User
+public function exportar()
+{
+    // $miembros = User::with('hijos')->orderBy('name', 'asc')->whereIn('idRol', [2, 3])->get();
+    $miembros = $this->users;
+    
+    $miembrosFiltrados = $miembros->map(function ($item) {
+        $itemArray = collect($item->toArray())->only($this->selectedColumns);
+        $itemArray['hijos'] = $item->hijos;  // Añadir relación hijos
+        $itemArray['conyuge'] = $item->conyuge;  // Añadir re
+        $itemArray['empresa'] = $item->empresa;  // Añadir re
+        $itemArray['sector'] = $item->sector;  // Añadir re
+        $itemArray['gremio'] = $item->gremio;  // Añadir re
+        $itemArray['condicion'] = $item->condicion;  // Añadir re
+
+        return $itemArray;
+    });
+
+    $encabezados = $this->selectedColumns;
+
+    $encabezados = array_filter($encabezados, function($encabezado) {
+    return $encabezado !== 'accion';
+});
+
+    return Excel::download(new MiembrosExport($miembrosFiltrados, $encabezados), 'miembros.xlsx');
+}
+
+
+
+
+     private function getEncabezados()
+    {
+        $columnas = [
+            'id' => 'ID',
+            'nombre' => 'Nombre Completo',
+            'email' => 'Correo Electrónico',
+            'created_at' => 'Fecha de Creación',
+            // Añade aquí todas las columnas posibles y su encabezado correspondiente
+        ];
+
+        return collect($this->selectedColumn)->map(function($columna) use ($columnas) {
+            return $columnas[$columna];
+        })->toArray();
+    }
+
     public function render()
     {
-      Log::alert("render");
 
       
       $usuarios = User::orderBy("name", "asc")->whereIn('idRol', [2, 3]);
-      // $usuarios = User::orderBy("name", "asc")->whereIn('idRol', [2, 3])->paginate(15);
-
-      
       
 
-      // VER SI INGRESAN CERO
+                  
       
       if ($this->desde !== null && $this->hasta !== null) {
         Log::alert("renderDESEED");
@@ -263,6 +342,7 @@ class Index extends Component
           });
     }
 
+
     if ($this->hijos) {
         $usuarios = $usuarios->whereHas('hijos');
     }
@@ -296,10 +376,7 @@ class Index extends Component
                   $query->where('sexo', $this->hijosSexo)
                              ->whereBetween('fNac', [ $ageToDate,$ageFromDate]);
                   });
-
-                  //  foreach ($usuarios->get() as $usuario) {
-                  //     $this->cantHijosRango += $usuario->hijos()->whereBetween('fNac', [ $ageToDate,$ageFromDate])->count();    
-                  //   }
+                  
 
           }
         else {  
@@ -313,10 +390,7 @@ class Index extends Component
           }
         
        }
-
-      //  ADDed conficional entre ambos ifs
-
-
+      
 
        if ($this->desdeHijo !== null || $this->hastaHijo !== null) {
         
@@ -369,38 +443,79 @@ class Index extends Component
 
 
 
+
+
+      //  new
+      $nombreSon = "secon";
+      if ($nombreSon) {
+        $this->cantHijos=0;
+
+
+        if ($this->desdeHijo !== null || $this->hastaHijo !== null) {
+                            
+              
+
+
+              $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($nombreSon) {
+                  $query->where('nombre', $nombreSon)
+                             ;
+                  });        
+
+          }              
+        
+       }
+      //  new
+
+Log::alert($this->searchType);
       if($this->query ){
-        // $usuarios =User::where("name", "like", '%'.$this->query . '%');
-        $usuarios =$usuarios->where($this->searchField, "like", '%'.$this->query . '%')
-                            ->whereIn('idRol', [2, 3])->orderBy("id","asc");
+                
+        if ($this->searchType == "miembro") {
+            $usuarios =$usuarios->where($this->searchField, "like", '%'.$this->query . '%')
+                                ->whereIn('idRol', [2, 3])->orderBy("id","asc");          
+        }
+
+        elseif ($this->searchType == "hijo") {
+          
+          $field=$this->searchField;
+          if($this->searchField == "name"){
+              $field="nombre";
+          }
+
+          if($this->searchField == "documento"){
+              $field="dni";
+          }
+          
+          
+          $usuarios = $usuarios->whereHas('hijos', function ($query) use($field)  {
+            $query->where($field, "like", '%'.$this->query . '%');
+          });
+          
+          
+        }
+        elseif ($this->searchType == "conyuge") {
+
+              $field=$this->searchField;
+              if($this->searchField == "name"){
+                  $field="nombre";
+              }
+              $usuarios = $usuarios->whereHas('conyuge', function ($query) use($field)   {
+                                  $query->where($field, "like", '%'.$this->query . '%');
+                                });          
+        }
+
+
                 
       }
 
 
-        // if(!$this->cantHijos || !$this->cantHijosRango){
-              $this->cantidad =  $usuarios->count();
-            // }
-
-            // elseif($this->cantHijos || !$this->cantHijosRango){
-            //     $this->cantidad =  $this->cantHijos;
-                
-            //   }
-            //   elseif(!$this->cantHijos || $this->cantHijosRango){
-            //       $this->cantidad =  $this->cantHijosRango;
-            //   }
-
-              // elseif($this->cantHijos || $this->cantHijosRango){
-              //     $this->cantidad =  $this->cantHijosRango;
-              // }
-
-            // if($this->cantHijos)
-          // $this->cantidad = 
-        // }
-        // else{
-        //   }
-
-            $usuarios = $usuarios->paginate(15);
-
+        
+      $this->cantidad =  $usuarios->count();
+        
+        
+        // $this->users = $usuarios->with("hijos")->get();
+        $this->users = $usuarios->get();
+        $usuarios = $usuarios->paginate(15);
+            
       
 
       

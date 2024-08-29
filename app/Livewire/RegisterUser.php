@@ -79,13 +79,13 @@ class RegisterUser extends Component
            }
                       
 
-          for ($i = 0; $i < $this->hijos; $i++) {
-              $rules["hijosData.$i.nombre"]   = 'required';
-              $rules["hijosData.$i.apellido"]  = 'required';
-              $rules["hijosData.$i.genero"]    = 'required';
-              $rules["hijosData.$i.documento"] = ['required', new UniqueDocument];
-              $rules["hijosData.$i.fechaNac"]   = 'required';
-           }
+            for ($i = 0; $i < $this->hijos; $i++) {
+                $rules["hijosData.$i.nombre"]   = 'required';
+                $rules["hijosData.$i.apellido"]  = 'required';
+                $rules["hijosData.$i.genero"]    = 'required';
+                $rules["hijosData.$i.documento"] = ['required', new UniqueDocument];
+                $rules["hijosData.$i.fechaNac"]   = 'required';
+            }
 
           return $rules;
         }

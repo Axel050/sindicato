@@ -96,6 +96,11 @@ class User extends Authenticatable
         return $this->belongsTo(Sectore::class, 'idSector');
     }
 
+     public function gremio()
+    {
+        return $this->belongsTo(Gremio::class, 'idGremio');
+    }
+
     public function hijos()
 {
     return $this->hasMany(Hijo::class, 'idPadre');
@@ -106,6 +111,15 @@ public function conyuge()
     return $this->hasOne(Conyuge::class, 'idConyuge');
 }
 
-    
+public function condicion()
+{
+     return $this->belongsTo(Condicione::class, 'idCondicion');
+    // return $this->hasOne(Condicione::class, 'idCondicion');
+}
+
+       public function columnPreference()
+    {
+        return $this->hasOne(ColumnPreference::class);
+    }
 
 }
