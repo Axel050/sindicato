@@ -37,7 +37,7 @@ class Modal extends Component
     public $telefono;
     public $telefonoLaboral;
     public $email;
-    public $fechaAfiliacion;
+    public $fechaAfiliacion=null;
 
     public $legajo;
     public $conyugue=0;
@@ -103,13 +103,21 @@ class Modal extends Component
               $this->apellido = $this->user->apellido ;
               $this->documento = $this->user->documento ;
               $this->genero = $this->user->sexo;
-              $this->fechaNac =date('Y-m-d', strtotime($this->user->fNac));
+
+              if($this->user->fNac){
+                $this->fechaNac =date('Y-m-d', strtotime($this->user->fNac));
+              }
+
               $this->direccion = $this->user->direccion ;
               $this->telefono = $this->user->telefono ;
               $this->telefonoLaboral = $this->user->telefonoLaboral ;
               $this->email = $this->user->email ;
               $this->localidad = $this->user->localidad ;              
+
+              if($this->user->fechaAfiliacion){
               $this->fechaAfiliacion =date('Y-m-d', strtotime($this->user->fechaAfiliacion));
+              }
+
               $this->empresaId = $this->user->idEmpresa ;
               $this->sectorId = $this->user->idSector ;
               $this->gremioId = $this->user->idGremio ;
@@ -345,7 +353,12 @@ class Modal extends Component
       $user->telefonoLaboral= $this->telefonoLaboral;              
       $user->email= $this->email;  
       $user->localidad= $this->localidad;
-      $user->fechaAfiliacion= $this->fechaAfiliacion;
+
+      
+      
+      $user->fechaAfiliacion= $this->fechaAfiliacion ;
+      
+
       $user->idEmpresa= $this->empresaId;
       $user->idGremio= $this->gremioId;
       $user->idSector= $this->sectorId;

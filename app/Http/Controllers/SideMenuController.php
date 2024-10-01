@@ -24,6 +24,14 @@ class SideMenuController extends Controller
         return view("admin.beneficios");  
        }
 
+       public function miembroBeneficios (){ 
+          if (!auth()->user()->hasAnyPermission(['miembros-ver','miembros-crear','miembros-editar','miembros-actualizar','miembros-eliminar']) 
+        || auth()->user()->estado!=1 ) {                
+                    return abort(403, 'No autorizado');               
+                    }
+        return view("admin.miembros-beneficios");  
+       }
+
 
 
        public function tablaEmpresa (){
@@ -81,7 +89,33 @@ class SideMenuController extends Controller
 
         return view("admin.usuarios.roles"); 
        }
+       
+       public function beneficiosActivos (){        
+          //  if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
+          //  || auth()->user()->estado!=1 ) {                
+              // return abort(403, 'No autorizado');               
+            // }
 
+        return view("admin.guest.activos"); 
+       }
+
+       public function beneficiosPreaprovados (){        
+          //  if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
+          //  || auth()->user()->estado!=1 ) {                
+              // return abort(403, 'No autorizado');               
+            // }
+
+        return view("admin.guest.preaprovados"); 
+       }
+
+       public function beneficiosVigentes (){        
+          //  if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
+          //  || auth()->user()->estado!=1 ) {                
+              // return abort(403, 'No autorizado');               
+            // }
+
+        return view("admin.beneficios.vigentes"); 
+       }
        public function perfil (){        
           //  if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
           //  || auth()->user()->estado!=1 ) {                

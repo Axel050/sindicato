@@ -32,7 +32,6 @@ use Illuminate\Database\Eloquent\Model;
 class Beneficio extends Model
 {
 	protected $table = 'beneficios';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
@@ -59,4 +58,67 @@ class Beneficio extends Model
 		'condiciones',
 		'bannerBeneficio'
 	];
+
+  
+     public function tieneCondicion($idCondicion)
+    {
+        return $this->beneficioCondiciones()->where('idCondicion', $idCondicion)->exists();
+    }
+
+public function beneficioCondiciones()
+{
+    return $this->hasMany(BeneficioCondicion::class, 'idBeneficio');
+}  
+
+public function beneficioCondicionesExist($id)
+{
+        $beneficios= $this->hasMany(BeneficioCondicion::class, 'idBeneficio');
+
+        
+          
+
+    return $this->hasMany(BeneficioCondicion::class, 'idBeneficio');
+}  
+
+
+
+
+public function estadoC($idMiembro){
+  
+  $total = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
+        ->where('idBeneficio', $this->id)
+        ->count();
+    
+ 
+    $conEstado1 = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
+        ->where('idBeneficio', $this->id)
+        ->where('estado', '1')
+        ->count();
+
+    if($total <= 0){
+      return false;
+    }
+
+    return $total === $conEstado1;
+
+}
+
+public function estadoCondicionesPorMiembro($idMiembro)
+{
+    return $this->hasManyThrough(
+        EstadoCondicionesRequerida::class,
+        BeneficioCondicion::class,
+        'idBeneficio',        // Foreign key on BeneficioCondicion
+        'idCondicionRequerida', // Foreign key on EstadoCondicionesRequerida
+        'id',                  // Local key on Beneficio
+        'idCondicion'          // Local key on BeneficioCondicion
+    )->where('estado_condiciones_requeridas.idMiembro', $idMiembro);
+}
+
+
+public function beneficioUsos()
+{
+    return $this->hasMany(BeneficiosUsos::class, 'id_Beneficio');
+}  
+
 }

@@ -22,7 +22,6 @@
           Alpine.data('imageUploader', (initialImage) => ({
             image: initialImage,
             isImageLoaded: !!initialImage,
-
           
 
         updateImage(event) {

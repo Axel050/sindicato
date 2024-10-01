@@ -4,9 +4,11 @@
 
     <div >
         <div class="">
+          <div class="flex justify-center rounded-md  shadow-sm w-fit mx-auto px-8"><h2 class="py-0.5 text-lg font-semibold">{{$nombreM}}</h2></div>
               <div class="w-full flex item-center justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-whit lg:py-4  py-2 px-6 rounded-md  shadow-md ">
+
                     <div  class="flex flex-col ">
-                      <label for="query" class="text-sm lg:text-base text-gray-600 ">Buscar</label>
+                      <label for="query" class="text-sm lg:text-base text-gray-600 ">Buscar </label>
                       <input type="search" nombre="query" wire:model.live="query" class="h-7 rounded-md border border-gray-400 w-40 lg:w-48 ">
                     </div>
         
@@ -25,8 +27,14 @@
                 
               </div>
 
-        @if ($method)        
-            @livewire('admin.beneficios.modal',[ "method" => $method,"id"=>$id])
+        @if ($method)              
+            @livewire('admin.miembros.modal-beneficios',[ "method" => $method,"id"=>$id,"idMiembro"=>$idMiembro])
+        @endif
+
+
+
+        @if ($administrar)                      
+            @livewire('admin.miembros.modal-beneficios-administrar',[ "id"=>$id,"idMiembro"=>$idMiembro] )
         @endif
 
          </div>
@@ -55,20 +63,21 @@
                                                         
                                                     <tr class="bg-gray-100 relative text-gray-600 font-bold divide-x-2 [&>th]:pl-2 [&>th]:pr-1 [&>th]:lg:pl-4 [&>th]:text-start text-sm ">
                                                         
-                                                      <th scope="col" class="py-1">
-                                                        Nombre
-                                                      </th>
-                                                      
-                                                      
+                                                      <th scope="col" class="py-1">Nro</th>
 
+                                                      <th scope="col" >Nombre</th>
+
+                                                      <th scope="col" >Descripcion</th>
+
+                                                      <th scope="col" >Comentario</th>
+                                                                                                            
                                                       <th scope="col" >Valido Desde</th>
 
                                                       <th scope="col" >Valido Hasta</th>
                                                       
                                                       <th scope="col" >Reutilizable</th>
                                                                                                             
-
-                                                      <th scope="col" >Estado</th>
+                                                      <th scope="col" >Cant Usos</th>
                                                                                                                 
                                                         <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>
                                                         
@@ -77,38 +86,26 @@
 
                                                   <tbody class="divide-y divide-gray-200 text-gray-500  text-sm">
 
-                                                    @foreach ($beneficios as $usuario)
+                                                    @foreach ($beneficios as $ben)
                                                     <tr class="divide-x-2 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start ">
 
-                                                      <td class="py-1.5" >{{ $usuario->nombre }}</td>
-
-                                                      <td class="py-1.5" >
-                                                         {{ $usuario->fechaDesde ? $usuario->fechaDesde : 'Indefinido' }}
-                                                      </td>
-
-                                                      <td class="py-1.5" >
-                                                        {{ $usuario->fechaHasta ? $usuario->fechaHasta : 'Indefinido' }}
-                                                      </td>
-
-                                                      <td class="py-1.5" >{{ $usuario->reutilizable }}</td>                                                      
+                                                       <td class="py-1.5" >{{ $ben->beneficio->id }}</td>
+                                                       <td class="py-1.5" >{{ $ben->beneficio->nombre }}</td>
+                                                       <td class="py-1.5" >{{ $ben->beneficio->descripcion }}</td>                                                       
+                                                       <td class="py-1.5" >{{ $ben->comentario }}</td>                                                       
+                                                       <td class="py-1.5" >{{ $ben->beneficio->fechaDesde ? $ben->beneficio->fechaDesde : 'Indefinido' }}</td>
+                                                       <td class="py-1.5" >{{ $ben->beneficio->fechaHasta ? $ben->beneficio->fechaHasta : 'Indefinido' }}</td>
+                                                       
+                                                       
+                                                       <td class="py-1.5" >{{ $ben->beneficio->reutilizable ? "Si" :"No" }}</td>
+                                                       <td class="py-1.5" >{{ $ben->beneficio->cantUsos }}</td>
                                                                                                             
-
-                                                                                                            
-                                                      <td  class="text-white">
-                                                          @if ($usuario->estado)
-                                                              <span class="bg-green-500 px-1 py-0.5 rounded-md">Activo</span>
-                                                             @else
-                                                              <span class="bg-red-300 px-1 py-0.5 rounded-md">Inactivo</span>
-                                                          @endif 
-                                                       </td>
-                                                        
-                                                      
                                                       <td >
                                                         <div class="flex justfy-end lg:gap-x-6 gap-x-4 text-white text-xs">
 
                                                         
                                                           <button    
-                                                              class=" hover:text-gray-200  hover:bg-red-600 flex items-center py-0.5 bg-red-500 rounded-lg px-1 " wire:click="option('delete',{{$usuario->id}})">
+                                                              class=" hover:text-gray-200  hover:bg-red-600 flex items-center py-0.5 bg-red-500 rounded-lg px-1 " wire:click="option('delete',{{$ben->id}})">
                                                                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <g id="SVGRepo_bgCarrier" stroke-width="0"/>
                                                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
@@ -117,11 +114,21 @@
                                                               <span class="hidden lg:block">Eliminar</span>
                                                           </button>
 
-                                                      <button class=" hover:text-gray-200 hover:bg-orange-600 flex items-center py-0.5 bg-orange-500 rounded-lg px-1 " wire:click="option('update',{{$usuario->id}})" >
+                                                      <button class=" hover:text-gray-200 hover:bg-orange-600 flex items-center py-0.5 bg-orange-500 rounded-lg px-1 " wire:click="option('update',{{$ben->id}})" >
                                                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                               <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1213 2.70705C19.9497 1.53548 18.0503 1.53547 16.8787 2.70705L15.1989 4.38685L7.29289 12.2928C7.16473 12.421 7.07382 12.5816 7.02986 12.7574L6.02986 16.7574C5.94466 17.0982 6.04451 17.4587 6.29289 17.707C6.54127 17.9554 6.90176 18.0553 7.24254 17.9701L11.2425 16.9701C11.4184 16.9261 11.5789 16.8352 11.7071 16.707L19.5556 8.85857L21.2929 7.12126C22.4645 5.94969 22.4645 4.05019 21.2929 2.87862L21.1213 2.70705ZM18.2929 4.12126C18.6834 3.73074 19.3166 3.73074 19.7071 4.12126L19.8787 4.29283C20.2692 4.68336 20.2692 5.31653 19.8787 5.70705L18.8622 6.72357L17.3068 5.10738L18.2929 4.12126ZM15.8923 6.52185L17.4477 8.13804L10.4888 15.097L8.37437 15.6256L8.90296 13.5112L15.8923 6.52185ZM4 7.99994C4 7.44766 4.44772 6.99994 5 6.99994H10C10.5523 6.99994 11 6.55223 11 5.99994C11 5.44766 10.5523 4.99994 10 4.99994H5C3.34315 4.99994 2 6.34309 2 7.99994V18.9999C2 20.6568 3.34315 21.9999 5 21.9999H16C17.6569 21.9999 19 20.6568 19 18.9999V13.9999C19 13.4477 18.5523 12.9999 18 12.9999C17.4477 12.9999 17 13.4477 17 13.9999V18.9999C17 19.5522 16.5523 19.9999 16 19.9999H5C4.44772 19.9999 4 19.5522 4 18.9999V7.99994Z" fill="#ffffff"/>
                                                           </svg>
                                                         <span class="hidden lg:block">Editar</span>
+                                                      </button>
+
+
+                                                      <button class=" hover:text-gray-200 hover:bg-green-600 flex items-center py-0.5 bg-green-500 rounded-lg px-1 " wire:click="option('administrar',{{$ben->beneficio->id}})" >
+                                                        <svg width="17px" height="17px" class="mr-0.5" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff" stroke="#ffffff">
+                                                              <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                                                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                                                              <g id="SVGRepo_iconCarrier"> <title>action / 6 - action, check, circle, checkmark, button, ok icon</title> <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-525.000000, -82.000000)" id="Group" stroke="#ffffff" stroke-width="2"> <g transform="translate(523.000000, 80.000000)" id="Shape"> <circle cx="12" cy="12" r="9"> </circle> <polyline points="7 11.3496994 11 15.3496994 17 9.35"> </polyline> </g> </g> </g> </g>
+                                                          </svg>
+                                                        <span class="hidden lg:block">Usar</span>
                                                       </button>
                                                       </div>
                                                     </td>

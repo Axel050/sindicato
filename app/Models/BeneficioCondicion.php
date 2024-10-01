@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class BeneficioCondicion
@@ -24,8 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BeneficioCondicion extends Model
 {
-	protected $table = 'beneficio_condicion';
-	public $incrementing = false;
+	protected $table = 'beneficio_condicion';	
 	public $timestamps = false;
 
 	protected $casts = [
@@ -45,4 +45,58 @@ class BeneficioCondicion extends Model
 		'idResponsable',
 		'estado'
 	];
+
+
+  public function estadoCondicionesRequeridaPre($id){
+    return EstadoCondicionesRequerida::where('idBeneficio', $this->idBeneficio)
+                                     ->where('idCondicionRequerida', $this->idCondicion)
+                                     ->where('idMiembro', $id)
+                                     ->first();
+
+  }
+
+  public function estadoCondicionesRequerida3()
+{
+  
+    return $this->hasMany(EstadoCondicionesRequerida::class, 'idBeneficio', 'idBeneficio')
+                ->where('idCondicionRequerida', $this->idCondicion)
+                ;
+  
+}
+
+
+  public function estadoCondicionRequerida($id)
+  {
+    return EstadoCondicionesRequerida::where('idBeneficio', $this->idBeneficio)
+                                     ->where('idCondicionRequerida', $this->idCondicion)
+                                     ->where('idMiembro', $id)
+                                     ->first();
+  
+  }
+
+  
+
+
+
+
+      public function beneficio()
+    {
+        return $this->belongsTo(Beneficio::class, 'idBeneficio', 'id');
+    }
+
+
+      public function condicionReq()
+    {
+        return $this->belongsTo(CondicionesRequerida::class, 'idCondicion', 'id');
+    }
+
+      
+
+    public function estadoCondicion()
+{
+    return $this->hasOne(EstadoCondicionesRequerida::class, 'idCondicionRequerida', 'idCondicion');
+}
+
+
+
 }

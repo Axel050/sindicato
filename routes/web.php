@@ -45,6 +45,10 @@ Route::middleware([
     // BENEFICIOS
     Route::get('/beneficios',[SideMenuController::class, "beneficios"])->name('beneficios');
 
+    // MIEMBROS BENEFICIOS
+    Route::get('/miembro-beneficios/{id?}/{idB?}',[SideMenuController::class, "miembroBeneficios"])->name('miembro-beneficios');
+    // Route::get('/ventapasajes/{vou?}', [TableController::class,"ventapasajes"])->name('ventapasajes');
+
     //TABLAS AUXILIARES
     Route::get('/empresas',[SideMenuController::class, "tablaEmpresa"])->name('empresas');
 
@@ -55,6 +59,12 @@ Route::middleware([
     Route::get('/condiciones',[SideMenuController::class, "tablaCondicion"])->name('condiciones');
 
     Route::get('/perfil',[SideMenuController::class, "perfil"])->name('perfil');
+
+    Route::get('/activos',[SideMenuController::class, "beneficiosActivos"])->name('activos');
+
+    Route::get('/preaprovados',[SideMenuController::class, "beneficiosPreaprovados"])->name('preaprovados');
+
+    Route::get('/vigentes',[SideMenuController::class, "beneficiosVigentes"])->name('vigentes');
 
     //  function () {
     //     return view('admin.tablas.empresas');}

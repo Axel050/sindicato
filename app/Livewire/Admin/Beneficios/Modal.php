@@ -3,8 +3,10 @@
 namespace App\Livewire\Admin\Beneficios;
 
 use App\Models\Beneficio;
+use App\Models\BeneficioCondicion;
 use App\Models\Condicione;
 use App\Models\CondicionesRequerida;
+use Illuminate\Console\View\Components\Alert;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +19,6 @@ class Modal extends Component
   use WithFileUploads;
 
      public $items = [];
-
 
     public $title;
     public $id;
@@ -32,8 +33,8 @@ class Modal extends Component
     public $idRol;
 
     public $nombre;
-    public $fechaDesde;
-    public $fechaHasta;
+    public $fechaDesde=null;
+    public $fechaHasta=null;
     public $descripcion;
     public $estado=1;
     public $reutilizable=0;
@@ -72,19 +73,38 @@ class Modal extends Component
 
         if($this->method == "update"){              
               $this->beneficio = Beneficio::find($this->id);
+
+              $isItems=$this->beneficio->beneficioCondiciones;
+
+              foreach ($isItems as $item ) {
+                $this->items[]=[
+                  'idcondicion' => $item->idCondicion,
+                  'descripcion' => $item->descripcion ,
+                  // 'condicion' => $item->condicion?->nombreRequerimiento,               
+                  'condicion' => $item->condicionReq?->nombreRequerimiento,               
+                ];
+              }
+
               $this->nombre = $this->beneficio->nombre;  
 
-              $this->fechaDesde =date('Y-m-d', strtotime($this->beneficio->fechaDesde));
-              $this->fechaHasta =date('Y-m-d', strtotime($this->beneficio->fechaHasta)); 
+              $condicionesGuardadas = explode('-', $this->beneficio->condiciones); 
+              
+              $this->idCondiciones = $condicionesGuardadas;  
+              
+              if($this->beneficio->fechaDesde){
+                $this->fechaDesde =date('Y-m-d', strtotime($this->beneficio->fechaDesde));
+              }
+
+            if($this->beneficio->fechaHasta){
+                $this->fechaHasta =date('Y-m-d', strtotime($this->beneficio->fechaHasta)); 
+            }
               
               $this->descripcion = $this->beneficio->descripcion;  
               $this->estado = $this->beneficio->estado ;                        
               
               $this->reutilizable = $this->beneficio->reutilizable ? 1 :  0 ;
-              $this->cantUsos = $this->beneficio->cantUsos  ;
-              
-              // $this->conyugue = $this->user->conyuge ? 1 :  0 ;
-            
+              $this->cantUsos = $this->beneficio->cantUsos  ;                                        
+              $this->bannerBeneficio = $this->beneficio->bannerBeneficio  ; 
               
                             
               $this->title= "Editar";
@@ -97,7 +117,8 @@ class Modal extends Component
 
      protected function rules(){
        $rules  =  [
-            "nombre" => "required",            
+            "nombre" => "required",           
+             "items" => "required|array|min:1",  
           ]; 
            
           return $rules;
@@ -107,56 +128,57 @@ class Modal extends Component
     protected function messages(){
        return [  
             "name.required" => "Ingrese nombre.", 
+             "items.required" => "Debe agregar al menos una condición.", 
 
           ];                 
       }
 
     
      public function save(){
+      
 
-    
       $url='';
-      // if($request->file("image")){
       if($this->bannerBeneficio){
+        
         $url =  Storage::disk("public")->put("banner", $this->bannerBeneficio);
       }
       
-
       
-      dd([
-        "idCondiciones" => $this->idCondiciones,
-        "items" => $this->items,
-        "imageHas" => $this->imagehas,
-        "banne" => $this->bannerBeneficio,
-      
-        "nombre" =>$this->nombre,
-        "fechaHasta" =>$this->fechaDesde,
-        "fechaDesde" =>$this->fechaHasta,
-        "descripcion" => $this->descripcion,
-        "estado" =>$this->estado, 
-        "reutilizable" =>$this->reutilizable, 
-        "cabtUsos" => $this->cantUsos,
-        "bannerBeneficio" => $url,
-      ]);
+      $condiciones = implode('-', $this->idCondiciones);
 
        $this->validate(  $this->rules(), $this->messages()); 
       
-
-
         $beneficio = Beneficio::create([
           "nombre" =>$this->nombre,
-          "fechaHasta" =>$this->fechaDesde,
-          "fechaDesde" =>$this->fechaHasta,
-
           "descripcion" => $this->descripcion,
+          "fechaCreacion" =>now(),
+          "fechaRegistro" =>now(),
+          "idResponsable" => 1,
+          "fechaDesde" =>$this->fechaHasta,
+          "fechaHasta" =>$this->fechaDesde,
           "estado" =>$this->estado, 
           "reutilizable" =>$this->reutilizable, 
-          "cabtUsos" => $this->cantUsos,
-          "bannerBeneficio" => $url,                               
-                    
+          "cantUsos" => $this->cantUsos,
+          "nroBeneficio" => 1,   
+          "condiciones" => $condiciones ,
+          "bannerBeneficio" => $url,                                   
         ]);
 
         
+        if($beneficio){
+                  foreach ($this->items as $condicion) {            
+                    
+                    BeneficioCondicion::create([        
+                      'idBeneficio' => $beneficio->id,
+                      'idCondicion' => $condicion['idcondicion'],
+                      'descripcion' => $condicion['descripcion'],
+                      'fechaRegistro' => now(),
+                      'idResponsable' => 1,
+                      'estado' => 1,
+                    ]);
+                  }
+                }
+                                
         
                 
          $this->dispatch("miembroCreated");
@@ -169,70 +191,73 @@ class Modal extends Component
 
       $this->validate(  $this->rules(), $this->messages()); 
 
-      $user=  $this->user ;
-      $user->name= $this->name;
-      $user->apellido= $this->apellido;
-      $user->documento= $this->documento;
-      $user->sexo= $this->genero;
-      $user->fNac= $this->fechaNac;
-      $user->direccion= $this->direccion;      
-      $user->telefono= $this->telefono;
-      $user->telefonoLaboral= $this->telefonoLaboral;              
-      $user->email= $this->email;  
-      $user->localidad= $this->localidad;
-      $user->fechaAfiliacion= $this->fechaAfiliacion;
-      $user->idEmpresa= $this->empresaId;
-      $user->idGremio= $this->gremioId;
-      $user->idSector= $this->sectorId;
-      $user->idCondicion= $this->idCondicion;
-      $user->legajo= $this->legajo;
-      $user->idRol= $this->idRol;
-      $user->estado= $this->estado;
-      
-     
-      $user->save();
+      $url='';      
+      if($this->bannerBeneficio){
+        $url =  Storage::disk("public")->put("banner", $this->bannerBeneficio);
+      }
       
 
+      
+      $condiciones = implode('-', $this->idCondiciones);
+
+      $this->beneficio->nombre  = $this->nombre;
+      $this->beneficio->descripcion  = $this->descripcion;
+
+      $this->beneficio->fechaDesde  = $this->fechaDesde ;      
+      $this->beneficio->fechaHasta  = $this->fechaHasta;
+
+
+      $this->beneficio->estado  = $this->estado ;
+      $this->beneficio->reutilizable  = $this->reutilizable;
+      $this->beneficio->cantUsos = $this->cantUsos;
+      $this->beneficio->condiciones  = $condiciones;
+      $this->beneficio->bannerBeneficio  = $url;      
+     
+      $this->beneficio->save();
+
+      $this->updateBeneficioCondiciones($this->beneficio->id);
+      
       $this->dispatch("miembroUpdated");
 
      }
 
 
-
     public function delete(){
-              $idRol = $this->user->idRol;
-              $this->user->delete();
+              
+              $beneficio = $this->beneficio;
+              $this->beneficio->delete();
 
-              $rol = Role::find($idRol);
-              $rolName = $rol->name;
-              $this->user->removeRole($rolName);
-
-              $this->user->hijos()->delete();
-              $this->user->conyuge()->delete();
+              $beneficio->beneficioCondiciones()->delete();
+              
+              // $this->user->hijos()->delete();
+              // $this->user->conyuge()->delete();
 
               $this->dispatch("miembroDeleted");
         }
 
-           public function addItem()
+
+    public function addItem()
     {
-        $this->validate([
-            'idCondicionReq' => 'required',            
-        ],
-        ["idCondicionReq.required" => "Elija condicion"
-          ]
-      );
 
-        $condicion = CondicionesRequerida::find($this->idCondicionReq)->nombreRequerimiento;
+      $this->validate([
+        'idCondicionReq' => 'required',            
+      ],
+      ["idCondicionReq.required" => "Elija condicion"
+      ]
+    );
+    
+    $condicion = CondicionesRequerida::find($this->idCondicionReq)->nombreRequerimiento;
+    
+    $this->items[] = [
+      'idcondicion' => $this->idCondicionReq,
+      'descripcion' => $this->descripcionReq ,
+      'condicion' => $condicion,
+    ];
+    
+    // Clear the inputs
+    $this->idCondicionReq = '';
+    $this->descripcionReq = '';
 
-        $this->items[] = [
-            'idcondicion' => $this->idCondicionReq,
-            'condicion' => $condicion,
-            'descripcion' => $this->descripcionReq ,
-        ];
-
-        // Clear the inputs
-        $this->idCondicionReq = '';
-        $this->descripcionReq = '';
     }
 
       public function removeItem($index)
@@ -243,6 +268,41 @@ class Modal extends Component
         $this->items = array_values($this->items);
 
     }
+
+
+     public function updateBeneficioCondiciones($beneficioId)
+{
+    
+    $beneficio = Beneficio::find($beneficioId);
+
+  // Obtener las condiciones actuales en la base de datos
+  $condicionesActuales = $beneficio->beneficioCondiciones->pluck('idCondicion')->toArray();
+
+
+foreach ($this->items as $condicion) {
+    if (!in_array($condicion['idcondicion'], $condicionesActuales)) {
+        // Crear nueva condición si no existe en la base de datos
+        $beneficio->beneficioCondiciones()->create([            
+            'idCondicion' => $condicion['idcondicion'],
+            'descripcion' => $condicion['descripcion'],
+            'fechaRegistro' => now(),
+            'idResponsable' => 1,
+            'estado' => 1,
+        ]);
+    }
+}
+
+
+$condicionesEnviadas = array_column($this->items, 'idcondicion');
+
+// Eliminar condiciones que ya no están presentes en el formulario
+  $beneficio->beneficioCondiciones()
+      ->whereNotIn('idCondicion', $condicionesEnviadas)
+      ->delete();
+      
+  }
+
+            
 
 
     public function render()

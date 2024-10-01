@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
 class BeneficioAfiliado extends Model
 {
 	protected $table = 'beneficio_afiliados';
-	public $incrementing = false;
+	// public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
@@ -39,7 +39,8 @@ class BeneficioAfiliado extends Model
 		'fechaRegistro' => 'datetime',
 		'idResponsable' => 'int',
 		'estado' => 'int',
-		'cantUsos' => 'int'
+		'cantUsos' => 'int',
+    'ultimo_uso'
 	];
 
 	protected $fillable = [
@@ -52,6 +53,35 @@ class BeneficioAfiliado extends Model
 		'fechaDesde',
 		'fechaHasta',
 		'reutilizable',
-		'cantUsos'
+		'cantUsos',
+    'ultimo_uso'
 	];
+
+
+      public function beneficio (){
+          return $this->belongsTo(Beneficio::class, 'idBeneficio', 'id');   
+      }
+
+
+       public function afiliado()
+    {
+        return $this->belongsTo(User::class, 'idAfiliado');
+    }
+
+          public function canUse()
+          {
+              $beneficio = $this->beneficio;
+
+              // Si no es reutilizable, verificar si ya se usó al menos una vez
+              if (!$beneficio->reutilizable && $this->cantUsos > 0) {
+                  return false;
+              }
+
+              // Si es reutilizable, verificar que la cantidad de usos no supere el límite
+              if ($beneficio->reutilizable && $this->cantUsos >= $beneficio->cantUsos) {
+                  return false;
+              }
+
+              return true;
+          }
 }

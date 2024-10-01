@@ -39,6 +39,21 @@ class CondicionesRequerida extends Model
 		'tipo'
 	];
 
+
+  public function estadoCondiciones()
+{
+    return $this->hasMany(EstadoCondicionesRequerida::class, 'idCondicionRequerida', 'id');
+}
+
+public function condicionRequerida()
+{
+    return $this->belongsTo(CondicionesRequerida::class, 'idCondicionRequerida', 'id');
+}
+
+public function beneficio()
+{
+    return $this->belongsTo(Beneficio::class, 'idBeneficio', 'id');
+}
     
 
 }

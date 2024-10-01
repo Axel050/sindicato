@@ -11,21 +11,25 @@
     
     <div class=" w-full grid lg:grid-cols-2 grid-cols-1 pb-8">
       <h2 class="text-3xl text-center font-semibold py-2 mt-4 col-span-2 mb-8 text-sky-600 ">Beneficios </h2>
-
+      {{-- @dump($user) --}}
+      
       <div class=" mx-auto rounded-lg w-3/4  bg-white shadow-md shadow-orange-400 hover:shadow-lg hover:shadow-orange-400 border-l-2 border-orange-400 lg:col-span-1  col-span-2 lg:mb-0 mb-8" >
         <div class="text-center py-4">
-          <a href="">
-          <h3 class="text-2xl">7</h3>
-          <h3 class="text-lg">Prepaprobados</h3>          
+          <a href="{{Route('preaprovados')}}">
+            <h3 class="text-2xl">{{$beneficiosPre->count()}}</h3>
+            <h3 class="text-lg">Prepaprobados</h3>          
           </a>
         </div>
+        {{-- @dump( $beneficiosPre->toArray()->nombre) --}}
+        {{-- @dump( $beneficiosPre->pluck('nombre')) --}}
+        {{-- @dump( ) --}}
 
       </div>
 
       <div class=" mx-auto rounded-lg w-3/4  bg-white shadow-md shadow-green-500 hover:shadow-lg hover:shadow-green-500 border-l-2 border-green-500" >
         <div class=" text-center py-4">
-          <a href="">
-          <h3 class="text-2xl">1</h3>
+          <a href="{{Route('activos')}}">
+          <h3 class="text-2xl">{{$beneficiosAfi->count()}}</h3>
           <h3 class="text-lg">Activos</h3>          
           </a>
         </div>

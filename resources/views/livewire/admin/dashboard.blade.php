@@ -93,7 +93,7 @@
 
               {{--  VIGENTES--}}
 
-                <a href="{{Route('miembros')}}" class="btn relative flex flex-col items-center justify-between overflow-hidden font-semibold transition-all bg-gray-100 rounded hover:bg-green-2 group lg:pt-5 pt-1 px.5 text-lg lg:text-xl hover:lg:text-2xl  hover:text-xl shadow-md  shadow-blue-500 lg:h-44 h-36 group-hover:font-semibold border border-blue-500">
+                <a href="{{Route('vigentes')}}" class="btn relative flex flex-col items-center justify-between overflow-hidden font-semibold transition-all bg-gray-100 rounded hover:bg-green-2 group lg:pt-5 pt-1 px.5 text-lg lg:text-xl hover:lg:text-2xl  hover:text-xl shadow-md  shadow-blue-500 lg:h-44 h-36 group-hover:font-semibold border border-blue-500">
 
                  <svg class="w-0 h-0 group-hover:w-14 group-hover:h-14 relative   z-10 " viewBox="0 0 32 32" enable-background="new 0 0 32 32" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" stroke="#fff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Layer_1"></g> <g id="Layer_2"> <g> <rect fill="none" height="16" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="24" x="4" y="14"></rect> <rect fill="none" height="6" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="28" x="2" y="8"></rect> <rect fill="none" height="16" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="6" x="13" y="14"></rect> <rect fill="none" height="6" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="6" x="13" y="8"></rect> <polygon fill="none" points=" 16,7 19,4 18,2 16,2 14,2 13,4 " stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></polygon> <polyline fill="none" points=" 19,4 23,3 25,5 25,8 " stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></polyline> <polyline fill="none" points=" 13,4 9,3 7,5 7,8 " stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></polyline> </g> </g> </g></svg>
 
@@ -106,10 +106,10 @@
                    <span class="w-full h-full rounded bg-gradient-to-r from-blue-500 to-blue-800  absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full group-hover:translate-x-0 group-hover:translate-y-0"></span>
 
                   <span class="relative w-full text-center text-blue-600 transition-colors duration-300 ease-in-out group-hover:text-white ">
-                    Beneficios Vigentes: {{$miembros}}</span>
+                    Beneficios Vigentes: {{$beneficiosVig}}</span>
 
                       <div class=" w-full bg-gradient-to-r   from-blue-500 to-blue-800   text-white z-10 py-0.5 text-base group-hover:text-lg  text-center group-hover:border-t-2 border-blue-400">                      
-                      Notificaciones: {{$revision}}
+                      Notificaciones: {{$beneficios}}
                     </div>
 
                   
