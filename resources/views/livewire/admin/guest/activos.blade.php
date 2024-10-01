@@ -38,7 +38,7 @@
                 
                 @else
                 <div class="h-32 flex bg-red200 items-center justify-center border">
-                  <img src="{{ asset('Logosindi.png') }}" class="h-16 w-fit " >
+                  <img src="{{ asset('logosindi.png') }}" class="h-16 w-fit " >
                   <div class="flex flex-col ml-1">
 
                     <span class="bg-green-20">Beneficio </span>
