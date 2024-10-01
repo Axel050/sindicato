@@ -7,7 +7,7 @@
             
           @foreach ($beneficios as $ben)
 
-          <div class="flex flex-col  lg:w-[31%] w-[48%] hover:bg-gray-200  relative  shadow-md"
+          <div class="flex flex-col  lg:w-[31%] w-[98%] hover:bg-gray-200  relative  shadow-md"
            x-data="{open:true}"  @click="open=!open"
           :class="open ? 'h-auto bg-gray-100' : 'h-20 bg-white' ">
 
@@ -48,8 +48,22 @@
 
                 
               @endif
+
+            <div class="text-sm flex flex-col p-2">
               
-              <div class="flex   mt-auto p-3">
+              @if($ben->beneficio->descripcion)
+                  <h4 class="font-semibold m-1 mb-0">Descripcion :</h4>
+                  <p  class="ml-2">{{$ben->beneficio->descripcion}} </p>                      
+                @endif
+                @if ($ben->comentario)
+                    <h5 class="font-semibold m-1 mb-0">Comentario :</h4>
+                    <p  class="ml-2">{{$ben->comentario}} </p>                      
+                              
+                  @endif
+            </div>
+            
+              
+              <div class="flex   mt-auto p-3 pt-1 border-t-[1px] border-gray-200">
 
               
 
@@ -93,8 +107,26 @@
                   @if ($ben->beneficio->cantUsos <= $ben->beneficio->beneficioUsos->count() )              
                       <p class="h-28 w-28 font-extrablod text-2xl border p-8 text-center align-middle bg-gray-100 flex items-center justify-center">No disponible</p>
                   @else
-                  <a href="{{Route('miembro-beneficios', ['id' => $ben->afiliado, 'idB' => $ben->beneficio->id])}}" >
-                  <p class="h-28 w-28 font-extrablod text-2xl border p-8 text-center align-middle bg-gray-100 flex items-center justify-center">QR</p>
+
+
+                      @php
+                      $url = route('miembro-beneficios', ['id' => $ben->idAfiliado, 'idB' => $ben->idBeneficio]);
+                      // $url = "https://www.google.com.ar/";
+
+
+                        $qrCodeResult = Endroid\QrCode\Builder\Builder::create()
+                                          ->writer(new Endroid\QrCode\Writer\PngWriter()) // Indica el formato de salida
+                                          ->data($url ) // Contenido del QR
+                                          ->build(); // Genera el código QR
+
+
+      $qr= $qrCodeBase64 = base64_encode($qrCodeResult->getString());
+                      @endphp
+
+                  <a href="{{Route('miembro-beneficios', ['id' => $ben->afiliado, 'idB' => $ben->beneficio->id])}}" >                  
+                  <div class="bg-red-200 h-40 w-40">                              
+                            <img src="data:image/png;base64, {{ $qrC }}" alt="Código QR">
+                  </div>
                   </a>
                   @endif
                 </div>

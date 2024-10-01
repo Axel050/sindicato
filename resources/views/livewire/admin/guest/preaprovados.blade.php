@@ -17,12 +17,7 @@
           @if(!$ben->estadoC($id))
           <div class="flex flex-col  lg:w-[32%] w-[48%] hover:bg-gray-200  relative  shadow-md"
           x-data="{open:true}"   :class="open ? 'h-auto bg-gray-100 min-h-32' : 'h-24 bg-white' "
-          
-          {{-- style="background-image: url('{{ asset('banner.jpg') }}');
-           background-size: cover;
-           background-position: center center;
-           background-repeat: no-repeat;
-           height: 200px;" --}}
+                              
            >
                     
 
@@ -71,6 +66,16 @@
                   </div>
                 </div>
                 @endif
+
+
+                <div class="text-sm flex flex-col p-2">
+              
+              @if($ben->descripcion)
+                  <h4 class="font-semibold m-1 mb-0">Descripcion :</h4>
+                  <p  class="ml-2">{{$ben->descripcion}} </p>                      
+                @endif
+                
+            </div>
 
               
               
