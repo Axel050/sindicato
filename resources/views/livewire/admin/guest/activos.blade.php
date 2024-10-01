@@ -120,12 +120,12 @@
                                           ->build(); // Genera el código QR
 
 
-      $qr= $qrCodeBase64 = base64_encode($qrCodeResult->getString());
+                      $qr= $qrCodeBase64 = base64_encode($qrCodeResult->getString());
                       @endphp
 
                   <a href="{{Route('miembro-beneficios', ['id' => $ben->afiliado, 'idB' => $ben->beneficio->id])}}" >                  
                   <div class="bg-red-200 h-40 w-40">                              
-                            <img src="data:image/png;base64, {{ $qrC }}" alt="Código QR">
+                            <img src="data:image/png;base64, {{ $qr }}" alt="Código QR">
                   </div>
                   </a>
                   @endif
