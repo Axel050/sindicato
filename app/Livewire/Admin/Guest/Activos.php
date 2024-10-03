@@ -17,46 +17,6 @@ use Endroid\QrCode\Writer\PngWriter;
 class Activos extends Component
 {
 
-  public $qrC;
-
-  public function generateQR($id,$idB){
-    // $url = route('miembro-beneficios', ['id' => $ben->id, 'idB' => $ben->beneficio->id]);
-    // $url = route('miembro-beneficios', ['id' => 410, 'idB' => 5]);
-    $url = "https://www.google.com.ar/";
-                        // qr = generateQR($ben->idAfiliado, 'idB' => $ben->beneficio->id);
-                        // $qrCode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(200)->generate($url);
-
-                        //  $url = route('miembro-beneficios', ['id' => $id, 'idB' => $idB]);
-
-                        // $this->qrC = QrCode::size(200)->generate($url);
-                        // $this->qrC = QrC
-
-
-                        // $qrCode = new QrCodeQrCode('Contenido del QR');  $qrCode->writeFile('path/donde/guardar/el/qr.png');
-
-
-$qrCodeResult = Builder::create()
-    ->writer(new PngWriter()) // Indica el formato de salida
-    ->data($url ) // Contenido del QR
-    ->build(); // Genera el código QR
-
-
-      $this->qrC= $qrCodeBase64 = base64_encode($qrCodeResult->getString());
-
-// Guardar el código QR en un archivo
-// $qrCodeResult->saveToFile('path/donde/guardar/el/qr.png');
-
-// También puedes devolver la imagen directamente al navegador
-// header('Content-Type: '.$qrCodeResult->getMimeType());
-
-                        
-                        // dd($qr);
-                        // dd([
-                        //   "id" => $id,
-                        //   "idB" => $idB
-                        // ]);
-  }
-
 
     public function render()
     {
@@ -136,8 +96,7 @@ $beneficios = BeneficioAfiliado::where('idAfiliado', $id)
     ->with('beneficio')
     ->get();
 
-
-    $this->generateQR(410,5);
+    
 
 
 

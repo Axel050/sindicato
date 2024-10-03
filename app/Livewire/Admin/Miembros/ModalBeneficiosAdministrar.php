@@ -54,7 +54,7 @@ class ModalBeneficiosAdministrar extends Component
     
      public function save(){
 
-      if($this->beneficio->beneficioUsos->count() >= $this->beneficio->cantUsos){
+      if($this->beneficio->beneficioUsos($this->idMiembro)->count() >= $this->beneficio->cantUsos){
             throw ValidationException::withMessages([
             'error' => 'El beneficio ha alcanzado el límite de usos permitidos.'
         ]);

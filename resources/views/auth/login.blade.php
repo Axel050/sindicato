@@ -2,7 +2,7 @@
     <x-authentication-card>
                 
         <x-slot name="logo">
-            {{-- <x-authentication-card-logo /> --}}
+            
                         <img src="{{asset('logosindiN.png')}}" class="lg:w-52  lg:h-52 w-44 h-44" >
                         
 
@@ -34,7 +34,7 @@
             <div class="mt-4">
                 <x-label for="password" value="{{ __('Password') }}" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>:::
+            </div>
 
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
@@ -44,9 +44,13 @@
             </div>
 
             <div class="flex items-center justify-between mt-4">
+
+                <x-button class="ms-4">
+                    {{ __('Log in') }}
+                </x-button>
               
 
-              <a href="{{Route('register')}}" class="bg-gray-500 text-white px-2 py-1  rounded-lg text-sm hover:bg-gray-600">
+              <a href="{{Route('register')}}" class="bg-blue-700 text-white px-2 py-1  rounded-lg text-sm hover:bg-gray-600">
                 Registarme</a>
 
                 @if (Route::has('password.request'))
@@ -55,9 +59,7 @@
                     </a> --}}
                 @endif
 
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
+              
             </div>
         </form>
     </x-authentication-card>

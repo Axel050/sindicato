@@ -145,68 +145,8 @@ $hoy = Carbon::now();
 
 
 
-    // 
-
-
-    // $beneficios = Beneficio::with('beneficioCondiciones.condicionReq')
-    // ->whereHas('beneficioCondiciones', function ($query) use ($idCondicion) {
-    //     $query->whereRaw("FIND_IN_SET(?, REPLACE(condiciones, '-', ','))", [$idCondicion]);
-    // })
-    // ->whereHas('beneficioCondiciones.estadoCondicionesRequerida3', function ($query) use ($id) {
-    //     $query->where('idMiembro', 410)
-    //          ->where('estado', '1');
-    // })
-    // ->get();
-
-  
-
-      // dd($beneficios);
-
 
         return view('livewire.admin.guest.preaprovados', compact("beneficios"));
     }
 }
 
-
-  // public function verificarBeneficio()
-  //   {
-  //       $beneficioAfiliado = BeneficioAfiliado::where('idAfiliado', $this->idAfiliado)
-  //           ->where('idBeneficio', $this->idBeneficio)
-  //           ->first();
-
-  //       if ($beneficioAfiliado && !$beneficioAfiliado->puedeUsarse()) {
-  //           $this->beneficioDisponible = false;
-  //           $this->mensaje = 'El beneficio ya no puede ser usado.';
-  //       } else {
-  //           $this->beneficioDisponible = true;
-  //           $this->mensaje = '';
-  //       }
-  //   }
-
-  //   public function usarBeneficio()
-  //   {
-  //       $beneficioAfiliado = BeneficioAfiliado::where('idAfiliado', $this->idAfiliado)
-  //           ->where('idBeneficio', $this->idBeneficio)
-  //           ->first();
-
-  //       if (!$beneficioAfiliado) {
-  //           $this->mensaje = 'Beneficio no encontrado.';
-  //           return;
-  //       }
-
-  //       if (!$beneficioAfiliado->puedeUsarse()) {
-  //           $this->beneficioDisponible = false;
-  //           $this->mensaje = 'El beneficio ya no puede ser usado.';
-  //           return;
-  //       }
-
-  //       // Usar el beneficio incrementando el contador de usos
-  //       $beneficioAfiliado->increment('usos');
-
-  //       $this->mensaje = 'Beneficio usado correctamente.';
-  //       $this->beneficioDisponible = false;
-
-  //       // Verificar de nuevo el beneficio después de usarlo
-  //       $this->verificarBeneficio();
-  //   }
-  

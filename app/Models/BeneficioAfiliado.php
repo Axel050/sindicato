@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class BeneficioAfiliado
@@ -40,7 +41,7 @@ class BeneficioAfiliado extends Model
 		'idResponsable' => 'int',
 		'estado' => 'int',
 		'cantUsos' => 'int',
-    'ultimo_uso'
+    'ultimo_uso' => 'datetime'
 	];
 
 	protected $fillable = [
@@ -58,8 +59,25 @@ class BeneficioAfiliado extends Model
 	];
 
 
+      public function beneficioUsos  ($idMiembro){
+          return $this->hasMany(BeneficiosUsos::class, 'id_beneficio','idBeneficio')
+                              ->where('id_miembro',$idMiembro);
+      }
+
+      public function beneficioCondiciones (){
+          return $this->hasMany(BeneficioCondicion::class, 'idBeneficio');
+      }
+
+
+
       public function beneficio (){
           return $this->belongsTo(Beneficio::class, 'idBeneficio', 'id');   
+      }
+
+
+      public function estadoCondicionesRequeridas (){
+          return $this->hasMany(EstadoCondicionesRequerida::class, 'idBeneficio','idBeneficio')
+                            ->where('idMiembro', $this->idAfiliado);;
       }
 
 
@@ -83,5 +101,34 @@ class BeneficioAfiliado extends Model
               }
 
               return true;
+          }
+
+
+          public function estadoC($idMiembro,$idB){
+  
+            $total = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
+                  ->where('idBeneficio', $idB)
+                  ->count();
+                                        
+          
+              $conEstado1 = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
+                  ->where('idBeneficio', $idB)
+                  ->where('estado', '1')
+                  ->count();
+
+                  Log::alert([
+                    "total22222 " => $total,
+                    "idMIentro " => $idMiembro,
+                    "idBenn" => $idB ,
+                    "estad1" => $conEstado1
+
+                  ]);
+
+              if($total <= 0){
+                return false;
+              }
+
+              return $total === $conEstado1;
+
           }
 }

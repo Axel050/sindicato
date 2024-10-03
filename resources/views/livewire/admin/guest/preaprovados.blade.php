@@ -13,18 +13,27 @@
           @foreach ($beneficios as $ben)
             
 
+          @php
+                      $noDisponible = $ben->estadoPendiente($id);
+                      $shadow = $noDisponible ? "shadow-orange-500" : "shadow-green-500";
+            @endphp
           
           @if(!$ben->estadoC($id))
-          <div class="flex flex-col  lg:w-[32%] w-[48%] hover:bg-gray-200  relative  shadow-md"
-          x-data="{open:true}"   :class="open ? 'h-auto bg-gray-100 min-h-32' : 'h-24 bg-white' "
+          
+          <div class="flex flex-col  lg:w-[32%] w-[48%] hover:bg-gray-200  relative cursor-pointer  shadow-md {{$shadow}}"
+          x-data="{open:false}"   :class="open ? 'h-auto bg-gray-100 min-h-32' : 'h-24 bg-white' "
                               
            >
+
+           
+           
+           
                     
 
             
               <div class="min-h-20 " @click="open=!open">
 
-                <h3 class="text-lg font-semibold px-2 py-1 ">{{$ben->nombre}}</h3 >
+                <h3 class="text-lg font-semibold px-2 py-1 ">{{$ben->nombre}}{{$ben->id}}</h3 >
                   
                                     
                   <p class="pl-2 pb-1 text-sm text-gray-500 "
@@ -57,13 +66,8 @@
                 <img src="{{ Storage::url($ben->bannerBeneficio) }}" class="h-32 w-fit mx-auto" >
                 
                 @else
-                <div class="h-32 flex bg-red200 items-center justify-center border">
-                  <img src="{{ asset('logosindi.png') }}" class="h-16 w-fit " >
-                  <div class="flex flex-col ml-1">
-
-                    <span class="bg-green-20">Beneficio </span>
-                    <span class="bg-green-00">sin imagen.</span>
-                  </div>
+                <div class="h-32 flex bg-red200 items-center justify-center ">
+                  <img src="{{ asset('logosindi.png') }}" class="h-24 w-fit " >                  
                 </div>
                 @endif
 
@@ -113,7 +117,7 @@
                         - {{$condicion->condicionReq->nombreRequerimiento}}  
                       </span>
                       
-                      {{-- Verificar si el estado de la condición pertenece al miembro --}}                        
+                      
 
                         @if ($b)                  
 

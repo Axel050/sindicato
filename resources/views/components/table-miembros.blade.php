@@ -196,7 +196,7 @@
                                                       
                                                       
                                                       @if(in_array('rol', $selectedColumns))
-                                                      <td >{{ $usuario->role?->name }}</td>
+                                                      <td class="@if($usuario->idRol == 2) text-orange-700 @endif">{{ $usuario->role?->name }}</td>
                                                       @endif
                                                       
 

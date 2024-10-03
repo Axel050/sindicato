@@ -4,11 +4,35 @@
 
     <div >
         <div class="">
-              <div class="w-full flex item-center justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-whit lg:py-4  py-2 px-6 rounded-md  shadow-md ">
+              <div class="w-full flex item-center justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-whit lg:py-4  py-1 lg:px-6 px-2 rounded-md  shadow-md ">
+
+                  <div class="flex lg:flex-row flex-col  ">
+
                     <div  class="flex flex-col ">
                       <label for="query" class="text-sm lg:text-base text-gray-600 ">Buscar</label>
-                      <input type="search" nombre="query" wire:model.live="query" class="h-7 rounded-md border border-gray-400 w-40 lg:w-48 ">
+                      <input type="search" nombre="query" wire:model.live="query" class="h-6 rounded-md border border-gray-400 w-40 lg:w-48 ">
                     </div>
+
+
+                    <div  class="flex flex-col  lg:ml-10   ">
+                      <label for="query" class="text-sm lg:text-base text-gray-700 ">Mostrar</label>
+                      <div class="flex text-xs lg:gap-x-4 gap-x-1 text-gray-500">
+                        
+                        <label for="">Inactivos
+                          <input type="radio" value="0" wire:model.live="filter" class=" ml-1">
+                        </label>
+                        
+                        <label for="">Activos
+                        <input type="radio" value="1" wire:model.live="filter" class=" ml-1 ">
+                        </label>
+
+                        <label for="">Todos
+                        <input type="radio" value="all" wire:model.live="filter" class=" ml-1 ">
+                      </label>
+                      </div>
+                    </div>
+
+                  </div>
         
                 
                     <button class="border border-green-800 hover:text-gray-200 hover:bg-green-700 bg-green-600 px-2 py-0.5 rounded-lg text-white text-sm h-7 place-self-center flex items-center gap-x-2"   wire:click="option('save')" > 

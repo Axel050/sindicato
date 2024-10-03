@@ -271,8 +271,7 @@
                 <div class="overflow-hidden">
                 
                     @if (count($usuarios) )                
-                        <x-table-miembros :usuarios="$usuarios" :selectedColumns="$selectedColumns" />
-                        {{-- <x-table-miembros :usuarios="$users" :selectedColumns="$selectedColumns" /> --}}
+                        <x-table-miembros :usuarios="$usuarios" :selectedColumns="$selectedColumns" />                        
                     @else
                           <h3 class="w-full text-center py-2 px-3 rounded-md">Sin resultados </h3>                      
                     @endif

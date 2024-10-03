@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Beneficios;
 
 use App\Models\Beneficio;
+use App\Models\BeneficioAfiliado;
 use App\Models\Empresa;
 use App\Models\EstadoCondicionesRequerida;
 use Livewire\Component;
@@ -44,6 +45,39 @@ class ModalVigentes extends Component
        $reque->save() ;
       }
 
+
+// ->where("idBeneficio",$this->idBeneficio)
+//                           ->where("idMiembro", $this->idMiembro)
+
+
+      $total = EstadoCondicionesRequerida::where('idMiembro', $this->idMiembro)
+        ->where('idBeneficio', $this->idBeneficio)
+        ->count();
+            
+         
+    $conEstado1 = EstadoCondicionesRequerida::where('idMiembro', $this->idMiembro)
+        ->where('idBeneficio', $this->idBeneficio)
+        ->where('estado', '1')
+        ->count();
+
+        if($total === $conEstado1 ){          
+            BeneficioAfiliado::create([
+              "idAfiliado" => $this->idMiembro,
+              "idBeneficio" => $this->idBeneficio,              
+            ]);
+        }
+        elseif($total > $conEstado1){
+           $beneficioAfiliado = BeneficioAfiliado::where('idAfiliado', $this->idMiembro)
+                                         ->where('idBeneficio', $this->idBeneficio)
+                                         ->first();
+    
+              if ($beneficioAfiliado) {
+                    $beneficioAfiliado->delete();
+              }
+
+        }
+
+      
 
     }
 

@@ -91,7 +91,7 @@
                                                     <tr class="divide-x-2 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start ">
 
                                                       
-                                                      <td class="py-1.5" >{{ $ben->user?->name }} ({{$ben->id}})</td>
+                                                      <td class="py-1.5" >{{ $ben->user?->name }}</td>
 
                                                       <td class="py-1.5" >                                                        
                                                          {{ $ben->beneficio?->nombre}}

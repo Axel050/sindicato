@@ -19,6 +19,7 @@ class Index extends Component
   
   use WithPagination;
   public $users;  
+  public $idRol=0;  
 
   public $selectedColumns=[];  
 
@@ -263,17 +264,24 @@ public function exportar()
         })->toArray();
     }
 
+    // public $idRol=[2,3];  
     public function render()
     {
 
       
       $usuarios = User::orderBy("name", "asc")->whereIn('idRol', [2, 3]);
+
+
+
+        if($this->idRol === "2" || $this->idRol === "3"){
+          $usuarios = $usuarios->where('idRol', $this->idRol);
+        }
+    
       
 
                   
       
       if ($this->desde !== null && $this->hasta !== null) {
-        Log::alert("renderDESEED");
         $desde=$this->desde;
           $hasta=$this->hasta;
 
@@ -333,7 +341,7 @@ public function exportar()
     }
 
     if ($this->conyuge) {
-        $usuarios = $usuarios->whereHas('conyuge');
+         $usuarios = $usuarios->whereHas('conyuge');
     }
 
     if ($this->fechaNacConyuge) {
@@ -409,11 +417,7 @@ public function exportar()
           $ageFromDate = $today->copy()->subYears($desde)->endOfDay();
           $ageToDate = $today->copy()->subYears($hasta + 1)->endOfDay();
 
-        if ($this->hijosSexo){
-          Log::alert("jhihihi");
-
-          Log::alert($this->hijosSexo);
-          Log::alert("jhihihi");
+        if ($this->hijosSexo){                    
             $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($ageFromDate, $ageToDate) {
               $query->whereBetween('fNac', [ $ageToDate,$ageFromDate])
                           ->where('sexo', $this->hijosSexo); 
@@ -425,8 +429,7 @@ public function exportar()
                                                                                     ->where('sexo', $this->hijosSexo)->count();    
               }
         }
-        else{          
-              Log::alert("EEELSEE");
+        else{                        
             $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($ageFromDate, $ageToDate) {
               $query->whereBetween('fNac', [ $ageToDate,$ageFromDate]);                       
             });          
@@ -464,15 +467,15 @@ public function exportar()
           }              
         
        }
-      //  new
 
-Log::alert($this->searchType);
+
       if($this->query ){
                 
         if ($this->searchType == "miembro") {
             $usuarios =$usuarios->where($this->searchField, "like", '%'.$this->query . '%')
-                                ->whereIn('idRol', [2, 3])->orderBy("id","asc");          
+                               ->orderBy("id","asc");          
         }
+
 
         elseif ($this->searchType == "hijo") {
           

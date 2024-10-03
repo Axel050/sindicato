@@ -5,8 +5,10 @@ namespace App\Livewire\Admin\Miembros;
 use App\Models\Beneficio;
 use App\Models\BeneficioAfiliado;
 use App\Models\BeneficioCondicion;
+use App\Models\EstadoCondicionesRequerida;
 use Livewire\Component;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class ModalBeneficios extends Component
 {
@@ -40,12 +42,7 @@ class ModalBeneficios extends Component
 
       $this->condicion= $this->miembro->idCondicion;
 
-
-    //  $b= Beneficio::find(1);
-      // dd($b->tieneCondicion(1));
-      // dd($this->miembro);
-      // dd($this->condicion);
-      
+     
       
       if($this->method == "save"){        
           $this->title= "Agregar";
@@ -121,11 +118,12 @@ class ModalBeneficios extends Component
 
        $this->validate(  $this->rules(), $this->messages()); 
 
-        $exists = BeneficioCondicion::where("idBeneficio",$this->idBeneficio)
-                      ->where('idCondicion', $this->condicion)->exists(); 
+        $exists = Beneficio::where("id",$this->idBeneficio)
+                      ->whereRaw('FIND_IN_SET(?, REPLACE(condiciones, "-", ","))', [$this->condicion])
+                      ->exists(); 
 
         if (!$exists) {
-        $this->addError('beneficio_condicion', 'No disponible para este usuario.');
+        $this->addError('beneficio_condicion', 'No disponible para este usuariao.');
         return;
       }
 
@@ -157,6 +155,32 @@ class ModalBeneficios extends Component
 
         ]);
 
+                
+        
+        if($beneficioMiembro){                    
+
+              $beneficioCondiciones= BeneficioCondicion::where("idBeneficio",$beneficioMiembro->idBeneficio)->get();
+
+                            
+              $primera=true;              
+              foreach ($beneficioCondiciones as $b) {                                          
+                $estadoConReq = $b->estadoCondicionesRequeridas($this->idMiembro);              
+                
+                // borramos si hay requeridas por miembro previamente y creamos nuevas
+                if($primera &&  $estadoConReq->count() > 0){                            
+                  $estadoConReq->delete();
+                }
+                $primera=false;
+                
+                EstadoCondicionesRequerida::create([
+                  "idCondicionRequerida" => $b->idCondicion,
+                  "idBeneficio" => $b->idBeneficio,
+                  "idMiembro" => $this->idMiembro,
+                  "estado" => 1,
+                ]);                                                                              
+                          
+          }
+        }
         
                 
          $this->dispatch("miembroCreated");
@@ -169,8 +193,9 @@ class ModalBeneficios extends Component
 
       $this->validate(  $this->rules(), $this->messages()); 
 
-      $exists = BeneficioCondicion::where("idBeneficio",$this->idBeneficio)
-                      ->where('idCondicion', $this->condicion)->exists(); 
+      $exists = Beneficio::where("id",$this->idBeneficio)
+                      ->whereRaw('FIND_IN_SET(?, REPLACE(condiciones, "-", ","))', [$this->condicion])
+                      ->exists(); 
 
         if (!$exists) {
         $this->addError('beneficio_condicion', 'No disponible para este usuario.');
@@ -204,8 +229,22 @@ class ModalBeneficios extends Component
 
      
     public function delete(){
-              $this->beneficioM->delete();
-                                                        
+            
+      foreach($this->beneficioM->estadoCondicionesRequeridas as $req){
+        $req->delete();
+      }
+
+      // borramos usos del beneficio      
+      foreach($this->beneficioM->beneficioUsos($this->idMiembro)->get() as $uso){            
+            $uso->delete();
+      }
+
+      $this->beneficioM->delete();
+
+
+
+                
+              
               $this->dispatch("miembroDeleted");
         }
 

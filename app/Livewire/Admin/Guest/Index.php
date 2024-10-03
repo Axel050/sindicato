@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Guest;
 use App\Models\Beneficio;
 use App\Models\BeneficioAfiliado;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Index extends Component
@@ -50,26 +51,16 @@ class Index extends Component
     ->where("estado", 1)
     ->get();
 
+    $cantPre=0;
+    foreach ($beneficiosPre as $pre ) {
+          if(!$pre->estadoC($user->id)){
+            $cantPre++;
+          }
+    }
+
 
     $today = now();
 
-
-
-
-// $beneficiosAfi = BeneficioAfiliado::where('idAfiliado', $user->id)
-//     ->where(function($query) {
-//         $query->where(function($subquery) {
-//             // Si fechaDesde y fechaHasta son válidas, comprobar que la fecha actual esté en el rango
-//             $subquery->where('fechaDesde', '<=', Carbon::now())
-//                      ->where('fechaHasta', '>=', Carbon::now());
-//         })
-//         ->orWhere(function($subquery) {
-//             // Incluir registros donde fechaDesde o fechaHasta sean nulas
-//             $subquery->whereNull('fechaDesde')
-//                      ->orWhereNull('fechaHasta');
-//         });
-//     })
-//     ->get();
 
 $beneficiosAfi = BeneficioAfiliado::where('idAfiliado', $user->id)
     ->whereHas('beneficio', function ($query) use ($hoy) {
@@ -106,6 +97,6 @@ $beneficiosAfi = BeneficioAfiliado::where('idAfiliado', $user->id)
 
 
 
-        return view('livewire.admin.guest.index' , compact(["beneficiosPre","user","beneficiosAfi"]));
+        return view('livewire.admin.guest.index' , compact(["cantPre","user","beneficiosAfi"]));
     }
 }

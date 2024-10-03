@@ -16,13 +16,11 @@
       <div class=" mx-auto rounded-lg w-3/4  bg-white shadow-md shadow-orange-400 hover:shadow-lg hover:shadow-orange-400 border-l-2 border-orange-400 lg:col-span-1  col-span-2 lg:mb-0 mb-8" >
         <div class="text-center py-4">
           <a href="{{Route('preaprovados')}}">
-            <h3 class="text-2xl">{{$beneficiosPre->count()}}</h3>
+            <h3 class="text-2xl">{{$cantPre}}</h3>
             <h3 class="text-lg">Prepaprobados</h3>          
           </a>
         </div>
-        {{-- @dump( $beneficiosPre->toArray()->nombre) --}}
-        {{-- @dump( $beneficiosPre->pluck('nombre')) --}}
-        {{-- @dump( ) --}}
+        
 
       </div>
 

@@ -97,6 +97,11 @@ class BeneficioCondicion extends Model
     return $this->hasOne(EstadoCondicionesRequerida::class, 'idCondicionRequerida', 'idCondicion');
 }
 
+    public function estadoCondicionesRequeridas($idMiembro)
+{
+    return $this->hasMany(EstadoCondicionesRequerida::class, 'idBeneficio', 'idBeneficio')->where("idMiembro",$idMiembro);
+}
+
 
 
 }

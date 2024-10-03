@@ -12,6 +12,17 @@
 
 
       <ul class="flex  flex-col px-4  mt-2 text-gray-50  borde  [&>li]:cursor-pointer  text-sm ">        
+
+
+        {{-- Rol --}}                     
+           <x-side-menu-filter-item title="Por Rol">
+               -Rol
+               <select wire:model="idRol" class="w-fit text-gray-700 rounded-md h-6 mx-1 text-xs py-0">
+                   <option value="0">Todos</option>                                                
+                   <option value="3">Miembro</option>                        
+                   <option value="2">Pendiente</option>                        
+               </select>           
+           </x-side-menu-filter-item>
     
           {{--  RANGO DE EDAD--}}
           <x-side-menu-filter-item title="Por Rango de Edad"> 
@@ -35,6 +46,7 @@
                     @endforeach                         
                   </select>                   
               </x-side-menu-filter-item>
+              
 
            {{-- GENERO --}}                     
            <x-side-menu-filter-item title="Por Genero">

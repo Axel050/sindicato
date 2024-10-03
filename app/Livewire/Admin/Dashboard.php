@@ -2,14 +2,21 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Beneficio;
 use App\Models\EstadoCondicionesRequerida;
+use App\Models\Hijo;
 use App\Models\User;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
+    public $hijos =0;
+
     public $miembros =0;
     public $revision =0;
+
+    public $beneficiosTotalActivos =0;
+    public $beneficiosTotalInactivos =0;
 
     public $beneficios =0;
     public $beneficiosVig =0;
@@ -18,6 +25,11 @@ class Dashboard extends Component
       $this->miembros = User::where("idRol", 3)->count();
 
       $this->revision = User::where("idRol", 2)->count();
+
+      $this->hijos = Hijo::count();
+
+      $this->beneficiosTotalActivos = Beneficio::where("estado",1)->count();
+      $this->beneficiosTotalInactivos = Beneficio::where("estado",0)->count();
 
     
 
@@ -35,6 +47,8 @@ class Dashboard extends Component
 
           $this->beneficios = $b->havingRaw('total_estado_0 = total_registros')->count();     
           $this->beneficiosVig = $bV->havingRaw('total_estado_1 = total_registros')->count();
+
+
   
          
 

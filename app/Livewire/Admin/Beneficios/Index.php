@@ -16,6 +16,7 @@ class Index extends Component
 
   public $query,$nombre,$id;
   public $method="";    
+  public $filter="all";    
 
     
     public function upd( $provincia){
@@ -56,13 +57,20 @@ class Index extends Component
     public function render()
     {
 
-      $beneficios = Beneficio::orderBy("nombre", "asc")->paginate(15);
+      $beneficios = Beneficio::orderBy("nombre", "asc");
 
 
       if($this->query ){
-        $beneficios =Beneficio::where("nombre", "like", '%'.$this->query . '%')
-                            ->whereIn('idRol', [2, 3])->orderBy("id","asc")->paginate(15);
+        $beneficios =Beneficio::where("nombre", "like", '%'.$this->query . '%');                            
       }
+
+       if ($this->filter === "0" || $this->filter === "1" ) {
+          
+        $beneficios->where("estado", $this->filter);  
+      }
+
+    // Paginate the results
+        $beneficios = $beneficios->paginate(15);
                         
         return view('livewire.admin.beneficios.index',compact("beneficios"));
     }

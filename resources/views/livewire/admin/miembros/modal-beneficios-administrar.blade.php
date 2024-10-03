@@ -44,7 +44,7 @@
                                                 <label  class="w-full text-start text-gray-500  text-base ">Usados:</label>
                                                 
                                                 
-                                                    <span class="w-full text-gray-700 text-sm ">{{$beneficio->beneficioUsos->count()}}</span>
+                                                    <span class="w-full text-gray-700 text-sm ">{{$beneficio->beneficioUsos($idMiembro)->count()}}</span>
                                                 
                                               </div>
 
@@ -59,9 +59,9 @@
                                                   </thead>
 
                                                   <tbody class="divide-y divide-gray-200 text-gray-500  text-sm">
-
                                                     
-                                                    @foreach ($beneficio->beneficioUsos as $uso)
+                                                    @foreach ($beneficio->beneficioUsos($idMiembro)->get() as $uso) 
+                                                    
                                                     <tr class="divide-x-2 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start font-bold">
                                                     
                                                         <td class="py-1.5" >{{$uso->fecha_uso}}</td>

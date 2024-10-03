@@ -1,10 +1,10 @@
 <div  class=" flex justify-center w-full fullscreen items-center bg-gray-50 relative" >
   <x-action-message on="UserUpdated" class="bg-orange-500  border-orange-700 absolute top-0 left-0 z-10" >
-                Miembro actualizado con exitó.</x-action-message> 
+                Perfil actualizado con exitó.</x-action-message> 
               
                   <div class="flex  flex-col justify-center items-center    mx-auto h-fit lg:w-auto w-[95%] border shadow-lg">
                                           
-                            <h2 class="lg:text-2xl text-xl mb-0  w-full text-center py-1  border-b border-gray-300 text-white"  
+                            <h2 class=" text-xl mb-0  w-full text-center py-1  border-b border-gray-300 text-white font-semibold"  
                             style="{{$bg}}">                                          
                                 {{$title  }} perfil
                               </h2>                                            
@@ -198,8 +198,8 @@
                             @if ($conyugue)             
                             
                             
-                            <div class="flex flex-col  max-w-[1050px] mx-auto lg:w-fit w-[90%]  border-2 border-gray-300 pb-4 shadow-lg mb-6 rounded-lg">
-                                  <h2 class="bg-emerald-700   w-full py-1 text-lg font-semibold mb-4 pl-4 flex rounded-t-md text-white">
+                            <div class="flex flex-col  max-w-[1050px] mx-auto lg:w-fit w-[90%]  border-2 border-gray-300 pb-4 shadow-lg mb-3 rounded-lg">
+                                  <h2 class="bg-emerald-700   w-full py-1 text-base font-semibold mb-4 pl-4 flex rounded-t-md text-white">
                                     <span>Conyugue</span>
                                     @if ($method == "edit")                                    
                                     <button  type="button" wire:click="$set('conyugue','0')" class="ml-auto mr-4 text-red-600 font-semibold hover:text-red-800 hover:font-bold text-xl">X</button>                                    
@@ -250,8 +250,8 @@
                                                 {{-- HIJOS --}}    
                                                 @for ($i = 0; $i < $hijos; $i++)
                                                 
-                                                <div class="flex flex-col  max-w-[1050px] mx-auto lg:w-fit w-[90%]  border-2 border-gray-300 pb-4 shadow-lg mb-4 rounded-lg">
-                                                      <h2 class="bg-red-300 wfull py-1 text-lg font-semibold mb-4 pl-4 flex rounded-t-md text-white">Hijo {{$i +1}}
+                                                <div class="flex flex-col  max-w-[1050px] mx-auto lg:w-fit w-[90%]  border-2 border-gray-300 pb-4 shadow-lg mb-3 rounded-lg">
+                                                      <h2 class="bg-red-300 wfull py-1 text-base font-semibold mb-4 pl-4 flex rounded-t-md text-white">Hijo {{$i +1}}
                                                         
                                                         @if ($method == "edit")                                    
                                                               <button type="button" class="text-red-600 ml-auto mr-4 font-semibold hover:text-red-800 hover:font-bold text-xl"
@@ -317,7 +317,7 @@
 
                                                       </button >
                                                       
-                                                        <button   class="px-6 py-1.5 bg-green-500 text-white w-fit  rounded-lg hover:bg-green-600" wire:click="edit">Guardar</button>{{$method}}
+                                                        <button   class="px-6 py-1.5 bg-green-500 text-white w-fit  rounded-lg hover:bg-green-600" wire:click="edit">Guardar</button>
                                                         @else
 
                                                         <button   type="button"  class="px-6 py-1.5 bg-green-500 text-white w-fit  rounded-lg hover:bg-green-600" wire:click="option('edit')">Editar</button>

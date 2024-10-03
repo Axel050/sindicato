@@ -9,6 +9,7 @@ use App\Models\Empresa;
 use App\Models\Gremio;
 use App\Models\Hijo;
 use App\Models\Sectore;
+use App\Rules\UniqueDocument;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 
@@ -52,12 +53,16 @@ class Show extends Component
     public $documentoConyugue;
     public $generoConyugue;
     public $fechaNacConyugue;
+    public $idConyugue;
 
     public $hijosData=[];
     
 
-
+      
      public function mount(){
+        Log::alert(">method");
+        Log::alert($this->method);
+
           $this->method="show";    
           $this->title= "Informacion del ";              
           $this->bg="background-color: rgb(22 163 74)"; 
@@ -68,7 +73,8 @@ class Show extends Component
                     'apellido' => '',
                     'nombre' => '',
                     'genero' => '',            
-                    'fechaNac' => '',            
+                    'fechaNac' => '',          
+                    "id" => ""  
                 ]);
 
               $this->empresas=Empresa::orderBy("nombreEmpresa","asc")->get();
@@ -102,6 +108,7 @@ class Show extends Component
                       'nombre' => $h->nombre,
                       'genero' => $h->sexo,
                       'fechaNac' => date('Y-m-d', strtotime($h->fNac)),
+                      'id' => $h->id,
                   ];
                 
               }
@@ -109,6 +116,7 @@ class Show extends Component
 
 
               if($this->user->conyuge){
+                $this->idConyugue =$this->user->conyuge?->id;
                 $this->nombreConyugue = $this->user->conyuge?->nombre;
                 $this->apellidoConyugue = $this->user->conyuge?->apellido;
                 $this->documentoConyugue = $this->user->conyuge?->documento;
@@ -120,6 +128,8 @@ class Show extends Component
                 $this->bg="background-color: rgb(22 163 74)"; 
 
             }
+
+
 
             public function option($method){
 
@@ -144,45 +154,41 @@ class Show extends Component
             'direccion' => 'required',         
             'name' => 'required',
             'apellido' => 'required',
-            'telefono' => 'required',
-            'documento' => 'required',         
+            'telefono' => 'required',            
+            'documento' => 'required|unique:users', 
             'genero' => 'required',         
             'fechaNac' => 'required',         
             'gremioId' => 'required|integer',  
             'empresaId' => 'required',              
             'hijos' => 'required|integer',                                                                                              
           ]; 
+                              
+            $rules['documento'] = 'required|unique:users,documento,' . $this->user->id;                      
           
-          
-          if($this->method == "edit"){
-            $rules['email'] = 'required|email|unique:users,email,' . $this->user->id;
-          
-                if ( $this->password) {
-                    $rules['password'] = 'required|string|confirmed|min:8';
-                }
-            }
-
-           elseif($this->method == "save"){  
-                  $rules['email'] = 'required|email|unique:users';
+              if ( $this->password) {
                   $rules['password'] = 'required|string|confirmed|min:8';
-           }
+              }
+          
+
+           
           
                     
           if($this->conyugue == 1  ){ 
             $rules['nombreConyugue'] = 'required';
             $rules['apellidoConyugue'] = 'required';
-            $rules['documentoConyugue'] = 'required';
+            // $rules['documentoConyugue'] = 'required';
             $rules['generoConyugue'] = 'required';
             $rules['fechaNacConyugue'] = 'required';
+            $rules['documentoConyugue'] = ['required', new UniqueDocument($this->idConyugue)];
           }
 
 
             for ($i = 0; $i < $this->hijos; $i++) {
               $rules["hijosData.$i.nombre"]   = 'required';
               $rules["hijosData.$i.apellido"]  = 'required';
-              $rules["hijosData.$i.genero"]    = 'required';
-              $rules["hijosData.$i.documento"] = 'required';
+              $rules["hijosData.$i.genero"]    = 'required';              
               $rules["hijosData.$i.fechaNac"]   = 'required';
+              $rules["hijosData.$i.documento"] = ['required', new UniqueDocument('',$this->hijosData[$i]['id'], $this->user->id)];
            }
           
            
@@ -204,6 +210,7 @@ class Show extends Component
             "password.min"=> "Debe tener al menos 8 caracteres.",            
             "empresaId.required"=> "Elija una empresa.",
             "documento" => "Ingrese documento.",
+            "documento.unique" => "Documento existente.",
             "genero" => "Elija genero.",
             "fechaNac" => "Elija fecha.",
             "direccion" => "Ingrese direccion.",
@@ -213,14 +220,14 @@ class Show extends Component
             "hijosData.*.nombre.required" => "Ingrese nombre.",
             "hijosData.*.apellido" => "Ingrese apellido.",
             "hijosData.*.genero" => "Elija genero.",
-            "hijosData.*.fechaNac" => "Elija fecha.",
-            "hijosData.*.documento" => "Ingrese documento.",
+            "hijosData.*.fechaNac" => "Elija fecha.",            
+            "hijosData.*.documento.required" => "Ingrese documento.",
 
             "nombreConyugue" => "Ingrese nombre.",
             "apellidoConyugue" => "Ingrese apellido.",
             "generoConyugue" => "Elija genero.",
-            "fechaNacConyugue" => "Elija fecha.",
-            "documentoConyugue" => "Ingrese documento.",
+            "fechaNacConyugue" => "Elija fecha.",            
+            "documentoConyugue.required" => "Ingrese documento.",
 
 
           ];                 
@@ -277,7 +284,7 @@ class Show extends Component
               "documento"=>$this->documentoConyugue,
               "sexo"=>$this->generoConyugue,
               "fNac"=>$this->fechaNacConyugue,
-              "idConyuge"=>$this->id,
+              "idConyuge"=>$this->user->id,
         ]);
            }
       
@@ -328,6 +335,7 @@ class Show extends Component
 
 
       $this->dispatch("UserUpdated");
+      $this->option("show");
 
      }
 
@@ -343,6 +351,8 @@ class Show extends Component
 
     }
     
+        
+
         #[On(['UserUpdated'] )]  
     public function render()
     {

@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class Beneficio
@@ -81,20 +82,43 @@ public function beneficioCondicionesExist($id)
 }  
 
 
+public function estadoPendiente($idMiembro){
+  $total = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
+        ->where('idBeneficio', $this->id)
+        ->count();
 
+            
+        
+ 
+    $conEstado0 = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
+        ->where('idBeneficio', $this->id)
+        ->where('estado', '0')
+        ->count();
+
+        
+    if($total <= 0){
+      return false;
+    }
+
+    return $conEstado0 > 0;
+
+}
 
 public function estadoC($idMiembro){
   
   $total = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
         ->where('idBeneficio', $this->id)
         ->count();
-    
+
+            
+        
  
     $conEstado1 = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
         ->where('idBeneficio', $this->id)
         ->where('estado', '1')
         ->count();
 
+        
     if($total <= 0){
       return false;
     }
@@ -102,6 +126,7 @@ public function estadoC($idMiembro){
     return $total === $conEstado1;
 
 }
+
 
 public function estadoCondicionesPorMiembro($idMiembro)
 {
@@ -116,9 +141,10 @@ public function estadoCondicionesPorMiembro($idMiembro)
 }
 
 
-public function beneficioUsos()
+public function beneficioUsos($idMiembro)
 {
-    return $this->hasMany(BeneficiosUsos::class, 'id_Beneficio');
+    return $this->hasMany(BeneficiosUsos::class, 'id_Beneficio' )
+                        ->where("id_miembro",$idMiembro);
 }  
 
 }

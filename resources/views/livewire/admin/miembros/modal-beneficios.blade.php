@@ -33,7 +33,7 @@
 
                                                 <div class="relative w-full">
 
-                                                  <select  wire:model.live="idBeneficio" class ="h-7 py-0 rounded-md border border-gray-400 w-full text-gray-700 text-sm" >
+                                                  <select  wire:model.live="idBeneficio" class ="h-7 py-0 rounded-md border border-gray-400 w-full text-gray-700 text-sm "    {{ $method == 'update' ? 'disabled' : '' }}>
                                                     <option value="">Elija beneficio</option>
                                                     @foreach ($beneficios as $beneficio)                                                    
                                                     <option value="{{$beneficio->id}}">{{$beneficio->nombre}}</option>                                                        
