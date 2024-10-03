@@ -64,6 +64,11 @@ class Index extends Component
         $beneficios =Beneficio::where("nombre", "like", '%'.$this->query . '%');                            
       }
 
+      if(request()->route('inactivos') == "inactivos"){
+          $this->filter="0";
+        }
+
+
        if ($this->filter === "0" || $this->filter === "1" ) {
           
         $beneficios->where("estado", $this->filter);  

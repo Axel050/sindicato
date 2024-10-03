@@ -6,10 +6,15 @@
       
 
 
-          
-
-          
-            <a href="{{Route('miembros')}}" class="btn relative flex flex-col items-center justify-between overflow-hidden font-semibold transition-all bg-gray-100 rounded hover:bg-green-2 group lg:pt-5 pt-1 px.5 text-lg lg:text-xl hover:lg:text-2xl  hover:text-xl shadow-md  shadow-green-500 lg:h-44 h-36 group-hover:font-semibold border border-green-500">
+                    
+                @php
+                      $route=Route('miembros');
+                    if($revision > 0){
+                      $route=Route('miembros','pendiente');
+                    }
+                @endphp
+            
+            <a href="{{$route}}" class="btn relative flex flex-col items-center justify-between overflow-hidden font-semibold transition-all bg-gray-100 rounded hover:bg-green-2 group lg:pt-5 pt-1 px.5 text-lg lg:text-xl hover:lg:text-2xl  hover:text-xl shadow-md  shadow-green-500 lg:h-44 h-36 group-hover:font-semibold border border-green-500">
 
                  <svg class="w-0 h-0 group-hover:w-16 group-hover:h-16 relative   z-10 " viewBox="0 0 24 24" fill="none" >                
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M14.875 7.375C14.875 8.68668 13.8117 9.75 12.5 9.75C11.1883 9.75 10.125 8.68668 10.125 7.375C10.125 6.06332 11.1883 5 12.5 5C13.8117 5 14.875 6.06332 14.875 7.375Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -70,7 +75,13 @@
 
 
               {{-- Beneficios --}}              
-                <a href="{{Route('beneficios')}}" class="btn relative flex flex-col items-center justify-between overflow-hidden font-semibold transition-all bg-gray-100 rounded hover:bg-green-2 group lg:pt-5 pt-1 px.5 text-lg lg:text-xl hover:lg:text-2xl  hover:text-xl shadow-md  shadow-yellow-200 lg:h-44 h-36 group-hover:font-semibold border border-yellow-200">
+                    @php
+                      $routeB=Route('beneficios');
+                    if($beneficiosTotalInactivos > 0){
+                      $routeB=Route('beneficios','inactivos');
+                    }
+                @endphp
+                <a href="{{$routeB}}" class="btn relative flex flex-col items-center justify-between overflow-hidden font-semibold transition-all bg-gray-100 rounded hover:bg-green-2 group lg:pt-5 pt-1 px.5 text-lg lg:text-xl hover:lg:text-2xl  hover:text-xl shadow-md  shadow-yellow-200 lg:h-44 h-36 group-hover:font-semibold border border-yellow-200">
 
                  
                     <svg class="w-0 h-0 group-hover:w-16 group-hover:h-16 relative   z-10 " viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#fff" stroke-width="0">
@@ -95,7 +106,13 @@
 
               {{--  VIGENTES--}}
 
-                <a href="{{Route('vigentes')}}" class="btn relative flex flex-col items-center justify-between overflow-hidden font-semibold transition-all bg-gray-100 rounded hover:bg-green-2 group lg:pt-5 pt-1 px.5 text-lg lg:text-xl hover:lg:text-2xl  hover:text-xl shadow-md  shadow-blue-500 lg:h-44 h-36 group-hover:font-semibold border border-blue-500">
+              @php
+                      $routeV=Route('vigentes');
+                    if($beneficios > 0){
+                      $routeV=Route('vigentes','pendiente');
+                    }
+                @endphp
+                <a href="{{$routeV}}" class="btn relative flex flex-col items-center justify-between overflow-hidden font-semibold transition-all bg-gray-100 rounded hover:bg-green-2 group lg:pt-5 pt-1 px.5 text-lg lg:text-xl hover:lg:text-2xl  hover:text-xl shadow-md  shadow-blue-500 lg:h-44 h-36 group-hover:font-semibold border border-blue-500">
 
                  <svg class="w-0 h-0 group-hover:w-14 group-hover:h-14 relative   z-10 " viewBox="0 0 32 32" enable-background="new 0 0 32 32" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" stroke="#fff">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">

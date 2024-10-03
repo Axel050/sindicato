@@ -24,12 +24,14 @@ class Dashboard extends Component
     public function mount(){
       $this->miembros = User::where("idRol", 3)->count();
 
-      $this->revision = User::where("idRol", 2)->count();
+      $this->revision = User::where("idRol", 2)->count();      
 
       $this->hijos = Hijo::count();
 
       $this->beneficiosTotalActivos = Beneficio::where("estado",1)->count();
       $this->beneficiosTotalInactivos = Beneficio::where("estado",0)->count();
+      
+      
 
     
 

@@ -8,7 +8,7 @@ class SideMenuController extends Controller
 {
 
        public function miembros (){ 
-          if (!auth()->user()->hasAnyPermission(['miembros-ver','miembros-crear','miembros-editar','miembros-actualizar','miembros-eliminar']) 
+          if (!auth()->user()->hasAnyPermission(['miembros-ver','miembros-crear','miembros-actualizar','miembros-eliminar']) 
         || auth()->user()->estado!=1 ) {                
                     // return abort(403, 'No autorizado');               
                     return view("components.unauthorized");
@@ -18,7 +18,7 @@ class SideMenuController extends Controller
 
 
        public function beneficios (){ 
-          if (!auth()->user()->hasAnyPermission(['miembros-ver','miembros-crear','miembros-editar','miembros-actualizar','miembros-eliminar']) 
+          if (!auth()->user()->hasAnyPermission(['beneficios-ver','beneficios-crear','beneficios-actualizar','beneficios-eliminar']) 
         || auth()->user()->estado!=1 ) {                
                     return view("components.unauthorized");           
                     }
@@ -26,7 +26,7 @@ class SideMenuController extends Controller
        }
 
        public function miembroBeneficios (){ 
-          if (!auth()->user()->hasAnyPermission(['miembros-ver','miembros-crear','miembros-editar','miembros-actualizar','miembros-eliminar']) 
+          if (!auth()->user()->hasAnyPermission(['miembros-ver','miembros-crear','miembros-actualizar','miembros-eliminar']) 
         || auth()->user()->estado!=1 ) {                
                     return view("components.unauthorized");           
                     }
@@ -36,7 +36,7 @@ class SideMenuController extends Controller
 
 
        public function tablaEmpresa (){
-        if (!auth()->user()->hasAnyPermission(['empresas-ver','empresas-crear','empresas-editar','empresas-actualizar','empresas-eliminar']) 
+        if (!auth()->user()->hasAnyPermission(['empresas-ver','empresas-crear','empresas-actualizar','empresas-eliminar']) 
         || auth()->user()->estado!=1 ) {                
                     return view("components.unauthorized");           
                     }
@@ -46,7 +46,7 @@ class SideMenuController extends Controller
 
         
        public function tablaGremio (){
-                if (!auth()->user()->hasAnyPermission(['gremios-ver','gremios-crear','gremios-editar','gremios-actualizar','gremios-eliminar']) 
+                if (!auth()->user()->hasAnyPermission(['gremios-ver','gremios-crear','gremios-actualizar','gremios-eliminar']) 
                 || auth()->user()->estado!=1 ) {                
                     return view("components.unauthorized");           
                     }
@@ -54,7 +54,7 @@ class SideMenuController extends Controller
        }
 
        public function tablaSector (){        
-        if (!auth()->user()->hasAnyPermission(['sectores-ver','sectores-crear','sectores-editar','sectores-actualizar','sectores-eliminar']) 
+        if (!auth()->user()->hasAnyPermission(['sectores-ver','sectores-crear','sectores-actualizar','sectores-eliminar']) 
         || auth()->user()->estado!=1 ) {                
                     return view("components.unauthorized");           
                     }          
@@ -63,7 +63,7 @@ class SideMenuController extends Controller
        }
 
        public function tablaCondicion (){        
-          if (!auth()->user()->hasAnyPermission(['condiciones-ver','condiciones-crear','condiciones-editar','condiciones-actualizar','condiciones-eliminar'])
+          if (!auth()->user()->hasAnyPermission(['condiciones-ver','condiciones-crear','condiciones-actualizar','condiciones-eliminar'])
            || auth()->user()->estado!=1 ) {                
               return view("components.unauthorized");           
             }
@@ -73,7 +73,7 @@ class SideMenuController extends Controller
 
 
        public function usuarios (){        
-          if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
+          if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-actualizar','usuarios-eliminar']) 
           || auth()->user()->estado!=1 ) {                
               return view("components.unauthorized");           
             }
@@ -83,7 +83,7 @@ class SideMenuController extends Controller
 
 
        public function roles (){        
-           if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
+           if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-actualizar','usuarios-eliminar']) 
            || auth()->user()->estado!=1 ) {                
               return view("components.unauthorized");           
             }
@@ -110,10 +110,10 @@ class SideMenuController extends Controller
        }
 
        public function beneficiosVigentes (){        
-          //  if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
-          //  || auth()->user()->estado!=1 ) {                
-              // return abort(403, 'No autorizado');               
-            // }
+           if (!auth()->user()->hasAnyPermission(['beneficios-ver','beneficios-crear','beneficios-actualizar','beneficios-eliminar']) 
+           || auth()->user()->estado!=1 ) {                
+                  return view("components.unauthorized");           
+            }
 
         return view("admin.beneficios.vigentes"); 
        }

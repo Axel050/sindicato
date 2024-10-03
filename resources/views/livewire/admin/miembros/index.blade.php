@@ -10,7 +10,7 @@
                     <div  class="flex flex-col lg:w-1/3 w-full lg:order-1 order-2 mt-2 lg:mt-0 lg:mr-14 ">
 
                       <div class="flex  items-center">
-                        <label for="query" class="text-sm lg:text-base text-gray-600 mr-3 mb-1">Buscar por:</label>
+                        <label for="query" class="text-sm lg:text-base text-gray-600 mr-3 mb-1">Buscar por:{{$idRol}}</label>
 
                         <div class="flex flex-col">
 
@@ -103,7 +103,7 @@
 
 
 
-         @if ($mesCumple   || $desde  || $hasta || $genero ||$selectLocalidad || $estado ==='0' || $estado ==="1" || $fechaAfiliacion || $idSector   || $idEmpresa   || $idGremio || $fechaRegistro || $conyuge || $fechaNacConyuge || $hijos   || $hijosSexo   || $hastaHijo || $desdeHijo )
+         @if ($mesCumple   || $desde  || $hasta || $genero ||$selectLocalidad || $estado ==='0' || $estado ==="1" || $fechaAfiliacion || $idSector   || $idEmpresa   || $idGremio || $fechaRegistro || $conyuge || $fechaNacConyuge || $hijos   || $hijosSexo   || $hastaHijo || $desdeHijo || $idRol)
         
          
          <div class="bg-white w-full mt-2 flex flex-col  pl-2 pb-0 rounded-md  shadow-md  ">
@@ -114,6 +114,21 @@
           
            <div class="flex   lg:gap-x-6 gap-x-2 justify-center  flex-wrap">
 
+
+            @php
+                $rol='';
+                if ($idRol == "2" ) {
+                    $rol="Pendiente";
+                }
+                elseif($idRol == "3"){
+                  $rol="Miembro";
+                }
+            @endphp
+            <x-button-active-filter 
+                    title="Rol" 
+                    value="{{ $rol}}" 
+                    action="$set('idRol',0)" 
+                    />
               
                 @if ($desde || $hasta  )                                      
                   <button class="bg-gray-500 px-2 rounded-lg mt-2 hover:bg-gray-600 hover:text-gray-50 text-gray-100 items-center flex w-fit" wire:click="resetRango">

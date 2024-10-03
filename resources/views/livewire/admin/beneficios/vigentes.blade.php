@@ -141,7 +141,7 @@
 
                                               @else
 
-                                              <h3 class="w-full text-center py-2 px-3 rounded-md">Sin resultados para "<strong>{{$query}} </strong>"</h3>
+                                              <h3 class="w-full text-center py-2 px-3 rounded-md">Sin resultados !</h3>
                                               @endif
                                           </div>
                                                     

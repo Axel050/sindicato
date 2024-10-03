@@ -150,6 +150,12 @@ class Index extends Component
 
     #[On(['miembroCreated' ,'miembroUpdated' ,'miembroDeleted'] )]
       public function mount(){
+
+
+        
+        
+
+
         $this->loadUserPreferences();
         $this->method="";
         $this->resetPage(); 
@@ -271,6 +277,10 @@ public function exportar()
       
       $usuarios = User::orderBy("name", "asc")->whereIn('idRol', [2, 3]);
 
+
+      if(request()->route('rol') == "pendiente"){
+          $this->idRol="2";
+        }
 
 
         if($this->idRol === "2" || $this->idRol === "3"){

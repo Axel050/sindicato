@@ -19,7 +19,7 @@ class Vigentes extends Component
   public $query,$nombre;
   public $idMiembro,$idBeneficio;
   public $method="";    
-  public $filter="0";    
+  public $filter="all";    
 
     
     public function upd( $provincia){
@@ -45,7 +45,8 @@ class Vigentes extends Component
 
 
     #[On(['solicitudDeleted' ] )]
-      public function mount(){
+      public function mount(){                
+
         $this->method="";
         $this->resetPage(); 
       }
@@ -66,6 +67,8 @@ class Vigentes extends Component
     //       $query->where('estado', 1);
     //   }
 
+    
+
      $query = EstadoCondicionesRequerida::with('beneficio')
         ->select('idMiembro', 'idBeneficio', 'fechaRegistro')
         ->selectRaw('COUNT(*) as total_registros') // Contar total de registros por grupo
@@ -73,6 +76,10 @@ class Vigentes extends Component
         ->selectRaw('SUM(CASE WHEN estado = 0 THEN 1 ELSE 0 END) as total_estado_0') // Contar cuántos tienen estado 0
         ->groupBy('idMiembro', 'idBeneficio', 'fechaRegistro')
         ->orderBy('id', 'desc');
+
+        if(request()->route('p') == "pendiente"){
+          $this->filter="0";
+        }
 
     // Aplica los filtros según el valor de $this->filter
     if ($this->filter === "0") {
