@@ -3,13 +3,11 @@
 namespace App\Livewire\Admin\Guest;
 
 use App\Models\Beneficio;
-use App\Models\BeneficioAfiliado;
-use App\Models\BeneficioCondicion;
-use App\Models\EstadoCondicionesRequerida;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
+
 
 class Preaprovados extends Component
 {
@@ -25,10 +23,9 @@ class Preaprovados extends Component
             $this->method="delete";            
         }
         $this->idBeneficio=$id;
-
-      
-      
+            
     }
+
 
 
     #[On(['solicitudCreated' ,'solicitudCancel' ] )]
@@ -39,7 +36,6 @@ class Preaprovados extends Component
     public function render()
     {
         
-
       $id = auth()->user()->id;
         
       $this->id=$id;

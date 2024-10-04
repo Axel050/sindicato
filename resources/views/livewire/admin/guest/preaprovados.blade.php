@@ -1,7 +1,7 @@
 <div class="flex flex-col bg-gray-50 fullscreen items-center ">    
     
     @if ($method)        
-            @livewire('admin.guest.modalpre-aprovado',[ "method" => $method,"id"=>$id,"idbeneficio"=>$idBeneficio])
+            @livewire('admin.guest.modal-preaprovado',[ "method" => $method,"id"=>$id,"idbeneficio"=>$idBeneficio])
     @endif
 
 

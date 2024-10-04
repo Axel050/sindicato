@@ -6,12 +6,13 @@ use App\Models\Beneficio;
 use App\Models\BeneficioCondicion;
 use App\Models\Condicione;
 use App\Models\CondicionesRequerida;
-use Illuminate\Console\View\Components\Alert;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile as SupportFileUploadsTemporaryUploadedFile;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-use Spatie\Permission\Models\Role;
+
+
 
 class Modal extends Component
 {
@@ -188,15 +189,15 @@ class Modal extends Component
 
      public function update(){
 
+      $this->validate( $this->rules(), $this->messages() ); 
 
-      $this->validate(  $this->rules(), $this->messages()); 
+      $url='';
 
-      $url='';      
-      if($this->bannerBeneficio){
-        $url =  Storage::disk("public")->put("banner", $this->bannerBeneficio);
-      }
-      
-
+         if ($this->bannerBeneficio instanceof SupportFileUploadsTemporaryUploadedFile ) {
+           $url = Storage::disk("public")->put("banner", $this->bannerBeneficio);          
+         }
+        
+        
       
       $condiciones = implode('-', $this->idCondiciones);
 
@@ -211,7 +212,9 @@ class Modal extends Component
       $this->beneficio->reutilizable  = $this->reutilizable;
       $this->beneficio->cantUsos = $this->cantUsos;
       $this->beneficio->condiciones  = $condiciones;
-      $this->beneficio->bannerBeneficio  = $url;      
+      if ($url) {        
+        $this->beneficio->bannerBeneficio  = $url;      
+      }
      
       $this->beneficio->save();
 

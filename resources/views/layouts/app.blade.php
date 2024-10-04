@@ -18,10 +18,11 @@
         @livewireStyles
 
         <script>
-          document.addEventListener('alpine:init', () => {
+          document.addEventListener('alpine:init', () => {            
           Alpine.data('imageUploader', (initialImage) => ({
             image: initialImage,
             isImageLoaded: !!initialImage,
+            
           
 
         updateImage(event) {

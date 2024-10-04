@@ -126,9 +126,9 @@
                                                                                     
                                                                             </div>
                                                                             
-                                                                            @error($bannerBeneficio)
+                                                                            {{-- @error($bannerBeneficio)
                                                                                 <span class="text-danger mt-2 ms-2 " style="font-size: 11px">{{ $message }}</span>          
-                                                                            @enderror
+                                                                            @enderror --}}
                                            </div>
 
                                   {{-- <x-image-uploader :image="$bannerBeneficio" name="bannerBeneficio"  errorName="bannerBeneficio" /> --}}
