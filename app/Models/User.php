@@ -49,7 +49,8 @@ class User extends Authenticatable
         'fNac',
         'fechaAfiliacion',
         'documento',
-        'idCondicion'
+        'idCondicion',
+        'legajo'
     ];
 
     /**
