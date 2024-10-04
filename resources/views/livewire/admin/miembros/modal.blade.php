@@ -140,7 +140,7 @@
 
                                   <div>
                                     
-                                    <x-label for="">Condicion </x-label>
+                                    <x-label for="">Condicion</x-label>
                                     <select wire:model.live="idCondicion" class="h-7 rounded-lg mr-2 text-sm block py-0">
                                         <option value="">Elija condicion</option>
                                         @foreach ($condiciones as $condicion)

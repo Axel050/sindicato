@@ -154,7 +154,7 @@ class Modal extends Component
               $this->title= "Editar";
               $this->btnText= "Guardar"; 
               $this->bg="background-color: rgb(234 88 12)";
-            }
+          }
 
       
      }
@@ -201,12 +201,18 @@ class Modal extends Component
           }
 
 
-            for ($i = 0; $i < $this->hijos; $i++) {                            
+            for ($i = 0; $i < $this->hijos; $i++) {                                          
               $rules["hijosData.$i.nombre"]   = 'required';
               $rules["hijosData.$i.apellido"]  = 'required';
-              $rules["hijosData.$i.genero"]    = 'required';
-              $rules["hijosData.$i.documento"] = ['required', new UniqueDocument('',$this->hijosData[$i]['id'], $this->id)];
+              $rules["hijosData.$i.genero"]    = 'required';              
               $rules["hijosData.$i.fechaNac"]   = 'required';
+
+              if ($this->method == "update") {                
+                $rules["hijosData.$i.documento"] = ['required', new UniqueDocument('',$this->hijosData[$i]['id'], '')];
+              }else{
+                $rules["hijosData.$i.documento"] = ['required', new UniqueDocument()];
+              }
+
            }
       
            
@@ -254,10 +260,9 @@ class Modal extends Component
 
     
      public function save(){
-
+       
        $this->validate(  $this->rules(), $this->messages()); 
       
-
 
         $miembro = User::create([
           "name" =>$this->name,
@@ -275,7 +280,7 @@ class Modal extends Component
           
           "idEmpresa" =>$this->empresaId,
           "idGremio" =>$this->gremioId,
-          "idSector" =>$this->sectorId,
+          "idSector" =>$this->sectorId,          
           "idCondicion" =>$this->idCondicion,
           "legajo" =>$this->legajo,
 

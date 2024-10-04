@@ -188,7 +188,7 @@ class Show extends Component
               $rules["hijosData.$i.apellido"]  = 'required';
               $rules["hijosData.$i.genero"]    = 'required';              
               $rules["hijosData.$i.fechaNac"]   = 'required';
-              $rules["hijosData.$i.documento"] = ['required', new UniqueDocument('',$this->hijosData[$i]['id'], $this->user->id)];
+              $rules["hijosData.$i.documento"] = ['required', new UniqueDocument('',$this->hijosData[$i]['id'], '')];
            }
           
            

@@ -48,7 +48,8 @@ class User extends Authenticatable
         'telefonoLaboral',
         'fNac',
         'fechaAfiliacion',
-        'documento'
+        'documento',
+        'idCondicion'
     ];
 
     /**

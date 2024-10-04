@@ -29,13 +29,13 @@ class UniqueDocument implements ValidationRule
 
             $queryH = DB::table('hijos')->where('dni', $value);
 
-            Log::alert("queryH->get()");
-            Log::alert($queryH->get());
-            Log::alert([
-              "value" => $value,
-              "id" => $this->hijoId
-            ]);
-            Log::alert("queryH->get()");
+            // Log::alert("queryH->get()");
+            // Log::alert($queryH->get());
+            // Log::alert([
+            //   "value" => $value,
+            //   "id" => $this->hijoId
+            // ]);
+            // Log::alert("queryH->get()");
 
         // Si es una actualización, excluye el cónyuge actual
         if ($this->hijoId) {
