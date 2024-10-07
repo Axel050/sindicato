@@ -15,10 +15,9 @@
                             wire:submit={{$method}} 
                             >                                
                             @if ($method =="delete") 
-
                                 <p class="text-center text-gray-600 lg:px-10 px-6">Esta seguro de eliminar el miembro  </p>
                                 <p class="text-center text-gray-600 mb-6"><strong >"{{$name}}" </strong>?</p>
-                                @else
+                              @else
                                                  
 
                             <div class="border- border-gray-300 shadow-l mb-6 rounded-lg bg-rd-200">

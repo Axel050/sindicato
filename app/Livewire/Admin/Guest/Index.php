@@ -5,7 +5,6 @@ namespace App\Livewire\Admin\Guest;
 use App\Models\Beneficio;
 use App\Models\BeneficioAfiliado;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Index extends Component
@@ -92,9 +91,6 @@ $beneficiosAfi = BeneficioAfiliado::where('idAfiliado', $user->id)
     })
     ->with('beneficio')
     ->get();
-
-
-
 
 
         return view('livewire.admin.guest.index' , compact(["cantPre","user","beneficiosAfi"]));

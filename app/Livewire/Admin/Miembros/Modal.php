@@ -11,7 +11,6 @@ use App\Models\Gremio;
 use App\Models\Hijo;
 use App\Models\Sectore;
 use App\Rules\UniqueDocument;
-use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 
 class Modal extends Component
@@ -140,8 +139,6 @@ class Modal extends Component
                 
               }
 
-
-
               if($this->user->conyuge){
                 $this->conyugeId= $this->user->conyuge?->id;
                 $this->nombreConyugue = $this->user->conyuge?->nombre;
@@ -164,8 +161,7 @@ class Modal extends Component
             'direccion' => 'required',         
             'name' => 'required',
             'apellido' => 'required',
-            'telefono' => 'required',
-            
+            'telefono' => 'required',            
             'genero' => 'required',         
             'fechaNac' => 'required',         
             'gremioId' => 'required|integer',  
@@ -239,8 +235,7 @@ class Modal extends Component
             "fechaNac" => "Elija fecha.",
             "direccion" => "Ingrese direccion.",
             "gremioId" => "Elija sindicato.",
-            "idCondicion" => "Elija condicion.",
-            
+            "idCondicion" => "Elija condicion.",            
             
             "hijosData.*.nombre.required" => "Ingrese nombre.",
             "hijosData.*.apellido" => "Ingrese apellido.",
@@ -253,8 +248,6 @@ class Modal extends Component
             "generoConyugue" => "Elija genero.",
             "fechaNacConyugue" => "Elija fecha.",
             "documentoConyugue.required" => "Ingrese documento.",
-
-
           ];                 
       }
 
@@ -272,12 +265,10 @@ class Modal extends Component
           "telefonoLaboral" =>$this->telefonoLaboral,
           "direccion" =>$this->direccion,
           "sexo" =>$this->genero,
-          "fNac" =>$this->fechaNac,
-                             
+          "fNac" =>$this->fechaNac,                             
           "localidad" =>$this->localidad,
           "documento" =>$this->documento,
-          "fechaAfiliacion"=>$this->fechaAfiliacion,
-          
+          "fechaAfiliacion"=>$this->fechaAfiliacion,          
           "idEmpresa" =>$this->empresaId,
           "idGremio" =>$this->gremioId,
           "idSector" =>$this->sectorId,          
@@ -288,12 +279,9 @@ class Modal extends Component
            
           "idRol" =>$this->estado == 1 ? 3 : $this->idRol, //si es activo , rol=miembro
           "estado" =>$this->estado, 
-                    
         ]);
-
-        // 
+        
         $rol = Role::find($this->idRol);
-
       
       if($this->estado == 0  ){                        
         $roleName= $rol->name;        
@@ -302,12 +290,10 @@ class Modal extends Component
       else if($this->estado == 1 ){                     
               $miembro->assignRole("Miembro");
               $miembro->idRol= 3;
-        }
-        // 
+        }        
         
         $id = $miembro->id;
         
-
         if($this->conyugue == 1){
         $conyugue= Conyuge::create([
           "nombre"=>$this->nombreConyugue,
@@ -392,22 +378,12 @@ class Modal extends Component
               $user->assignRole("Miembro");
               $user->idRol= 3;
         }
-
-      
-      
-      
-
-      
-      
-      
+            
       $user->save();
-      
-      
       
       if($this->conyugue == 0){
             $user->conyuge()->delete();
       }
-
       
       if($user->conyuge && $this->conyugue ==  1){                   
             $user->conyuge->nombre = $this->nombreConyugue;
@@ -429,20 +405,16 @@ class Modal extends Component
         ]);
            }
       
-
-      // $user->hijos()->delete();
         // Manejar hijos
     $existingHijosIds = $user->hijos->pluck('id')->toArray();
     $updatedHijosIds = [];
 
     foreach ($this->hijosData as $hijoData) {
-          // Encuentra el hijo por ID o documento, si existe
           $hijo = Hijo::where('idPadre', $user->id)
                      ->where('dni', $hijoData['documento'])
                      ->first();
 
-          if ($hijo) {
-              // Actualizar hijo existente
+          if ($hijo) {              
               $hijo->update([
                   'nombre' => $hijoData['nombre'],
                   'apellido' => $hijoData['apellido'],
@@ -451,8 +423,7 @@ class Modal extends Component
                   'fNac' => $hijoData['fechaNac'],
               ]);
               $updatedHijosIds[] = $hijo->id;
-            } else {
-                // Crear nuevo hijo
+            } else {                
                 $nuevoHijo = Hijo::create([
                     'nombre' => $hijoData['nombre'],
                     'apellido' => $hijoData['apellido'],
@@ -473,8 +444,6 @@ class Modal extends Component
           $user->hijos()->delete();
         }
       
-
-
       $this->dispatch("miembroUpdated");
 
      }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,6 +12,9 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @property \App\Models\ColumnPreference $columnPreference
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -104,24 +106,24 @@ class User extends Authenticatable
     }
 
     public function hijos()
-{
-    return $this->hasMany(Hijo::class, 'idPadre');
-}
-
-public function conyuge()
-{
-    return $this->hasOne(Conyuge::class, 'idConyuge');
-}
-
-public function condicion()
-{
-     return $this->belongsTo(Condicione::class, 'idCondicion');
-    // return $this->hasOne(Condicione::class, 'idCondicion');
-}
-
-       public function columnPreference()
     {
-        return $this->hasOne(ColumnPreference::class);
+        return $this->hasMany(Hijo::class, 'idPadre');
     }
+
+    public function conyuge()
+      {
+        return $this->hasOne(Conyuge::class, 'idConyuge');
+      }
+
+    public function condicion()
+      {
+        return $this->belongsTo(Condicione::class, 'idCondicion');
+        // return $this->hasOne(Condicione::class, 'idCondicion');
+      }
+
+    public function columnPreference()
+      {
+        return $this->hasOne(ColumnPreference::class);
+      }
 
 }

@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 class Condicione extends Model
 {
 	protected $table = 'condiciones';
-	public $incrementing = false;
+	// public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [

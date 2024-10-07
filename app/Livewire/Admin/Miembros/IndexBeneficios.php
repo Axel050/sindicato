@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Livewire\Admin\Miembros;
-
-use Livewire\Attributes\Url;
 
 use App\Models\BeneficioAfiliado;
 use App\Models\User;
@@ -17,32 +14,21 @@ class IndexBeneficios extends Component
 
 
     public $query,$nombre,$nombreM;
-  
     public $id;
-
     public $idMiembro= '';
-  
+    public $method="";    
+    public $administrar="";    
 
-   public $method="";    
-   public $administrar="";    
-
-    
-
-
-    public function option($method, $id=false){
-
-      
+    public function option($method, $id=false){      
       if($method == "delete" || $method == "update"){        
         $condicion = BeneficioAfiliado::find($id);        
-
-                if(!$condicion){                  
-                  $this->dispatch('userNotExits');   
-                }
-                else{                  
-                  $this->method =$method ;
-                  $this->id=$id;  
-                }
-                
+            if(!$condicion){                  
+              $this->dispatch('userNotExits');   
+            }
+            else{                  
+              $this->method =$method ;
+              $this->id=$id;  
+            }
           }
 
           if($method == "save"){
@@ -79,9 +65,7 @@ class IndexBeneficios extends Component
 
     public function render()
     {
-      
-      
-
+          
       $beneficios = BeneficioAfiliado::where("idAfiliado",$this->idMiembro)->with('beneficio') ->paginate(15);
 
       if ($this->query) {

@@ -5,9 +5,6 @@ namespace App\Livewire\Admin\Tablas\Empresas;
 use App\Models\Empresa;
 use Livewire\Component;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-
-use Illuminate\Validation\Rule;
 
 class Modal extends Component
 {
@@ -45,9 +42,7 @@ class Modal extends Component
             "email.required"=> "Ingrese mail.",          
           ];                 
       }
-    
-    
-
+        
   
     public function mount()
     { 
@@ -59,15 +54,14 @@ class Modal extends Component
         }
         
         if($this->method == "delete"){
-          $this->empresa = Empresa::find($this->id);
-          $this->nombreEmpresa = $this->empresa->nombreEmpresa ;
-          $this->title= "Eliminar";
-          $this->btnText= "Eliminar";
-          $this->bg=	"background-color: rgb(239 68 68)"; 
+            $this->empresa = Empresa::find($this->id);
+            $this->nombreEmpresa = $this->empresa->nombreEmpresa ;
+            $this->title= "Eliminar";
+            $this->btnText= "Eliminar";
+            $this->bg=	"background-color: rgb(239 68 68)"; 
         }
         if($this->method == "update"){              
-              $this->empresa = Empresa::find($this->id);
-              
+              $this->empresa = Empresa::find($this->id);              
               $this->nombreEmpresa =  $this->empresa->nombreEmpresa ;              
               $this->direccion =  $this->empresa->direccion ;
               $this->telefono =  $this->empresa->telefono ;
@@ -98,9 +92,7 @@ class Modal extends Component
             "idResponsable"=>1,            
           ]);        
 
-
           $this->dispatch('empresaCreated');   
-
     }
 
     public function update(){
@@ -134,7 +126,6 @@ class Modal extends Component
           $this->dispatch('empresaDeleted');   
         }
     }
-
 
 
     public function render()

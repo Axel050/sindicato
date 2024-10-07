@@ -7,19 +7,16 @@ use App\Models\BeneficioCondicion;
 use App\Models\Condicione;
 use App\Models\CondicionesRequerida;
 use Livewire\Component;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile as SupportFileUploadsTemporaryUploadedFile;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-
-
 
 class Modal extends Component
 {
 
   use WithFileUploads;
 
-     public $items = [];
+    public $items = [];
 
     public $title;
     public $id;
@@ -80,8 +77,7 @@ class Modal extends Component
               foreach ($isItems as $item ) {
                 $this->items[]=[
                   'idcondicion' => $item->idCondicion,
-                  'descripcion' => $item->descripcion ,
-                  // 'condicion' => $item->condicion?->nombreRequerimiento,               
+                  'descripcion' => $item->descripcion ,                  
                   'condicion' => $item->condicionReq?->nombreRequerimiento,               
                 ];
               }
@@ -101,12 +97,10 @@ class Modal extends Component
             }
               
               $this->descripcion = $this->beneficio->descripcion;  
-              $this->estado = $this->beneficio->estado ;                        
-              
+              $this->estado = $this->beneficio->estado ;                                      
               $this->reutilizable = $this->beneficio->reutilizable ? 1 :  0 ;
               $this->cantUsos = $this->beneficio->cantUsos  ;                                        
               $this->bannerBeneficio = $this->beneficio->bannerBeneficio  ; 
-              
                             
               $this->title= "Editar";
               $this->btnText= "Guardar"; 
@@ -128,33 +122,30 @@ class Modal extends Component
 
     protected function messages(){
        return [  
-            "name.required" => "Ingrese nombre.", 
+            "nombre.required" => "Ingrese nombre.", 
              "items.required" => "Debe agregar al menos una condición.", 
-
           ];                 
       }
 
     
      public function save(){
       
-
       $url='';
-      if($this->bannerBeneficio){
-        
+      if($this->bannerBeneficio){        
         $url =  Storage::disk("public")->put("banner", $this->bannerBeneficio);
       }
-      
-      
+            
       $condiciones = implode('-', $this->idCondiciones);
 
        $this->validate(  $this->rules(), $this->messages()); 
       
+        $id = auth()->user()->id;
         $beneficio = Beneficio::create([
           "nombre" =>$this->nombre,
           "descripcion" => $this->descripcion,
           "fechaCreacion" =>now(),
           "fechaRegistro" =>now(),
-          "idResponsable" => 1,
+          "idResponsable" => $id,
           "fechaDesde" =>$this->fechaHasta,
           "fechaHasta" =>$this->fechaDesde,
           "estado" =>$this->estado, 
@@ -164,26 +155,21 @@ class Modal extends Component
           "condiciones" => $condiciones ,
           "bannerBeneficio" => $url,                                   
         ]);
-
         
         if($beneficio){
-                  foreach ($this->items as $condicion) {            
-                    
+                  foreach ($this->items as $condicion) {                                
                     BeneficioCondicion::create([        
                       'idBeneficio' => $beneficio->id,
                       'idCondicion' => $condicion['idcondicion'],
                       'descripcion' => $condicion['descripcion'],
                       'fechaRegistro' => now(),
-                      'idResponsable' => 1,
+                      'idResponsable' => $id,
                       'estado' => 1,
                     ]);
                   }
                 }
-                                
-        
                 
          $this->dispatch("miembroCreated");
-
       
      }
 
@@ -192,22 +178,16 @@ class Modal extends Component
       $this->validate( $this->rules(), $this->messages() ); 
 
       $url='';
-
-         if ($this->bannerBeneficio instanceof SupportFileUploadsTemporaryUploadedFile ) {
-           $url = Storage::disk("public")->put("banner", $this->bannerBeneficio);          
-         }
-        
-        
-      
+        if ($this->bannerBeneficio instanceof SupportFileUploadsTemporaryUploadedFile ) {
+          $url = Storage::disk("public")->put("banner", $this->bannerBeneficio);          
+        }
+                    
       $condiciones = implode('-', $this->idCondiciones);
 
       $this->beneficio->nombre  = $this->nombre;
       $this->beneficio->descripcion  = $this->descripcion;
-
       $this->beneficio->fechaDesde  = $this->fechaDesde ;      
       $this->beneficio->fechaHasta  = $this->fechaHasta;
-
-
       $this->beneficio->estado  = $this->estado ;
       $this->beneficio->reutilizable  = $this->reutilizable;
       $this->beneficio->cantUsos = $this->cantUsos;
@@ -226,17 +206,13 @@ class Modal extends Component
 
 
     public function delete(){
-              
-              $beneficio = $this->beneficio;
-              $this->beneficio->delete();
+        $beneficio = $this->beneficio;
+        $this->beneficio->delete();
 
-              $beneficio->beneficioCondiciones()->delete();
-              
-              // $this->user->hijos()->delete();
-              // $this->user->conyuge()->delete();
+        $beneficio->beneficioCondiciones()->delete();              
 
-              $this->dispatch("miembroDeleted");
-        }
+        $this->dispatch("miembroDeleted");
+    }
 
 
     public function addItem()
@@ -263,13 +239,9 @@ class Modal extends Component
 
     }
 
-      public function removeItem($index)
-    {
-
-      
-        unset($this->items[$index]);
-        $this->items = array_values($this->items);
-
+    public function removeItem($index){      
+      unset($this->items[$index]);
+      $this->items = array_values($this->items);
     }
 
 
@@ -280,7 +252,7 @@ class Modal extends Component
 
   // Obtener las condiciones actuales en la base de datos
   $condicionesActuales = $beneficio->beneficioCondiciones->pluck('idCondicion')->toArray();
-
+  $id = auth()->user()->id;
 
 foreach ($this->items as $condicion) {
     if (!in_array($condicion['idcondicion'], $condicionesActuales)) {
@@ -289,12 +261,11 @@ foreach ($this->items as $condicion) {
             'idCondicion' => $condicion['idcondicion'],
             'descripcion' => $condicion['descripcion'],
             'fechaRegistro' => now(),
-            'idResponsable' => 1,
+            'idResponsable' => $id,
             'estado' => 1,
         ]);
     }
 }
-
 
 $condicionesEnviadas = array_column($this->items, 'idcondicion');
 
@@ -304,9 +275,6 @@ $condicionesEnviadas = array_column($this->items, 'idcondicion');
       ->delete();
       
   }
-
-            
-
 
     public function render()
     {

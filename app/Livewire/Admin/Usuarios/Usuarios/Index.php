@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Admin\Usuarios\Usuarios;
 
-use App\Models\Condicione;
-use App\Models\Sectore;
 use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;

@@ -10,7 +10,7 @@
                     <div  class="flex flex-col lg:w-1/3 w-full lg:order-1 order-2 mt-2 lg:mt-0 lg:mr-14 ">
 
                       <div class="flex  items-center">
-                        <label for="query" class="text-sm lg:text-base text-gray-600 mr-3 mb-1">Buscar por:{{$idRol}}</label>
+                        <label for="query" class="text-sm lg:text-base text-gray-600 mr-3 mb-1">Buscar por:</label>
 
                         <div class="flex flex-col">
 

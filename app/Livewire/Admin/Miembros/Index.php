@@ -34,71 +34,46 @@ class Index extends Component
   // filter
   public $desde;
   public $hasta;
-
   public $mesCumple=0;
-
   public $genero ;
-
   public $localidades =[];
   public $selectLocalidad;
-
-
   public $estado;
-
   public $fechaAfiliacion;
-
   public $sectores;
   public $idSector;
-
   public $empresas;
   public $idEmpresa;
-
   public $gremios;
   public $idGremio;
-
-
-
   public $conyuge;
-
   public $fechaNacConyuge;
-
   public $hijos;
   public $hijosSexo;
-
-  public $fechaRegistro;
-  
-  
+  public $fechaRegistro;  
   // endfilter
 
   public $query,$nombre,$id;
-    public $searchField = 'name';
-    public $searchType = 'miembro';
+  public $searchField = 'name';
+  public $searchType = 'miembro';
   public $method="";    
-
-    
-    public function upd( $provincia){
-      $this->nombre=  $provincia->nombre;
-      $this->method=  "Editar";
-    }
-
-
+        
     public function updatedSearchField(){          
         $this->query = $this->query;
     }
-    public function option($method, $id=false){
 
-      
+    public function option($method, $id=false){
+  
       if($method == "delete" || $method == "update"){        
         $condicion = User::find($id);        
 
-                if(!$condicion){                  
-                  $this->dispatch('userNotExits');   
-                }
-                else{                  
-                  $this->method =$method ;
-                  $this->id=$id;  
-                }
-                
+            if(!$condicion){                  
+              $this->dispatch('userNotExits');   
+            }
+            else{                  
+              $this->method =$method ;
+              $this->id=$id;  
+            }                
           }
 
           if($method == "save"){
@@ -140,10 +115,7 @@ class Index extends Component
         return '';
       }
 
-      public function filter(){
-        // dd($this->desde);
-      //   dd(["desde" => $this->desde,
-      // "hasta" => $this->hasta]);
+      public function filter(){        
         $this->render();
       }
 
@@ -151,37 +123,21 @@ class Index extends Component
     #[On(['miembroCreated' ,'miembroUpdated' ,'miembroDeleted'] )]
       public function mount(){
 
-
-        
-        
-
-
         $this->loadUserPreferences();
         $this->method="";
         $this->resetPage(); 
 
         $this->localidades = User::distinct()->pluck('localidad')->filter()->toArray(); 
-
         $this->sectores = Sectore::orderBy("nombreSector", "asc")->get();
-
         $this->empresas = Empresa::orderBy("nombreEmpresa", "asc")->get();
-
-        $this->gremios = Gremio::orderBy("nombreGremio", "asc")->get();
-        
-        
-
-        // Log::alert($this->localidades);
+        $this->gremios = Gremio::orderBy("nombreGremio", "asc")->get();        
          
       }
-
-
-
 
 
     public function loadUserPreferences()
     {
         $preference = auth()->user()->columnPreference;
-
         if ($preference) {
             $this->selectedColumns = json_decode($preference->columns, true);
         }
@@ -190,17 +146,16 @@ class Index extends Component
      public function showColumns()
     {
         $preference = auth()->user()->columnPreference;
-
+        Log::alert($preference);
         if ($preference) {
             $preference->update(['columns' => json_encode($this->selectedColumns)]);
         } else {
+          
             auth()->user()->columnPreference()->create([
                 'columns' => json_encode($this->selectedColumns),
             ]);
         }
     }
-
-
 
        public function getMonthName($monthNumber)
     {
@@ -223,22 +178,19 @@ class Index extends Component
     }
 
 
-
-    // $miembros = User::where('idRol', [2, 3])->orderBy("id","asc")->get(); 
-    // $miembros = $this->users; // Esto debe ser una colección de modelos User
 public function exportar()
 {
-    // $miembros = User::with('hijos')->orderBy('name', 'asc')->whereIn('idRol', [2, 3])->get();
+
     $miembros = $this->users;
     
     $miembrosFiltrados = $miembros->map(function ($item) {
         $itemArray = collect($item->toArray())->only($this->selectedColumns);
         $itemArray['hijos'] = $item->hijos;  // Añadir relación hijos
-        $itemArray['conyuge'] = $item->conyuge;  // Añadir re
-        $itemArray['empresa'] = $item->empresa;  // Añadir re
-        $itemArray['sector'] = $item->sector;  // Añadir re
-        $itemArray['gremio'] = $item->gremio;  // Añadir re
-        $itemArray['condicion'] = $item->condicion;  // Añadir re
+        $itemArray['conyuge'] = $item->conyuge;  
+        $itemArray['empresa'] = $item->empresa;  
+        $itemArray['sector'] = $item->sector;  
+        $itemArray['gremio'] = $item->gremio;  
+        $itemArray['condicion'] = $item->condicion;  
 
         return $itemArray;
     });
@@ -253,8 +205,6 @@ public function exportar()
 }
 
 
-
-
      private function getEncabezados()
     {
         $columnas = [
@@ -262,35 +212,26 @@ public function exportar()
             'nombre' => 'Nombre Completo',
             'email' => 'Correo Electrónico',
             'created_at' => 'Fecha de Creación',
-            // Añade aquí todas las columnas posibles y su encabezado correspondiente
         ];
 
         return collect($this->selectedColumn)->map(function($columna) use ($columnas) {
             return $columnas[$columna];
         })->toArray();
     }
-
-    // public $idRol=[2,3];  
+    
     public function render()
     {
-
       
       $usuarios = User::orderBy("name", "asc")->whereIn('idRol', [2, 3]);
-
 
       if(request()->route('rol') == "pendiente"){
           $this->idRol="2";
         }
 
-
-        if($this->idRol === "2" || $this->idRol === "3"){
-          $usuarios = $usuarios->where('idRol', $this->idRol);
-        }
-    
-      
-
-                  
-      
+      if($this->idRol === "2" || $this->idRol === "3"){
+        $usuarios = $usuarios->where('idRol', $this->idRol);
+      }
+                                
       if ($this->desde !== null && $this->hasta !== null) {
         $desde=$this->desde;
           $hasta=$this->hasta;
@@ -304,13 +245,9 @@ public function exportar()
           $today = Carbon::today();
           $ageFromDate = $today->copy()->subYears($desde)->endOfDay();
           $ageToDate = $today->copy()->subYears($hasta + 1)->endOfDay();
-        
-        
-        $usuarios->whereBetween('fNac', [ $ageToDate,$ageFromDate]);  
-        
-    }
-
-
+                
+        $usuarios->whereBetween('fNac', [ $ageToDate,$ageFromDate]);          
+     }
 
     if ($this->mesCumple) {      
         $usuarios = $usuarios->whereMonth('fNac', $this->mesCumple);
@@ -324,11 +261,9 @@ public function exportar()
         $usuarios = $usuarios->where('localidad', $this->selectLocalidad);
     }
 
-
     if ($this->estado === "0" || $this->estado ===  "1") {            
         $usuarios = $usuarios->where('estado', $this->estado);
     }
-
 
     if ($this->fechaAfiliacion ) {                
         $usuarios = $usuarios->whereDate('fechaAfiliacion', $this->fechaAfiliacion);
@@ -346,7 +281,7 @@ public function exportar()
         $usuarios = $usuarios->where('idGremio', $this->idGremio);
     }
 
-        if ($this->fechaRegistro ) {                
+    if ($this->fechaRegistro ) {                
         $usuarios = $usuarios->whereDate('created_at', $this->fechaRegistro);
     }
 
@@ -360,56 +295,46 @@ public function exportar()
           });
     }
 
-
     if ($this->hijos) {
         $usuarios = $usuarios->whereHas('hijos');
     }
 
-
-
-        // HIJOS SEXO
     if ($this->hijosSexo) {
         $this->cantHijos=0;
 
-
         if ($this->desdeHijo !== null || $this->hastaHijo !== null) {
               
-              $desde=$this->desdeHijo;
-              $hasta=$this->hastaHijo;
+            $desde=$this->desdeHijo;
+            $hasta=$this->hastaHijo;
 
-              if ($desde  > $hasta ) {
-                    $temp = $this->desdeHijo;
-                    $desde = $this->hastaHijo;
-                    $hasta = $temp;
-                }
-                      
+            if ($desde  > $hasta ) {
+                  $temp = $this->desdeHijo;
+                  $desde = $this->hastaHijo;
+                  $hasta = $temp;
+              }
+                    
+            $today = Carbon::today();
+            $ageFromDate = $today->copy()->subYears($desde)->endOfDay();
+            $ageToDate = $today->copy()->subYears($hasta + 1)->endOfDay();            
 
-              $today = Carbon::today();
-              $ageFromDate = $today->copy()->subYears($desde)->endOfDay();
-              $ageToDate = $today->copy()->subYears($hasta + 1)->endOfDay();
-              
-
-
-              $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($ageFromDate, $ageToDate) {
-                  $query->where('sexo', $this->hijosSexo)
-                             ->whereBetween('fNac', [ $ageToDate,$ageFromDate]);
-                  });
-                  
-
-          }
+            $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($ageFromDate, $ageToDate) {
+                $query->where('sexo', $this->hijosSexo)
+                            ->whereBetween('fNac', [ $ageToDate,$ageFromDate]);
+                });
+                
+        }
         else {  
                   $usuarios = $usuarios->whereHas('hijos', function ($query) {
                   $query->where('sexo', $this->hijosSexo);
                 });
            }
-           $this->cantidadHijos =0;
+        $this->cantidadHijos =0;
         foreach ($usuarios->get() as $usuario) {
             $this->cantidadHijos += $usuario->hijos()->where('sexo', $this->hijosSexo)->count();    
           }
         
        }
       
-
        if ($this->desdeHijo !== null || $this->hastaHijo !== null) {
         
           $desde=$this->desdeHijo;
@@ -422,62 +347,45 @@ public function exportar()
             }
           
           $this->cantHijosRango=0;
-        $this->cantidadHijos =0;
-          $today = Carbon::today();
-          $ageFromDate = $today->copy()->subYears($desde)->endOfDay();
-          $ageToDate = $today->copy()->subYears($hasta + 1)->endOfDay();
+          $this->cantidadHijos =0;
+            $today = Carbon::today();
+            $ageFromDate = $today->copy()->subYears($desde)->endOfDay();
+            $ageToDate = $today->copy()->subYears($hasta + 1)->endOfDay();
 
-        if ($this->hijosSexo){                    
-            $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($ageFromDate, $ageToDate) {
-              $query->whereBetween('fNac', [ $ageToDate,$ageFromDate])
-                          ->where('sexo', $this->hijosSexo); 
-            });                    
+          if ($this->hijosSexo){                    
+              $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($ageFromDate, $ageToDate) {
+                $query->whereBetween('fNac', [ $ageToDate,$ageFromDate])
+                            ->where('sexo', $this->hijosSexo); 
+              });                    
 
-                        foreach ($usuarios->get() as $usuario) {
-                // $this->cantHijosRango += $usuario->hijos()->whereBetween('fNac', [ $ageToDate,$ageFromDate])->count();    
-                $this->cantidadHijos += $usuario->hijos()->whereBetween('fNac', [ $ageToDate,$ageFromDate])
-                                                                                    ->where('sexo', $this->hijosSexo)->count();    
-              }
-        }
-        else{                        
-            $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($ageFromDate, $ageToDate) {
-              $query->whereBetween('fNac', [ $ageToDate,$ageFromDate]);                       
-            });          
-            foreach ($usuarios->get() as $usuario) {
-                // $this->cantHijosRango += $usuario->hijos()->whereBetween('fNac', [ $ageToDate,$ageFromDate])->count();    
-                $this->cantidadHijos += $usuario->hijos()->whereBetween('fNac', [ $ageToDate,$ageFromDate])->count();    
-              }
-        }
-
+                foreach ($usuarios->get() as $usuario) {                
+                  $this->cantidadHijos += $usuario->hijos()->whereBetween('fNac', [ $ageToDate,$ageFromDate])
+                                                                                      ->where('sexo', $this->hijosSexo)->count();    
+                }
+          }
+          else{                        
+              $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($ageFromDate, $ageToDate) {
+                $query->whereBetween('fNac', [ $ageToDate,$ageFromDate]);                       
+              });          
+              foreach ($usuarios->get() as $usuario) {                  
+                  $this->cantidadHijos += $usuario->hijos()->whereBetween('fNac', [ $ageToDate,$ageFromDate])->count();    
+                }
+          }
         
                   
        }
 
-
-
-
-
-
-      //  new
       $nombreSon = "secon";
       if ($nombreSon) {
-        $this->cantHijos=0;
-
-
-        if ($this->desdeHijo !== null || $this->hastaHijo !== null) {
-                            
-              
-
-
-              $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($nombreSon) {
-                  $query->where('nombre', $nombreSon)
-                             ;
-                  });        
-
-          }              
+          $this->cantHijos=0;
+          if ($this->desdeHijo !== null || $this->hastaHijo !== null) {
         
-       }
-
+              $usuarios = $usuarios->whereHas('hijos', function ($query)  use ($nombreSon) {
+                  $query->where('nombre', $nombreSon);
+                  });        
+           }              
+        
+      }
 
       if($this->query ){
                 
@@ -485,8 +393,6 @@ public function exportar()
             $usuarios =$usuarios->where($this->searchField, "like", '%'.$this->query . '%')
                                ->orderBy("id","asc");          
         }
-
-
         elseif ($this->searchType == "hijo") {
           
           $field=$this->searchField;
@@ -497,13 +403,11 @@ public function exportar()
           if($this->searchField == "documento"){
               $field="dni";
           }
-          
-          
+                    
           $usuarios = $usuarios->whereHas('hijos', function ($query) use($field)  {
             $query->where($field, "like", '%'.$this->query . '%');
           });
-          
-          
+                    
         }
         elseif ($this->searchType == "conyuge") {
 
@@ -515,24 +419,13 @@ public function exportar()
                                   $query->where($field, "like", '%'.$this->query . '%');
                                 });          
         }
-
-
                 
       }
-
-
         
       $this->cantidad =  $usuarios->count();
-        
-        
-        // $this->users = $usuarios->with("hijos")->get();
-        $this->users = $usuarios->get();
-        $usuarios = $usuarios->paginate(15);
+      $this->users = $usuarios->get();
+      $usuarios = $usuarios->paginate(15);
             
-      
-
-      
-      
         return view('livewire.admin.miembros.index',compact("usuarios"));
     }
 }

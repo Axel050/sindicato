@@ -4,11 +4,8 @@ namespace App\Livewire\Admin\Beneficios;
 
 use App\Models\Beneficio;
 use App\Models\BeneficioAfiliado;
-use App\Models\Empresa;
 use App\Models\EstadoCondicionesRequerida;
 use Livewire\Component;
-use Carbon\Carbon;
-
 
 class ModalVigentes extends Component
 {
@@ -26,10 +23,6 @@ class ModalVigentes extends Component
             
     public $nombre;    
     public $beneficio;    
-
-    
-    
-
   
     public function change($id){
 
@@ -45,20 +38,15 @@ class ModalVigentes extends Component
        $reque->save() ;
       }
 
-
-// ->where("idBeneficio",$this->idBeneficio)
-//                           ->where("idMiembro", $this->idMiembro)
-
-
       $total = EstadoCondicionesRequerida::where('idMiembro', $this->idMiembro)
         ->where('idBeneficio', $this->idBeneficio)
         ->count();
             
          
-    $conEstado1 = EstadoCondicionesRequerida::where('idMiembro', $this->idMiembro)
-        ->where('idBeneficio', $this->idBeneficio)
-        ->where('estado', '1')
-        ->count();
+      $conEstado1 = EstadoCondicionesRequerida::where('idMiembro', $this->idMiembro)
+          ->where('idBeneficio', $this->idBeneficio)
+          ->where('estado', '1')
+          ->count();
 
         if($total === $conEstado1 ){          
             BeneficioAfiliado::create([
@@ -76,9 +64,7 @@ class ModalVigentes extends Component
               }
 
         }
-
-      
-
+    
     }
 
 
@@ -106,9 +92,7 @@ class ModalVigentes extends Component
             }
                 
     }
-      
-        
-
+              
     public function delete(){                      
 
         $solicitudes=EstadoCondicionesRequerida::where("idBeneficio",$this->idBeneficio)
@@ -126,20 +110,14 @@ class ModalVigentes extends Component
           $this->dispatch('solicitudDeleted');   
         }
     }
-
-
-
     
     public function render()
     {
-
             $beneficios = EstadoCondicionesRequerida::with('beneficio')
                           ->where("idBeneficio",$this->idBeneficio)
                           ->where("idMiembro", $this->idMiembro)
                           ->orderBy("id","desc")
                           ->paginate(15);
-
-
 
         return view('livewire.admin.beneficios.modal-vigentes', compact("beneficios"));
     }

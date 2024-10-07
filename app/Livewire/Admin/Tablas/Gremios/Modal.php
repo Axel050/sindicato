@@ -1,16 +1,8 @@
 <?php
-
 namespace App\Livewire\Admin\Tablas\Gremios;
 
-
-
-use App\Models\Empresa;
 use App\Models\Gremio;
 use Livewire\Component;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-
-use Illuminate\Validation\Rule;
 
 class Modal extends Component
 {
@@ -43,8 +35,6 @@ class Modal extends Component
           ];                 
       }
     
-    
-
   
     public function mount()
     { 
@@ -86,10 +76,8 @@ class Modal extends Component
             "descripcionGremio"=>$this->descripcionGremio,
             "estado"=>$this->estado,
           ]);
-
-          // "idResponsable"=>1,
+          
           $this->dispatch('gremioCreated');   
-
     }
 
 
@@ -124,11 +112,8 @@ class Modal extends Component
     }
 
 
-
-    public function render()
-    { 
- 
-
+    public function render(){  
         return view('livewire.admin.tablas.gremios.modal');
     }
+    
 }

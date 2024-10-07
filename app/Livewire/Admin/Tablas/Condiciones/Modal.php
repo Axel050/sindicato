@@ -4,12 +4,7 @@ namespace App\Livewire\Admin\Tablas\Condiciones;
 
 use App\Models\Condicione;
 use Livewire\Component;
-use App\Models\Gremio;
-use App\Models\Sectore;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-
-use Illuminate\Validation\Rule;
 
 class Modal extends Component
 {
@@ -74,14 +69,16 @@ class Modal extends Component
     public function save(){
                   
         $this->validate(  $this->rules(), $this->messages());              
-
+        $id = auth()->user()->id;
+        
           Condicione::create([
             "nombreCondicion"=>$this->nombreCondicion,            
             "descripcionCondicion"=>$this->descripcionCondicion,
-            "estado"=>$this->estado,            
-            "idResponsable"=>1,            
+            "estado"=>$this->estado,
+            "idResponsable"=>$id, 
             "fechaRegistro"=>Carbon::now('America/Argentina/Buenos_Aires'),
           ]);        
+
 
           $this->dispatch('condicionCreated');   
 

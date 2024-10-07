@@ -2,16 +2,13 @@
 
 namespace App\Livewire\Admin\Usuarios\Usuarios;
 
-// use App\Actions\Fortify\PasswordValidationRules;
+use App\Models\Gremio;
 use App\Models\User;
-use Illuminate\Console\View\Components\Alert;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
 class Modal extends Component
-{
-    // use PasswordValidationRules;
+{    
 
     public $title;
     public $id;
@@ -26,6 +23,8 @@ class Modal extends Component
     public $email;    
     public $telefono;    
     public $tipos=[];
+    public $gremios=[];
+    public $idGremio;
     public $idRol;
     public $estado=0;
     public $password;
@@ -33,9 +32,9 @@ class Modal extends Component
 
 
     public function mount(){
-
       
       $this->tipos = Role::orderBy('name', 'asc')->get();
+      $this->gremios = Gremio::orderBy('nombreGremio', 'asc')->get();
 
        if($this->method == "save"){        
           $this->title= "Crear";
@@ -59,9 +58,10 @@ class Modal extends Component
               $this->email = $this->user->email ;
               $this->estado = $this->user->estado ;
               $this->idRol = $this->user->idRol ;
+              $this->idGremio = $this->user->idGremio ;
               
               $this->title= "Editar";
-              $this->btnText= "Guardar";          
+              $this->btnText= "Guardar";
               $this->bg="background-color: rgb(234 88 12)";
             }
 
@@ -75,6 +75,7 @@ class Modal extends Component
             'apellido' => 'required',
             'telefono' => 'required',
             'idRol' => 'required',         
+            'idGremio' => 'required',         
           ]; 
           
           if($this->method == "update"){            
@@ -94,14 +95,15 @@ class Modal extends Component
         
 
     protected function messages(){
-       return [                      
-            "name.required" => "Ingrese nombre.",            
+       return [
+            "name.required" => "Ingrese nombre.",
             "apellido.required"=> "Ingrese apellido.",
             "telefono.required"=> "Ingrese telefono.",
             "email.required"=> "Ingrese mail.", 
             'email.email' => 'Ingrese un mail válido.',
             'email.unique' => 'Mail existente.',
             "idRol.required"=> "Elijo un tipo.",
+            "idGremio.required"=> "Elijo un sindicato.",
             "password.required"=> "Ingrese clave.",
             "password.confirmed"=> "Las claves no coinciden.",            
             "password.min"=> "Debe tener al menos 8 caracteres.",            
@@ -120,6 +122,7 @@ class Modal extends Component
               "telefono" =>$this->telefono,
               "email" =>$this->email,
               "idRol" =>$this->idRol,
+              "idGremio" =>$this->idGremio,
               "estado" =>$this->estado,
               'password' => bcrypt($this->password),
           ]);
@@ -145,6 +148,7 @@ class Modal extends Component
           $this->user->telefono= $this->telefono;
           $this->user->email= $this->email;
           $this->user->idRol= $this->idRol;
+          $this->user->idGremio= $this->idGremio;
           $this->user->estado= $this->estado;
           
           if($this->password){
@@ -158,7 +162,6 @@ class Modal extends Component
           $this->user->syncRoles($roleName);
           // $this->user->assignRole($roleName);
         
-
           $this->dispatch("userUpdated");
         }
 

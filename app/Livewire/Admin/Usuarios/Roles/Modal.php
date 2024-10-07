@@ -2,10 +2,7 @@
 
 namespace App\Livewire\Admin\Usuarios\Roles;
 
-use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\On;
 use Livewire\Component;
-// use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 
@@ -30,11 +27,7 @@ class Modal extends Component
     public $bg;    
     public $method;
     public $btnText;    
-
-    // public $roleName;
-    // public $permissions = [];
-    // public $availablePermissions;
-
+    
     public $rol;
     public $name;
     public $description;
@@ -43,9 +36,7 @@ class Modal extends Component
     
     public function mount()
     {
-    
-        // $this->availablePermissions = Permission::all();
-
+            
         if($this->method == "save"){        
           $this->title= "Crear";
           $this->btnText= "Guardar";
@@ -98,7 +89,7 @@ class Modal extends Component
           "guard_name" => "web",
           "description" => $this->description,
         ]);
-        // "status" => $this->status,
+     
         
         $this->dispatch("roleCreated");
     }

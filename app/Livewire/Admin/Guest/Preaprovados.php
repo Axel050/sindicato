@@ -4,7 +4,6 @@ namespace App\Livewire\Admin\Guest;
 
 use App\Models\Beneficio;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -41,71 +40,8 @@ class Preaprovados extends Component
       $this->id=$id;
       $idCondicion = auth()->user()->idCondicion;
 
-      // dd([
-      //   "id"=>$id,
-      //   "idCOndi" =>$idCondicion
-      
-      // ]);
+      $hoy = Carbon::now();
 
-      // $beneficios = BeneficioAfiliado::where('idAfiliado', $id)
-      // ->with('beneficio')
-      // ->get();
-      
-      // $beneficios = Beneficio::whereRaw("FIND_IN_SET($idCondicion, REPLACE(condiciones, '-', ','))")->get();
-
-      // $beneficios = Beneficio::with(['beneficioCondiciones.condicionReq', 'beneficioCondiciones.estadoCondicion'])->whereRaw("FIND_IN_SET($idCondicion, REPLACE(condiciones, '-', ','))")->get();
-
-
-    //   $beneficios = Beneficio::with(['beneficioCondiciones.condicionReq', 'beneficioCondiciones.estadoCondicion'])
-    // ->whereHas('beneficioCondiciones', function($query) use ($idCondicion) {
-    //     $query->whereRaw("FIND_IN_SET(?, REPLACE(condiciones, '-', ','))", [$idCondicion]);
-    // })
-    // ->get();
-
-
-    // $beneficios = Beneficio::with(['beneficioCondiciones.condicionReq', 'beneficioCondiciones.estadoCondicion'])
-    // ->whereHas('beneficioCondiciones', function ($query) use ($idCondicion, $id) {
-    //     $query->whereRaw("FIND_IN_SET(?, REPLACE(condiciones, '-', ','))", [$idCondicion])
-    //           ->whereHas('estadoCondicion', function ($subQuery) use ($id) {
-    //               $subQuery->where('estado', 0)
-    //                        ->where('idMiembro', $id); // Filtramos por estado y el miembro
-    //           });
-    // })
-    // ->get();
-
-    // $beneficios = Beneficio::with(['beneficioCondiciones.condicionReq', 'beneficioCondiciones.estadoCondicionesRequerida3'])
-    // ->whereHas('beneficioCondiciones', function ($query) use ($idCondicion, $id) {
-    //     $query->whereRaw("FIND_IN_SET(?, REPLACE(condiciones, '-', ','))", [$idCondicion])
-    //           ->whereHas('estadoCondicionesRequerida3', function ($subQuery) use ($id) {
-    //               $subQuery->where('estado', '1')
-    //                        ->where('idMiembro', $id); // Filtramos por estado y el miembro
-    //           });
-    // })
-    // ->get();
-
-
-
-$hoy = Carbon::now();
-
-
-// $beneficios = Beneficio::with('beneficioCondiciones.condicionReq')
-//     ->whereHas('beneficioCondiciones', function ($query) use ($idCondicion) {
-//         $query->whereRaw("FIND_IN_SET(?, REPLACE(condiciones, '-', ','))", [$idCondicion]);
-//     })
-    
-//      ->where(function ($query) use ($hoy) {
-//         $query->where(function ($q) use ($hoy) {
-//             $q->whereDate('fechaDesde', '<=', $hoy)
-//               ->whereDate('fechaHasta', '>=', $hoy);
-//         })
-//         ->orWhereNull('fechaDesde')
-//         ->orWhereNull('fechaHasta');
-//     })
-//     ->where("estado",1)
-
-//     ->get();
-    
-    // }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
     
     $beneficios = Beneficio::with('beneficioCondiciones.condicionReq')
     ->whereHas('beneficioCondiciones', function ($query) use ($idCondicion) {
@@ -138,8 +74,6 @@ $hoy = Carbon::now();
     })
     ->where("estado", 1)
     ->get();
-
-
 
 
         return view('livewire.admin.guest.preaprovados', compact("beneficios"));

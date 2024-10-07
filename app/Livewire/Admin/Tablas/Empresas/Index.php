@@ -18,40 +18,35 @@ class Index extends Component
   public $query,$nombre,$id;
   public $method="";    
 
-
-    // public function upd(Provincia $provincia){
+    
     public function upd( $provincia){
 
       $this->nombre=  $provincia->nombre;
       $this->method=  "Editar";
 
-
     }
 
 
     public function option($method, $id=false){
-
       
-      if($method == "delete" || $method == "update"){
-        
-        $localidad = Empresa::find($id);
-        // Log::alert("uppdppdpd");
+        if($method == "delete" || $method == "update"){
+          
+          $localidad = Empresa::find($id);
+              if(!$localidad){                  
+                $this->dispatch('paisNotExits');   
+              }
+              else{                  
+                $this->method =$method ;
+                $this->id=$id;  
+              }
+                  
+        }
 
-                if(!$localidad){                  
-                  $this->dispatch('paisNotExits');   
-                }
-                else{                  
-                  $this->method =$method ;
-                  $this->id=$id;  
-                }
-                
-          }
+        if($method == "save"){
+          $this->method =$method ;
+        }
 
-          if($method == "save"){
-            $this->method =$method ;
-          }
-
-      }
+    }
 
 
     #[On(['empresaCreated' ,'empresaUpdated' ,'empresaDeleted'] )]
@@ -60,17 +55,14 @@ class Index extends Component
         $this->resetPage(); 
       }
 
-    public function render()
-    {
-
+    public function render(){
       $localidades = Empresa::orderBy("nombreEmpresa", "desc")->paginate(10);
-
 
       if($this->query ){
         $localidades =Empresa::where("nombreEmpresa", "like", '%'.$this->query . '%')->orderBy("id","desc")->paginate(10);
       }
-          
-        
+                  
         return view('livewire.admin.tablas.empresas.index',compact('localidades'));
+    }
 
-    }}
+  }

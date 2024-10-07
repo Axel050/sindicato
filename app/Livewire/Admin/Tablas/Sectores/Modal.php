@@ -3,12 +3,7 @@
 namespace App\Livewire\Admin\Tablas\Sectores;
 
 use Livewire\Component;
-use App\Models\Gremio;
 use App\Models\Sectore;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-
-use Illuminate\Validation\Rule;
 
 class Modal extends Component
 {
@@ -34,13 +29,9 @@ class Modal extends Component
        return [                      
             "nombreSector.required" => "Ingrese nombre.",                        
           ];                 
-      }
-    
-    
-
+      }    
   
-    public function mount()
-    { 
+    public function mount(){ 
                                     
       if($this->method == "save"){        
           $this->title= "Crear";
@@ -69,16 +60,14 @@ class Modal extends Component
                 
     }
       
-
-    public function save(){
-                  
+    public function save(){      
         $this->validate(  $this->rules(), $this->messages());              
-
+          $id = auth()->user()->id;
           Sectore::create([
             "nombreSector"=>$this->nombreSector,            
             "descripcionSector"=>$this->descripcionSector,
-            "estado"=>$this->estado,            
-            "idResponsable"=>1,            
+            "estado"=>$this->estado,
+            "idResponsable"=>$id, 
           ]);        
 
           $this->dispatch('sectorCreated');   
@@ -90,17 +79,16 @@ class Modal extends Component
                           
       if(!$this->sector){
         $this->dispatch('sectorNotExits');   
-      }            
-        else
-        {
+        }            
+        else{
           $this->validate(  $this->rules(), $this->messages());              
                   
-        $this->sector->nombreSector= $this->nombreSector;        
-        $this->sector->estado= $this->estado;
-        $this->sector->descripcionSector= $this->descripcionSector;
-       
-        $this->sector->save();
-        $this->dispatch('sectorUpdated');   
+          $this->sector->nombreSector= $this->nombreSector;        
+          $this->sector->estado= $this->estado;
+          $this->sector->descripcionSector= $this->descripcionSector;
+        
+          $this->sector->save();
+          $this->dispatch('sectorUpdated');   
       }
       
     }
@@ -116,12 +104,8 @@ class Modal extends Component
         }
     }
 
-
-
-    public function render()
-    { 
- 
-
+    public function render(){  
         return view('livewire.admin.tablas.sectores.modal');
     }
+
 }

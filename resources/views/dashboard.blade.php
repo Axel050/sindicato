@@ -5,9 +5,7 @@
 
 
 
-@if(auth()->user()->hasAnyRole([
-            'Administrador', 'AdministridaorPrincipal', 
-            ]) && auth()->user()->estado == 1 )        
+@if(auth()->user()->hasAnyRole(['Administrador', 'AdministradorPrincipal', ]) && auth()->user()->estado == 1 )        
         @livewire('admin.dashboard')
 
   @else 

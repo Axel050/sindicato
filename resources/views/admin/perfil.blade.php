@@ -4,7 +4,7 @@
   </x-slot>
 
 
-      @if(auth()->user()->hasAnyRole(['Administrador', 'AdministridaorPrincipal', ])
+      @if(auth()->user()->hasAnyRole(['Administrador', 'AdministradorPrincipal', ])
             && auth()->user()->estado == 1 )        
           
           @livewire('admin.perfil-actual.show-usuario')
@@ -14,6 +14,5 @@
           @livewire('admin.perfil-actual.show')
 
       @endif
-
 
 </x-app-layout>
