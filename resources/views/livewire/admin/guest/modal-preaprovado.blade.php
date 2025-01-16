@@ -9,8 +9,9 @@
                       <h2 class="lg:text-lg text-base mb-0  w-full text-center py-1  border-b border-gray-300 text-white bg-orange-600 px-6 rounded-t-md"  style="{{$bg}}" >
                             {{$title}} beneficio
                       </h2>                                            
+                     
                                                                                                                                                   
-                        <h3 class="p-8 ">Esta seguro de {{$text}} el beneficio " " ?</h3>
+                        <h3 class="p-8 ">Esta seguro de {{$text}} el beneficio <b>"{{$beneficio->nombre}}"</b> ?</h3>
                             
 
                         <div class="flex justify-center gap-x-12"> 

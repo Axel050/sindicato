@@ -8,6 +8,7 @@ namespace App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class EstadoCondicionesRequerida
@@ -25,6 +26,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class EstadoCondicionesRequerida extends Model
 {
+
+  use SoftDeletes;
+
+  
 	protected $table = 'estado_condiciones_requeridas';
 	public $incrementing = false;
 	public $timestamps = false;
@@ -76,5 +81,9 @@ class EstadoCondicionesRequerida extends Model
   
       }
 
+
+      public function condicionReq(){
+                return $this->belongsTo(CondicionesRequerida::class,"idCondicionRequerida");
+    }
   
 }

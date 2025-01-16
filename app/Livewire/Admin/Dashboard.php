@@ -18,6 +18,7 @@ class Dashboard extends Component
     public $beneficiosTotalActivos =0;
     public $beneficiosTotalInactivos =0;
 
+    public $beneficios2 =0;
     public $beneficios =0;
     public $beneficiosVig =0;
 
@@ -33,22 +34,24 @@ class Dashboard extends Component
       
       
 
-    
+    // $query = EstadoCondicionesRequerida::with('beneficio')
+    //     ->select('idMiembro', 'idBeneficio', 'fechaRegistro')
+    //     ->selectRaw('COUNT(*) as total_registros') // Contar total de registros por grupo
+    //      ->selectRaw('SUM(CASE WHEN estado = 1 THEN 1 ELSE 0 END) as total_estado_1') // Contar cuántos tienen estado 1
+    //     ->selectRaw('SUM(CASE WHEN estado = 0 THEN 1 ELSE 0 END) as total_estado_0') // Contar cuántos tienen estado 0        
+    //     ->groupBy('idMiembro', 'idBeneficio', 'fechaRegistro')
+    //     ->orderBy('id', 'desc');
 
-    $query = EstadoCondicionesRequerida::with('beneficio')
-        ->select('idMiembro', 'idBeneficio', 'fechaRegistro')
-        ->selectRaw('COUNT(*) as total_registros') // Contar total de registros por grupo
-        ->selectRaw('SUM(CASE WHEN estado = 1 THEN 1 ELSE 0 END) as total_estado_1') // Contar cuántos tienen estado 1
-        ->selectRaw('SUM(CASE WHEN estado = 0 THEN 1 ELSE 0 END) as total_estado_0') // Contar cuántos tienen estado 0
-        ->groupBy('idMiembro', 'idBeneficio', 'fechaRegistro')
-        ->orderBy('id', 'desc');
+            
+          // $bV = clone $query;
+          // $b = clone $query;    
 
-    
-          $bV = clone $query;
-          $b = clone $query;
-
-          $this->beneficios = $b->havingRaw('total_estado_0 = total_registros')->count();     
-          $this->beneficiosVig = $bV->havingRaw('total_estado_1 = total_registros')->count();
+          // $this->beneficios = $b->havingRaw('total_estado_0 = total_registros')->count();     
+          // $this->beneficios2 = $b2->havingRaw('total_estado_2 = total_registros')->count();     
+          $this->beneficiosVig = EstadoCondicionesRequerida::where('estado', 1)->count();
+          $this->beneficios = EstadoCondicionesRequerida::where('estado', '!=', 1)->count();
+          // $this->beneficios2 = $b2->havingRaw('total_estado_2 = total_registros')->get(); 
+          // $this->beneficiosVig = $bV->havingRaw('total_estado_1 = total_registros')->count();
 
 
   

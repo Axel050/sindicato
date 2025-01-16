@@ -161,7 +161,7 @@ class Modal extends Component
                     BeneficioCondicion::create([        
                       'idBeneficio' => $beneficio->id,
                       'idCondicion' => $condicion['idcondicion'],
-                      'descripcion' => $condicion['descripcion'],
+                      'descripcion' => $condicion['descripcion'] ?? 'sin descripción',
                       'fechaRegistro' => now(),
                       'idResponsable' => $id,
                       'estado' => 1,
@@ -169,7 +169,7 @@ class Modal extends Component
                   }
                 }
                 
-         $this->dispatch("miembroCreated");
+         $this->dispatch("beneficioCreated");
       
      }
 
@@ -200,30 +200,27 @@ class Modal extends Component
 
       $this->updateBeneficioCondiciones($this->beneficio->id);
       
-      $this->dispatch("miembroUpdated");
+      $this->dispatch("beneficioUpdated");
 
      }
-
 
     public function delete(){
         $beneficio = $this->beneficio;
         $this->beneficio->delete();
-
+        // $this->beneficio->forceDelete(); 
         $beneficio->beneficioCondiciones()->delete();              
 
-        $this->dispatch("miembroDeleted");
+        $this->dispatch("beneficioDeleted");
     }
-
 
     public function addItem()
     {
-
       $this->validate([
-        'idCondicionReq' => 'required',            
-      ],
-      ["idCondicionReq.required" => "Elija condicion"
-      ]
-    );
+          'idCondicionReq' => 'required',            
+        ],
+        ["idCondicionReq.required" => "Elija condicion"
+        ]
+      );
     
     $condicion = CondicionesRequerida::find($this->idCondicionReq)->nombreRequerimiento;
     
@@ -259,7 +256,7 @@ foreach ($this->items as $condicion) {
         // Crear nueva condición si no existe en la base de datos
         $beneficio->beneficioCondiciones()->create([            
             'idCondicion' => $condicion['idcondicion'],
-            'descripcion' => $condicion['descripcion'],
+            'descripcion' => $condicion['descripcion'] ?? 'sin descripción',
             'fechaRegistro' => now(),
             'idResponsable' => $id,
             'estado' => 1,

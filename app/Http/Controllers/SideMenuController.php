@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use Illuminate\Http\Request;
 
 class SideMenuController extends Controller
 {
@@ -82,7 +82,7 @@ class SideMenuController extends Controller
        }
 
 
-       public function roles (){        
+       public function roles (){
            if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-actualizar','usuarios-eliminar']) 
            || auth()->user()->estado!=1 ) {                
               return view("components.unauthorized");           
@@ -90,12 +90,39 @@ class SideMenuController extends Controller
 
         return view("admin.usuarios.roles"); 
        }
-       
-       public function beneficiosActivos (){        
-          //  if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
+
+
+      //  public function requerimientosAfiliadoAdmin (Request $request){
+
+       public function requerimientosAfiliadoAdmin (Request $request){        
+          //  if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-actualizar','usuarios-eliminar']) 
           //  || auth()->user()->estado!=1 ) {                
-              // return view("components.unauthorized");           
-            // }
+          //     return view("components.unauthorized");           
+          //   }
+
+          // Request $request)
+
+          if (!auth()->user()->hasAnyPermission(['beneficios-ver','beneficios-crear','beneficios-actualizar','beneficios-eliminar']) 
+          || auth()->user()->estado!=1 ) {                
+              return view("components.unauthorized");           
+            }
+    
+        $dni = $request->query('dni'); // Obtiene el valor de "dni" o null si no existe
+        $p = $request->query('p'); 
+
+          // $dni = 12;
+          // $p = "ad"; 
+
+
+
+        return view("admin.requerimientos", compact(["dni","p"])); 
+       }
+       
+       public function beneficiosActivos (){ 
+          //  if (!auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar']) 
+           if(auth()->user()->estado!=1 ) {
+              return view("components.unauthorized");
+            }
 
         return view("admin.guest.activos"); 
        }
@@ -109,10 +136,20 @@ class SideMenuController extends Controller
         return view("admin.guest.preaprovados"); 
        }
 
-       public function beneficiosVigentes (){        
+       public function requerimientosAfiliado (){ 
+          // if (!auth()->user()->hasAnyPermission(['beneficios-ver','beneficios-crear','beneficios-actualizar','beneficios-eliminar']) 
+          //  || auth()->user()->estado!=1 ) { 
+          //         return view("components.unauthorized");
+          //  }
+
+        return view("admin.guest.requerimientos"); 
+       }
+       
+
+       public function beneficiosVigentes (){
            if (!auth()->user()->hasAnyPermission(['beneficios-ver','beneficios-crear','beneficios-actualizar','beneficios-eliminar']) 
-           || auth()->user()->estado!=1 ) {                
-                  return view("components.unauthorized");           
+           || auth()->user()->estado!=1 ) {
+                  return view("components.unauthorized");
             }
 
         return view("admin.beneficios.vigentes"); 

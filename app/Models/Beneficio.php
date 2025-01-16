@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -32,6 +33,9 @@ use Illuminate\Support\Facades\Log;
  */
 class Beneficio extends Model
 {
+
+  use SoftDeletes;
+  
 	protected $table = 'beneficios';
 	public $timestamps = false;
 
@@ -66,17 +70,16 @@ class Beneficio extends Model
         return $this->beneficioCondiciones()->where('idCondicion', $idCondicion)->exists();
     }
 
+
 public function beneficioCondiciones()
 {
     return $this->hasMany(BeneficioCondicion::class, 'idBeneficio');
 }  
 
+
 public function beneficioCondicionesExist($id)
 {
-        $beneficios= $this->hasMany(BeneficioCondicion::class, 'idBeneficio');
-
-        
-          
+    $beneficios= $this->hasMany(BeneficioCondicion::class, 'idBeneficio');                  
 
     return $this->hasMany(BeneficioCondicion::class, 'idBeneficio');
 }  
@@ -93,6 +96,7 @@ public function estadoPendiente($idMiembro){
     $conEstado0 = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
         ->where('idBeneficio', $this->id)
         ->where('estado', '0')
+        ->orwhere('estado', '2')
         ->count();
 
         
@@ -104,24 +108,104 @@ public function estadoPendiente($idMiembro){
 
 }
 
+public function estadoCBC($idMiembro){
+  
+  $total = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
+        ->where('idBeneficio', $this->id)
+        ->count();
+        
+        $conEstado1 = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
+        ->where('idBeneficio', $this->id)
+        ->where('estado', '1')
+        ->count();
+        
+
+        $totalBC = BeneficioCondicion::where('idBeneficio', $this->id)
+              ->count();
+
+        $exist = BeneficioAfiliado::where('idAfiliado', $idMiembro)->where("idBeneficio",$this->id)->exists();
+              
+              
+          Log::alert([
+         "total" => $total,
+         "estadp1" => $conEstado1,
+         "totalBV" => $totalBC,
+         "exos" => $exist,
+         "idBEbif" => $this->id,
+          ]);
+        
+        
+      if($exist){
+        Log::alert("EXISTE");
+        Log::alert($this->id);
+        Log::alert($exist);
+        return true;
+      }
+      
+      
+      if($total <= 0){
+        return false;
+      }
+      
+      // Log::alert("funial");
+      // Log::alert($total === $conEstado1 && $total === $totalBC);
+      // Log::alert("funial");
+     if($total === $conEstado1 && $total === $totalBC){
+     Log::alert("return final IF ");
+      Log::alert([
+        "total" =>$total,
+        "conEstado1" =>$conEstado1,
+        "totalBC" =>$totalBC,
+      ]);
+     return true;
+    }
+    else{
+      Log::alert("return final else");
+      Log::alert([
+        "total" =>$total,
+        "conEstado1" =>$conEstado1,
+        "totalBC" =>$totalBC,
+      ]);
+      return false;
+
+    }
+
+
+}
+
+public function pre($idMiembro){
+  
+ 
+        $exist = BeneficioAfiliado::where('idAfiliado', $idMiembro)->where("idBeneficio",$this->id)->exists();
+              
+              
+     if(!$exist ){
+            return true;
+            }
+            else{              
+              return false;
+
+            }
+  
+
+
+}
+
 public function estadoC($idMiembro){
   
   $total = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
         ->where('idBeneficio', $this->id)
         ->count();
-
-            
-        
- 
+   
     $conEstado1 = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
         ->where('idBeneficio', $this->id)
         ->where('estado', '1')
         ->count();
-
         
-    if($total <= 0){
-      return false;
-    }
+        
+      if($total <= 0){
+        return false;
+      }
 
     return $total === $conEstado1;
 

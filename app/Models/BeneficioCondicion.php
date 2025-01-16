@@ -65,10 +65,38 @@ class BeneficioCondicion extends Model
 }
 
 
-  public function estadoCondicionRequerida($id)
+  public function estadoCondicionRequeridaOLD($id)
   {
     return EstadoCondicionesRequerida::where('idBeneficio', $this->idBeneficio)
                                      ->where('idCondicionRequerida', $this->idCondicion)
+                                     ->where('idMiembro', $id)
+                                     ->first();
+  
+  }
+
+  public function estadoCondicionRequerida($id)
+  {
+    $condicionRequerida = EstadoCondicionesRequerida::where('idBeneficio', $this->idBeneficio)
+                                     ->where('idCondicionRequerida', $this->idCondicion)
+                                     ->where('idMiembro', $id)
+                                     ->first();
+  
+    if (!$condicionRequerida) {
+        $condicionRequerida = EstadoCondicionesRequerida::create([
+            'idBeneficio' => $this->idBeneficio,
+            'idCondicionRequerida' => $this->idCondicion,
+            'idMiembro' => $id,
+            'estado' => 0
+        ]);
+      }
+    
+    return $condicionRequerida;
+  }
+
+  
+  public function estadoCondicionRequeridaAfi($id)
+  {
+    return EstadoCondicionesRequerida::where('idCondicionRequerida', $this->idCondicion)
                                      ->where('idMiembro', $id)
                                      ->first();
   

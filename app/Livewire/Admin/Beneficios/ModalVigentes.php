@@ -37,7 +37,7 @@ class ModalVigentes extends Component
           }
        $reque->save() ;
       }
-
+// EVALUAR MEJOR SI USAMOS LAS DOS TABLAS O UNA 
       $total = EstadoCondicionesRequerida::where('idMiembro', $this->idMiembro)
         ->where('idBeneficio', $this->idBeneficio)
         ->count();
@@ -68,10 +68,9 @@ class ModalVigentes extends Component
     }
 
 
-
     public function mount()
     { 
-                                    
+
       if($this->method == "save"){        
           $this->title= "Crear";
           $this->btnText= "Guardar";
@@ -110,6 +109,7 @@ class ModalVigentes extends Component
           $this->dispatch('solicitudDeleted');   
         }
     }
+
     
     public function render()
     {
@@ -117,7 +117,7 @@ class ModalVigentes extends Component
                           ->where("idBeneficio",$this->idBeneficio)
                           ->where("idMiembro", $this->idMiembro)
                           ->orderBy("id","desc")
-                          ->paginate(15);
+                           ->paginate(15);
 
         return view('livewire.admin.beneficios.modal-vigentes', compact("beneficios"));
     }

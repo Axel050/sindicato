@@ -10,9 +10,16 @@ use Livewire\Component;
 
 class Preaprovados extends Component
 {
+    public $methodReq;
+    public $methodReqPerfil;
     public $method;
     public $id;
     public $idBeneficio;
+
+
+    public $idUse;
+    public $idBen;
+    public $idCon;
 
     public function solicitud($id,$tipo){
 
@@ -27,9 +34,26 @@ class Preaprovados extends Component
 
 
 
-    #[On(['solicitudCreated' ,'solicitudCancel' ] )]
+    #[On(['solicitudCreated' ,'solicitudCancel' ,'condicionReqUpdated'] )]
     public function mount(){
         $this->method="";
+        $this->methodReq="";
+        $this->methodReqPerfil="";        
+    }
+
+    public function datos($idUse=null,$idBen=null,$idCon=null){
+      $this->idUse = $idUse;
+      $this->idBen = $idBen;
+      $this->idCon = $idCon;
+      // dd([
+      // "use" =>$idUse  ,
+      // "ben" =>$idBen  ,
+      // "cond" =>$idCon  ,
+      // "use2" =>$this->idUse  ,
+      // "ben2" =>$this->idBen  ,
+      // "cond2" =>$this->idCon  ,
+      // ]);
+      $this->methodReqPerfil=true;
     }
 
     public function render()
@@ -79,4 +103,4 @@ class Preaprovados extends Component
         return view('livewire.admin.guest.preaprovados', compact("beneficios"));
     }
 }
-
+// CAMBIARN SOLICITAR , A ACTIVAR ; QUE SE MUESTRE EL ESTADO DE LOS REQUERIEMIENTOS SIN TOCAR NADA ; Y SI ESTAN TODOS OK AL PREIONAR EL BOTON "ACTIVAR" SE VA A ACTIVOS ; SINO MOSTRAR BOTON disaBLED O CON OTRO TEXTO, y que me mande a los requeriemnrotns sin falta alguno  ,podria tener 2 estados , activar beneficio  y requerimientos incompletos

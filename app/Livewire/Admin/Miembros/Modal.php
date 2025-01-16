@@ -275,7 +275,7 @@ class Modal extends Component
           "idCondicion" =>$this->idCondicion,
           "legajo" =>$this->legajo,
 
-          "password" =>bcrypt($this->sectorId),
+          "password" =>bcrypt($this->password),
            
           "idRol" =>$this->estado == 1 ? 3 : $this->idRol, //si es activo , rol=miembro
           "estado" =>$this->estado, 
@@ -385,6 +385,7 @@ class Modal extends Component
             $user->conyuge()->delete();
       }
       
+      
       if($user->conyuge && $this->conyugue ==  1){                   
             $user->conyuge->nombre = $this->nombreConyugue;
             $user->conyuge->apellido = $this->apellidoConyugue;
@@ -447,6 +448,8 @@ class Modal extends Component
       $this->dispatch("miembroUpdated");
 
      }
+
+
 
      public function removeHijo($index)
     {

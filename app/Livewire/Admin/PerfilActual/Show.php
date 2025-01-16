@@ -19,7 +19,7 @@ class Show extends Component
     public $title;
     public $id;
     public $bg;    
-    public $method;    
+    public $method;      
 
     public $user;
     
@@ -58,11 +58,11 @@ class Show extends Component
     public $hijosData=[];
     
 
-      
+      #[On(['UserUpdated'] )]  
      public function mount(){
-        Log::alert(">method");
-        Log::alert($this->method);
-
+        $this->resetErrorBag();  
+        $this->reset();
+        
           $this->method="show";    
           $this->title= "Informacion del ";              
           $this->bg="background-color: rgb(22 163 74)"; 
@@ -180,6 +180,11 @@ class Show extends Component
             $rules['generoConyugue'] = 'required';
             $rules['fechaNacConyugue'] = 'required';
             $rules['documentoConyugue'] = ['required', new UniqueDocument($this->idConyugue)];
+            if($this->idConyugue){                
+                $rules["documentoConyugue"] = 'required|unique:conyuges,documento,'.$this->idConyugue;
+              }else{
+                $rules["documentoConyugue"] = 'required|unique:conyuges,documento';
+              }
           }
 
 
@@ -188,7 +193,11 @@ class Show extends Component
               $rules["hijosData.$i.apellido"]  = 'required';
               $rules["hijosData.$i.genero"]    = 'required';              
               $rules["hijosData.$i.fechaNac"]   = 'required';
-              $rules["hijosData.$i.documento"] = ['required', new UniqueDocument('',$this->hijosData[$i]['id'], '')];
+              if(isset($this->hijosData[$i]['id'])){                
+                $rules["hijosData.$i.documento"] = 'required|unique:hijos,dni,'.$this->hijosData[$i]['id'];
+              }else{
+                $rules["hijosData.$i.documento"] = 'required|unique:hijos,dni';
+              }
            }
           
            
@@ -222,24 +231,28 @@ class Show extends Component
             "hijosData.*.genero" => "Elija genero.",
             "hijosData.*.fechaNac" => "Elija fecha.",            
             "hijosData.*.documento.required" => "Ingrese documento.",
+            "hijosData.*.documento.unique" => "Documento existente.",
 
             "nombreConyugue" => "Ingrese nombre.",
             "apellidoConyugue" => "Ingrese apellido.",
             "generoConyugue" => "Elija genero.",
             "fechaNacConyugue" => "Elija fecha.",            
             "documentoConyugue.required" => "Ingrese documento.",
+            "documentoConyugue.unique" => "Documento existente.",
 
 
           ];                 
-      }
+    }
 
          
 
-     public function edit(){
-
-
+    
+    
+    public function edit(){
+      
       $this->validate(  $this->rules(), $this->messages()); 
-
+    
+      
       $user=  $this->user ;
       $user->name= $this->name;
       $user->apellido= $this->apellido;
@@ -353,7 +366,7 @@ class Show extends Component
     
         
 
-        #[On(['UserUpdated'] )]  
+        // #[On(['UserUpdated'] )]  
     public function render()
     {
         return view('livewire.admin.perfil-actual.show');

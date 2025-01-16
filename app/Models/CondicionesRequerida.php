@@ -54,6 +54,21 @@ public function beneficio()
 {
     return $this->belongsTo(Beneficio::class, 'idBeneficio', 'id');
 }
+ 
+
+
+
+public function estados()
+{
+    return $this->hasMany(EstadoCondicionRequeridaAfiliado::class, 'idCondicionReq');
+}
+
+public function estadoDeMiembro(int $idMiembro)
+{      
+    return $this->estados()->where('idMiembro', $idMiembro)->first();
     
+}
+
+
 
 }

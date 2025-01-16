@@ -2,9 +2,13 @@
     
       <div class="flex bg-gra-100 flex-wrap gap-2 lg:gap-4 justify-center pt-8 pb-4 w-full relative">
             
-          @foreach ($beneficios as $ben)
+            
+        {{-- {{-- @dump("beneficios ") --}}
+          {{-- @dump($beneficios->toArray() ) --}}
+          {{-- @dump("beneficios ")  --}}
+          @foreach ($beneficios as $ben)            
 
-              @if ($ben->estadoC($ben->idAfiliado,$ben->idBeneficio))
+              {{-- @if ($ben->estadoC($ben->idAfiliado,$ben->idBeneficio)) --}}
 
                   @php
                         $noDisponible = $ben->beneficio->cantUsos <= $ben->beneficio->beneficioUsos($ben->idAfiliado)->count() ;
@@ -122,7 +126,7 @@
                       </div>
                   </div>
 
-              @endif    
+              {{-- @endif     --}}
           @endforeach
           
 

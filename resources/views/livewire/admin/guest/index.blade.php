@@ -1,7 +1,7 @@
 <div class="flex flex-col bg-gray-50 fullscreen">
     <img src="{{asset('banner.jpg')}}" class="max-w-[1500px] w-full mx-auto">
 
-    @if(auth()->user()->hasRole(['UsuarioPendienteRevision'])  )    
+    @if(auth()->user()->hasRole(['UsuarioPendienteRevision'])  || auth()->user()->estado== 0 )    
        <h2 class="text-center lg:text-2xl text-lg shadow-xl mt-8 mb-4 bg-white mx-auto lg:px-4 rounded-lg">Hola  <b>{{auth()->user()->name}}</b> una vez que se active su cuenta podra acceder a sus beneficios</h2>
     
     @else

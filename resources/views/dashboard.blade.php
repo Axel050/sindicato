@@ -1,6 +1,7 @@
 <x-app-layout>     
     <x-slot name="headerT">
     Dashboard
+    {{-- @dump(auth()->user()->estado) --}}
   </x-slot>
 
 

@@ -30,6 +30,8 @@
                 <span class="ml-1 ">Panel de control</span></a>
               </li>
 
+
+
               {{-- @if(auth()->user()->hasRole('Administrador')  ) --}}
               @if(auth()->user()->hasAnyPermission(['usuarios-ver','usuarios-crear','usuarios-editar','usuarios-actualizar','usuarios-eliminar'])
               && auth()->user()->estado ==1 )
@@ -115,6 +117,7 @@
               </li>
               @endif
   
+                
 
 
           {{-- @if(auth()->user()->hasRole('Administrador')  ) --}}
@@ -173,10 +176,35 @@
              </ul>                                     
              
            </li>
+           
 
            @endif
 
 
+           @if(auth()->user()->hasAnyPermission([
+                      'empresas-ver','empresas-crear','empresas-editar','empresas-actualizar','empresas-eliminar',
+                      'gremios-ver','gremios-crear','gremios-editar','gremios-actualizar','gremios-eliminar',
+                      'sectores-ver','sectores-crear','sectores-editar','sectores-actualizar','sectores-eliminar',
+                      'condiciones-ver','condiciones-crear','condiciones-editar','condiciones-actualizar','condiciones-eliminar',
+                      ]) && auth()->user()->estado ==1 ) 
+          
+                      
+                      
+              <li class="pl- mb-1 mt-2   py-1 hover:text-gray-200 hover:shadow-md hover:shadow-sky-600 px-1 
+                  {{ Request::is("adminrequerimientos") ? 'bg-gradient-to-l from-sky-300 to-sky-300/10  text-gray-200 font-bold' : '' }} "            
+                >
+                  <a class="flex gap-x-2" href="{{Route('requerimientos-afiliado-admin')}}">                                
+                    <svg class="w-6 h-6" viewBox="0 0 1800 1800" enable-background="new 0 0 1800 1800" xml:space="preserve" fill="#ffffff" stroke="#ffffff">
+                          <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                          <g id="SVGRepo_iconCarrier"> <g> <path fill="#ffffff" d="M1506.693,279.092h-150.36v-85.277c0-17.353-14.065-31.418-31.419-31.418h-227.317 C1078.205,70.574,996.5,2.304,900.003,2.304c-96.499,0-178.202,68.27-197.595,160.092H475.091 c-17.353,0-31.419,14.065-31.419,31.418v85.277H293.307c-17.353,0-31.419,14.066-31.419,31.419v1455.764 c0,17.353,14.066,31.419,31.419,31.419h1213.386c17.354,0,31.42-14.066,31.42-31.419V310.511 C1538.113,293.158,1524.047,279.092,1506.693,279.092z M506.511,225.234h223.28c16.617,0,30.354-12.935,31.362-29.517 c4.436-73.219,65.424-130.574,138.85-130.574c73.425,0,134.413,57.355,138.849,130.574c1.009,16.582,14.746,29.517,31.363,29.517 h223.28v53.858v62.838v74.81H506.511v-74.81v-62.838V225.234z M1475.274,1734.855H324.728V341.93h118.944v106.229 c0,17.354,14.066,31.419,31.419,31.419h849.823c17.354,0,31.419-14.066,31.419-31.419V341.93h118.941V1734.855z"/> <path fill="#ffffff" d="M663.633,684.019L534.366,813.291l-57.803-57.806c-12.272-12.265-32.164-12.265-44.437,0 c-12.269,12.272-12.269,32.164,0,44.437l80.021,80.022c6.136,6.132,14.176,9.201,22.219,9.201c8.043,0,16.083-3.069,22.219-9.201 l151.486-151.486c12.269-12.273,12.269-32.165,0-44.438C695.799,671.755,675.907,671.755,663.633,684.019z"/> <path fill="#ffffff" d="M824.996,750.563c-17.354,0-31.419,14.066-31.419,31.419c0,17.354,14.066,31.419,31.419,31.419h520.665 c17.354,0,31.419-14.066,31.419-31.419c0-17.353-14.065-31.419-31.419-31.419H824.996z"/> <path fill="#ffffff" d="M663.633,1039.925l-129.267,129.272l-57.803-57.807c-12.272-12.265-32.164-12.265-44.437,0 c-12.269,12.272-12.269,32.164,0,44.438l80.021,80.021c6.136,6.133,14.176,9.2,22.219,9.2c8.043,0,16.083-3.067,22.219-9.2 l151.486-151.486c12.269-12.272,12.269-32.163,0-44.438C695.799,1027.66,675.907,1027.66,663.633,1039.925z"/> <path fill="#ffffff" d="M1345.661,1106.467H824.996c-17.354,0-31.419,14.066-31.419,31.42s14.066,31.42,31.419,31.42h520.665 c17.354,0,31.419-14.066,31.419-31.42S1363.015,1106.467,1345.661,1106.467z"/> <path fill="#ffffff" d="M663.633,1395.83l-129.267,129.272l-57.803-57.808c-12.272-12.264-32.164-12.264-44.437,0 c-12.269,12.274-12.269,32.166,0,44.439l80.021,80.021c6.136,6.132,14.176,9.199,22.219,9.199c8.043,0,16.083-3.067,22.219-9.199 l151.486-151.486c12.269-12.274,12.269-32.166,0-44.438C695.799,1383.566,675.907,1383.566,663.633,1395.83z"/> <path fill="#ffffff" d="M1345.661,1462.373H824.996c-17.354,0-31.419,14.066-31.419,31.42s14.066,31.418,31.419,31.418h520.665 c17.354,0,31.419-14.064,31.419-31.418S1363.015,1462.373,1345.661,1462.373z"/> </g> </g>
+                      </svg>
+           
+                <span class="ml-1 ">Requerimientos</span></a>
+              </li>
+
+              
+            @endif
 
         
 

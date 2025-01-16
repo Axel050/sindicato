@@ -45,6 +45,7 @@ class ModalBeneficiosAdministrar extends Component
           ]);
 
           }
+
         $uso = BeneficiosUsos::create([
           "id_beneficio" =>$this->id,
           "id_miembro" =>$this->idMiembro,
@@ -62,7 +63,8 @@ class ModalBeneficiosAdministrar extends Component
           $uso = BeneficiosUsos::find($id);
 
           if($uso){
-            $uso->delete();
+            // $uso->delete();
+            $uso->forceDelete();
             $this->dispatch("usoDeleted");
           }
 

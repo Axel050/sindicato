@@ -139,7 +139,7 @@ class ModalBeneficios extends Component
       
 
         $beneficioMiembro = BeneficioAfiliado::create([
-          "idBeneficio" =>$this->idBeneficio,                              
+            "idBeneficio" =>$this->idBeneficio,                              
           "idAfiliado" =>$this->idMiembro,
                                        
           "fechaRegistro" =>now(),
@@ -161,7 +161,7 @@ class ModalBeneficios extends Component
 
               $beneficioCondiciones= BeneficioCondicion::where("idBeneficio",$beneficioMiembro->idBeneficio)->get();
 
-                            
+                           
               $primera=true;              
               foreach ($beneficioCondiciones as $b) {                                          
                 $estadoConReq = $b->estadoCondicionesRequeridas($this->idMiembro);              

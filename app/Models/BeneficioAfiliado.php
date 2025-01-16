@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -29,6 +30,9 @@ use Illuminate\Support\Facades\Log;
  */
 class BeneficioAfiliado extends Model
 {
+
+  use SoftDeletes;
+  
 	protected $table = 'beneficio_afiliados';
 	// public $incrementing = false;
 	public $timestamps = false;
@@ -123,6 +127,11 @@ class BeneficioAfiliado extends Model
                     "estad1" => $conEstado1
 
                   ]);
+
+                  Log::alert("88888888888888888888");
+        Log::alert("estadoC".$total);
+        Log::alert("conEstado1".$conEstado1);
+        Log::alert("888899999999999999");
 
               if($total <= 0){
                 return false;

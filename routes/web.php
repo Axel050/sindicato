@@ -19,6 +19,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -28,7 +29,7 @@ Route::middleware([
        $user = auth()->user();
 
     // Verifica si el usuario tiene al menos un rol
-    if (!$user->roles()->exists()) {
+    if (!$user->roles()->exists()  ) {
         return abort(403, 'No autorizado');               
     }
         return view('dashboard');
@@ -65,6 +66,12 @@ Route::middleware([
     Route::get('/preaprovados',[SideMenuController::class, "beneficiosPreaprovados"])->name('preaprovados');
 
     Route::get('/vigentes/{p?}',[SideMenuController::class, "beneficiosVigentes"])->name('vigentes');
+
+    Route::get('/requerimientos',[SideMenuController::class, "requerimientosAfiliado"])->name('requerimientos-afiliado');
+
+    // Route::get('/adminrequerimientos/{p?}',[SideMenuController::class, "requerimientosAfiliadoAdmin"])->name('requerimientos-afiliado-admin');
+
+    Route::get('/adminrequerimientos',[SideMenuController::class, "requerimientosAfiliadoAdmin"])->name('requerimientos-afiliado-admin');
 
     //  function () {
     //     return view('admin.tablas.empresas');}

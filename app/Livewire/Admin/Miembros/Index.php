@@ -137,16 +137,21 @@ class Index extends Component
 
     public function loadUserPreferences()
     {
+
+     $defaultColumns = ["id", "apellido", "name", "documento", "sector", "rol", "accion"];
+       
         $preference = auth()->user()->columnPreference;
         if ($preference) {
             $this->selectedColumns = json_decode($preference->columns, true);
+        }else {
+        // Si no hay preferencias, asigna las columnas por defecto
+        $this->selectedColumns = $defaultColumns;
         }
     }
 
      public function showColumns()
     {
-        $preference = auth()->user()->columnPreference;
-        Log::alert($preference);
+        $preference = auth()->user()->columnPreference;        
         if ($preference) {
             $preference->update(['columns' => json_encode($this->selectedColumns)]);
         } else {
@@ -156,7 +161,8 @@ class Index extends Component
             ]);
         }
     }
-
+// ["id","apellido","name","documento","sector","rol","accion"]
+// 
        public function getMonthName($monthNumber)
     {
         $months = [

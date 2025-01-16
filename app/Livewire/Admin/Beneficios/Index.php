@@ -12,9 +12,11 @@ class Index extends Component
   
   use WithPagination;
 
+  public $listado;
   public $query,$nombre,$id;
   public $method="";    
   public $filter="all";    
+  public $rebootB=false;    
     
     public function option($method, $id=false){
       
@@ -36,10 +38,15 @@ class Index extends Component
 
   }
 
-    #[On(['miembroCreated' ,'miembroUpdated' ,'miembroDeleted'] )]
+    #[On(['rebootBen'] )]
+      public function rebbotBenClose(){ 
+        $this->rebootB=false;
+    }
+
+    #[On(['beneficioCreated' ,'beneficioUpdated' ,'beneficioDeleted'] )]
       public function mount(){
         $this->method="";
-        $this->resetPage(); 
+        // $this->resetPage(); 
       }
 
     public function render(){
