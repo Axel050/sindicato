@@ -95,11 +95,13 @@ public function estadoPendiente($idMiembro){
  
     $conEstado0 = EstadoCondicionesRequerida::where('idMiembro', $idMiembro)
         ->where('idBeneficio', $this->id)
-        ->where('estado', '0')
-        ->orwhere('estado', '2')
+          ->where(function ($query) {
+                        $query->where('estado', 0)
+                        ->orWhere('estado', 2);
+        })
         ->count();
-
         
+
     if($total <= 0){
       return false;
     }

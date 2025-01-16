@@ -76,55 +76,62 @@ class ModalPreaprovado extends Component
       $valor=null;
       
       
-        foreach ($beneficiosC as $ben) {
+        // foreach ($beneficiosC as $ben) {
 
 
-                // Verificamos documentacion 
-                  $e= EstadoCondicionesRequerida::where("idMiembro" ,$this->id)->where("idCondicionRequerida",$ben->idCondicion)->first();
+        //         // Verificamos documentacion 
+        //           $e= EstadoCondicionesRequerida::where("idMiembro" ,$this->id)->where("idCondicionRequerida",$ben->idCondicion)->first();
                   
-                  // Si alguno no es estado=1 , no se crea el beneficioafiliado,estadosOk
-                    if(isset($e->estado)){
-                      Log::alert("INN");
-                      $estadosCant++;
+        //           Log::alert($e->estado);
+        //           // Si alguno no es estado=1 , no se crea el beneficioafiliado,estadosOk
+        //             if(isset($e->estado)){                      
+        //               $estadosCant++;
 
-                        if($e->estado == 1 ){
-                          $estado = 1;                          
-                        } 
-                        elseif($e->estado == 2 ){
-                          $estado=2;
-                          $estadosOk=null;
-                        } 
-                        elseif($e->estado == 0 ){
-                          $estado=0;
-                          $estadosOk=null;                          
-                        }
+        //                 if($e->estado == 1 ){
+        //                   $estado = 1;                          
+        //                 } 
+        //                 elseif($e->estado == 2 ){
+        //                   $estado=2;
+        //                   $estadosOk=null;
+        //                 } 
+        //                 elseif($e->estado == 0 ){
+        //                   $estado=0;
+        //                   $estadosOk=null;                          
+        //                 }
                         
-                    }
+        //             }
                         
-                        // Si esta todo OK , se crea el beneficio afiliado 
+        //                 // Si esta todo OK , se crea el beneficio afiliado 
 
-                        $eCR= EstadoCondicionesRequerida::where("idMiembro" ,$this->id)->where("idCondicionRequerida",$ben->idCondicion)->where("idBeneficio",$this->idbeneficio)->first();
+        //                 $eCR= EstadoCondicionesRequerida::where("idMiembro" ,$this->id)->where("idCondicionRequerida",$ben->idCondicion)->where("idBeneficio",$this->idbeneficio)->first();
                         
-                        if($eCR){                          
-                            $eCR->estado=1;
-                            $eCR->save();
-                        }else{                  
+        //                 if($eCR){                          
+        //                     $eCR->estado=1;
+        //                     $eCR->save();
+        //                 }else{                  
 
-                            EstadoCondicionesRequerida::create([
-                              "idCondicionRequerida" => $ben->idCondicion,
-                              "idBeneficio" => $benef->id,
-                              "idMiembro" => $this->id,
-                              "estado" => $estado,
-                              "fechaRegistro" => now(),
-                              "idResponsable" => 1
-                            ]);
-                          }
-                    }
+        //                     EstadoCondicionesRequerida::create([
+        //                       "idCondicionRequerida" => $ben->idCondicion,
+        //                       "idBeneficio" => $benef->id,
+        //                       "idMiembro" => $this->id,
+        //                       "estado" => $estado,
+        //                       "fechaRegistro" => now(),
+        //                       "idResponsable" => 1
+        //                     ]);
+        //                   }
+
+
+        //             }
                  
                   
+                        // dd([
+                        //   "estados" => $estadosOk,
+                        //   "bencicion can" => $beneficiosC->count(),
+                        //   "estadosCa" => $estadosCant,
 
+                        // ]);
       
-                  if($estadosOk && $beneficiosC->count() ==  $estadosCant){
+                  // if($estadosOk && $beneficiosC->count() ==  $estadosCant){
                     $beneficioMiembro = BeneficioAfiliado::create([
                     "idBeneficio" =>$benef->id,                              
                     "idAfiliado" =>$this->id,
@@ -134,16 +141,18 @@ class ModalPreaprovado extends Component
                     "estado"=>1,
                   
                     "comentario" =>null,
-                    "fechaDesde" =>$ben->fechaDesde,
-                    "fechaHasta" =>$ben->fechaHasta,
+                    "fechaDesde" =>$benef->fechaDesde,
+                    "fechaHasta" =>$benef->fechaHasta,
+                    // "fechaDesde" =>$ben->fechaDesde,
+                    // "fechaHasta" =>$ben->fechaHasta,
                     
-                    "reutilizable" =>$ben->reutilizable,
-                    "cantUsos" =>$ben->cantUsos,        
+                    "reutilizable" =>$benef->reutilizable,
+                    "cantUsos" =>$benef->cantUsos,        
 
                     ]);
 
 
-                  }
+                  // }
                 
          $this->dispatch("solicitudCreated");
 
