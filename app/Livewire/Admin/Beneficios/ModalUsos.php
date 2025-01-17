@@ -14,6 +14,8 @@ class ModalUsos extends Component
   use WithFileUploads;
   use WithPagination;
 
+  
+
 
     public $id,$desde,$hasta,$cant,$beneficio;
                
@@ -31,12 +33,10 @@ class ModalUsos extends Component
         }
 
     public function render()
-    {
-         
-          // $usos = BeneficiosUsos::onlyTrashed()->where("id_beneficio",$this->id)
+    {                   
+          $this->beneficio = Beneficio::find($this->id);
           $usos = BeneficiosUsos::where("id_beneficio",$this->id)
           ->orderBy('id', 'desc');
-          $this->beneficio = Beneficio::find($this->id);
 
           if ($this->desde && $this->hasta) {
    
@@ -53,7 +53,8 @@ class ModalUsos extends Component
           }
 
           $this->cant =  $usos->count();
-          $usos= $usos->paginate(12);
+          $usos= $usos->paginate(12,pageName: 'usos-page');
+          
 
         return view('livewire.admin.beneficios.modal-usos', compact("usos"));
     }

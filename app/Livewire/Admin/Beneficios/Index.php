@@ -17,6 +17,9 @@ class Index extends Component
   public $method="";    
   public $filter="all";    
   public $rebootB=false;    
+
+  
+
     
     public function option($method, $id=false){
       
@@ -65,7 +68,7 @@ class Index extends Component
         $beneficios->where("estado", $this->filter);  
       }
 
-        $beneficios = $beneficios->paginate(15);
+        $beneficios = $beneficios->paginate(12);
                         
         return view('livewire.admin.beneficios.index',compact("beneficios"));
     }
