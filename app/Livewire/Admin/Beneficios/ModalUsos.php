@@ -23,8 +23,8 @@ class ModalUsos extends Component
           $uso = BeneficiosUsos::find($id);          
 
           if($uso){
-            // $uso->delete();
-            $uso->forceDelete();
+            $uso->delete();
+            // $uso->forceDelete();
             $this->dispatch("usoDeleted");
           }
 
@@ -53,7 +53,7 @@ class ModalUsos extends Component
           }
 
           $this->cant =  $usos->count();
-          $usos= $usos->paginate(15);
+          $usos= $usos->paginate(12);
 
         return view('livewire.admin.beneficios.modal-usos', compact("usos"));
     }

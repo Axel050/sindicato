@@ -63,8 +63,8 @@ class ModalBeneficiosAdministrar extends Component
           $uso = BeneficiosUsos::find($id);
 
           if($uso){
-            // $uso->delete();
-            $uso->forceDelete();
+            $uso->delete();
+            // $uso->forceDelete();
             $this->dispatch("usoDeleted");
           }
 

@@ -15,7 +15,7 @@
                   <label>Desde <input type="date" wire:model.live="desde" class="rounded-lg h-6 text-sm px-1"></label>
                   <label>Hasta <input type="date" wire:model.live="hasta" class="rounded-lg h-6 text-sm px-1"></label>
                 </div>
-                {{-- @dump($usos->toArray()) --}}
+              
 
                 @if (count($usos))
                     <h3 class="text-center">Usos: {{$cant}}</h3>
@@ -61,6 +61,12 @@
                             @endforeach
                           </tbody>
                  </table>
+
+                 @if (count($usos) )
+                  <div class="w-full  item-center justify-between lg:justify-center lg:gap-x-8   lg:flex-row lg:items-center lg:w-[75%] mx-auto px-2 mb-8 mt-5">
+                    {{$usos->links()}}
+                  </div>
+                  @endif
 
 
 
